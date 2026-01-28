@@ -36,9 +36,12 @@ The Lumeo Early Access Frontend is a modern, animated landing page that serves a
 
 1. THE Lumeo_System SHALL display an animated LUMEO logo with text scramble/flip effects
 2. THE Lumeo_System SHALL show the tagline "Early Access to Lumeo" prominently
-3. THE Lumeo_System SHALL display the subheading about dismantling legacy banking infrastructure
+3. THE Lumeo_System SHALL display the subheading "We are dismantling the slow rails of legacy banking. Lumeo is a non-custodial, wallet-first settlement layer. Money moves as fast as data. No intermediaries."
 4. THE Lumeo_System SHALL include animated background elements with noise and chevron effects
 5. THE Lumeo_System SHALL display a countdown timer to July 28, 2026 launch date
+6. THE Lumeo_System SHALL display an "Alpha Badge" showing "v0.1 / Alpha"
+7. THE Lumeo_System SHALL include a left vertical label "EARLY ACCESS" (rotated)
+8. THE Lumeo_System SHALL display "Beta release in 6 months. Secure your spot now." message
 
 ### Requirement 3: Email Collection and Early Access Signup
 
@@ -46,11 +49,11 @@ The Lumeo Early Access Frontend is a modern, animated landing page that serves a
 
 #### Acceptance Criteria
 
-1. THE Email_Collector SHALL provide an email input field in the hero section
-2. THE Email_Collector SHALL include an "Enter the Protocol" submit button
+1. THE Email_Collector SHALL provide an email input field with placeholder "your@email.com" in the hero section
+2. THE Email_Collector SHALL include an "Enter the Protocol" submit button that changes to "Joining..." when loading
 3. WHEN a user submits a valid email, THE Email_Collector SHALL send the data to /api/subscribe endpoint
 4. WHEN a user submits an invalid email, THE Email_Collector SHALL display appropriate validation feedback
-5. WHEN the form is successfully submitted, THE Email_Collector SHALL provide confirmation feedback
+5. WHEN the form is successfully submitted, THE Email_Collector SHALL display "✓ Welcome to the alpha. Check your email for next steps." confirmation message
 
 ### Requirement 4: Animated Content Sections
 
@@ -94,8 +97,12 @@ The Lumeo Early Access Frontend is a modern, animated landing page that serves a
 
 #### Acceptance Criteria
 
-1. THE Content_Sections SHALL display four core principles in an alternating layout pattern
-2. THE Content_Sections SHALL highlight specific keywords with animated orange background effects
+1. THE Content_Sections SHALL display four core principles in an alternating layout pattern:
+   - Principle 1: "INSTANT SETTLEMENT — Value transfers complete in milliseconds, not days. Quantum-speed verification eliminates waiting."
+   - Principle 2: "ZERO FRICTION — No intermediaries, no gas fees, no hidden costs. Pure peer-to-peer value flow."
+   - Principle 3: "CRYPTOGRAPHIC TRUST — Powered by zero-knowledge proofs, not trust in institutions. Math is your guarantee."
+   - Principle 4: "INFINITE LIQUIDITY — Cross-chain pooling ensures deep liquidity for any trading pair, anywhere, anytime."
+2. THE Content_Sections SHALL highlight specific keywords (INSTANT, ZERO, CRYPTOGRAPHIC, INFINITE) with animated orange background effects
 3. THE Content_Sections SHALL adapt the alternating layout for mobile viewports
 4. THE Content_Sections SHALL animate principle sections as they enter the viewport
 5. THE Content_Sections SHALL maintain text readability with sufficient contrast ratios
