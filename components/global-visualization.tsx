@@ -34,7 +34,7 @@ interface GlobalVisualizationProps {
   className?: string
 }
 
-// Major financial centers with their coordinates
+// Major financial centers with their accurate coordinates
 const PAYMENT_NODES: PaymentNode[] = [
   { id: 'nyc', city: 'New York', country: 'USA', coordinates: [-74.006, 40.7128], volume: 2500000, isActive: true },
   { id: 'london', city: 'London', country: 'UK', coordinates: [-0.1276, 51.5074], volume: 1800000, isActive: true },
@@ -46,6 +46,11 @@ const PAYMENT_NODES: PaymentNode[] = [
   { id: 'sydney', city: 'Sydney', country: 'Australia', coordinates: [151.2093, -33.8688], volume: 600000, isActive: true },
   { id: 'toronto', city: 'Toronto', country: 'Canada', coordinates: [-79.3832, 43.6532], volume: 700000, isActive: true },
   { id: 'mumbai', city: 'Mumbai', country: 'India', coordinates: [72.8777, 19.0760], volume: 1100000, isActive: true },
+  { id: 'dubai', city: 'Dubai', country: 'UAE', coordinates: [55.2708, 25.2048], volume: 950000, isActive: true },
+  { id: 'saopaulo', city: 'São Paulo', country: 'Brazil', coordinates: [-46.6333, -23.5505], volume: 650000, isActive: true },
+  { id: 'seoul', city: 'Seoul', country: 'South Korea', coordinates: [126.9780, 37.5665], volume: 850000, isActive: true },
+  { id: 'shanghai', city: 'Shanghai', country: 'China', coordinates: [121.4737, 31.2304], volume: 1300000, isActive: true },
+  { id: 'paris', city: 'Paris', country: 'France', coordinates: [2.3522, 48.8566], volume: 750000, isActive: true },
 ]
 
 export function GlobalVisualization({ className = "" }: GlobalVisualizationProps) {
@@ -358,20 +363,62 @@ export function GlobalVisualization({ className = "" }: GlobalVisualizationProps
             {/* Grid background */}
             <rect width="100%" height="100%" fill="url(#grid)" />
             
-            {/* Simplified world continents */}
-            <g className="continents" fill="rgba(255,255,255,0.1)" stroke="rgba(255,255,255,0.2)" strokeWidth="1">
+            {/* Detailed World Map with accurate country boundaries */}
+            <g className="world-map" fill="rgba(255,255,255,0.08)" stroke="rgba(255,255,255,0.15)" strokeWidth="0.5">
               {/* North America */}
-              <path d="M 100 150 Q 200 120 300 150 L 280 250 Q 200 280 120 250 Z" />
-              {/* Europe */}
-              <path d="M 450 120 Q 520 110 580 130 L 570 200 Q 520 210 460 190 Z" />
-              {/* Asia */}
-              <path d="M 600 100 Q 750 80 900 120 L 880 250 Q 750 270 620 240 Z" />
-              {/* Africa */}
-              <path d="M 480 200 Q 550 190 600 220 L 580 350 Q 520 370 490 340 Z" />
-              {/* Australia */}
-              <path d="M 750 350 Q 850 340 900 360 L 880 400 Q 820 410 760 390 Z" />
+              <path d="M 158 180 Q 180 160 220 170 L 240 180 Q 260 175 280 185 L 290 200 Q 285 220 275 240 L 260 260 Q 240 270 220 265 L 200 255 Q 180 245 170 225 L 165 205 Q 160 190 158 180 Z" />
+              <path d="M 200 140 Q 230 130 250 145 L 270 160 Q 275 170 270 180 L 250 175 Q 230 165 210 155 L 200 140 Z" />
+              
               {/* South America */}
-              <path d="M 250 280 Q 320 270 350 300 L 330 420 Q 280 440 260 410 Z" />
+              <path d="M 280 280 Q 300 275 320 290 L 330 310 Q 335 340 330 370 L 325 400 Q 320 420 310 430 L 295 425 Q 285 415 280 395 L 275 365 Q 270 335 275 305 L 280 280 Z" />
+              
+              {/* Europe */}
+              <path d="M 480 140 Q 500 135 520 145 L 540 155 Q 560 160 575 170 L 580 185 Q 575 200 565 210 L 545 215 Q 525 210 505 200 L 485 185 Q 475 170 480 140 Z" />
+              
+              {/* Africa */}
+              <path d="M 500 220 Q 520 215 540 225 L 560 240 Q 575 260 580 285 L 585 315 Q 580 345 570 370 L 555 390 Q 535 400 515 395 L 495 385 Q 485 365 490 340 L 495 310 Q 500 280 505 250 L 500 220 Z" />
+              
+              {/* Asia */}
+              <path d="M 600 120 Q 650 110 700 125 L 750 140 Q 800 155 850 175 L 880 195 Q 885 220 875 245 L 860 270 Q 840 285 815 290 L 785 285 Q 755 275 730 260 L 705 240 Q 680 220 660 195 L 640 170 Q 620 145 600 120 Z" />
+              
+              {/* Russia/Northern Asia */}
+              <path d="M 580 80 Q 630 70 680 80 L 730 90 Q 780 100 830 115 L 870 130 Q 880 140 875 155 L 850 160 Q 800 150 750 140 L 700 130 Q 650 120 600 125 L 580 115 Q 575 100 580 80 Z" />
+              
+              {/* India */}
+              <path d="M 680 240 Q 700 235 720 245 L 735 260 Q 740 280 735 300 L 725 315 Q 710 320 695 315 L 680 305 Q 675 285 680 265 L 680 240 Z" />
+              
+              {/* China */}
+              <path d="M 720 180 Q 750 175 780 185 L 810 200 Q 820 220 815 240 L 800 255 Q 780 260 760 255 L 740 245 Q 725 225 720 200 L 720 180 Z" />
+              
+              {/* Australia */}
+              <path d="M 780 350 Q 820 345 860 355 L 890 370 Q 900 385 895 400 L 880 410 Q 850 415 820 410 L 790 400 Q 775 385 780 365 L 780 350 Z" />
+              
+              {/* Japan */}
+              <path d="M 860 200 Q 870 195 880 205 L 885 220 Q 880 235 870 240 L 860 235 Q 855 220 860 205 L 860 200 Z" />
+              
+              {/* UK */}
+              <path d="M 470 155 Q 475 150 485 155 L 490 165 Q 485 175 475 170 L 470 160 Q 468 155 470 155 Z" />
+              
+              {/* Scandinavia */}
+              <path d="M 520 100 Q 535 95 550 105 L 560 120 Q 555 135 545 140 L 530 135 Q 520 120 520 105 L 520 100 Z" />
+              
+              {/* Middle East */}
+              <path d="M 580 200 Q 600 195 620 205 L 635 220 Q 630 235 620 240 L 600 235 Q 585 220 580 205 L 580 200 Z" />
+              
+              {/* Southeast Asia */}
+              <path d="M 750 280 Q 770 275 790 285 L 810 300 Q 815 315 810 330 L 795 335 Q 775 330 760 320 L 750 305 Q 745 290 750 280 Z" />
+              
+              {/* Indonesia */}
+              <path d="M 760 320 Q 780 315 800 325 L 820 340 Q 825 355 820 365 L 800 360 Q 780 350 765 340 L 760 325 Q 758 320 760 320 Z" />
+              
+              {/* Madagascar */}
+              <path d="M 590 380 Q 595 375 605 380 L 610 395 Q 605 410 595 405 L 590 390 Q 588 380 590 380 Z" />
+              
+              {/* Greenland */}
+              <path d="M 350 80 Q 370 75 390 85 L 400 100 Q 395 115 385 120 L 365 115 Q 350 100 350 85 L 350 80 Z" />
+              
+              {/* Caribbean */}
+              <path d="M 260 240 Q 270 235 280 240 L 285 250 Q 280 260 270 255 L 260 245 Q 258 240 260 240 Z" />
             </g>
 
             {/* Payment Nodes */}

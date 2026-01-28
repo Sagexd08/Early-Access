@@ -5,9 +5,6 @@ import { HeroSection } from "@/components/hero-section"
 import { SignalsSection } from "@/components/signals-section"
 import { WorkSection } from "@/components/work-section"
 import { PrinciplesSection } from "@/components/principles-section"
-import { GlobalVisualization } from "@/components/global-visualization"
-import { ArchitectureDiagram } from "@/components/architecture-diagram"
-import { ParticleSystem } from "@/components/particle-system"
 import { ColophonSection } from "@/components/colophon-section"
 import { SideNav } from "@/components/side-nav"
 import { useSkipLinks } from "@/lib/use-keyboard-navigation"
@@ -21,12 +18,10 @@ export default function EarlyAccessPage() {
     addSkipLink("signals", "Skip to latest updates")
     addSkipLink("work", "Skip to key features")
     addSkipLink("principles", "Skip to core principles")
-    addSkipLink("global-network", "Skip to global network visualization")
-    addSkipLink("architecture", "Skip to architecture diagram")
     addSkipLink("colophon", "Skip to footer")
 
     // Ensure all sections are focusable for keyboard navigation
-    const sections = ['hero', 'signals', 'work', 'principles', 'global-network', 'architecture', 'colophon']
+    const sections = ['hero', 'signals', 'work', 'principles', 'colophon']
     sections.forEach(sectionId => {
       const section = document.getElementById(sectionId)
       if (section) {
@@ -47,9 +42,7 @@ export default function EarlyAccessPage() {
           '2': 'signals', 
           '3': 'work',
           '4': 'principles',
-          '5': 'global-network',
-          '6': 'architecture',
-          '7': 'colophon'
+          '5': 'colophon'
         }
         
         const sectionId = keyMap[event.key]
@@ -97,8 +90,6 @@ export default function EarlyAccessPage() {
           <SignalsSection />
           <WorkSection />
           <PrinciplesSection />
-          <GlobalVisualization />
-          <ArchitectureDiagram />
           <ColophonSection />
         </div>
 
@@ -107,7 +98,7 @@ export default function EarlyAccessPage() {
           <div className="bg-background/90 backdrop-blur-sm border border-border/50 p-3 rounded font-mono text-xs">
             <div className="text-accent mb-2 uppercase tracking-wider">Keyboard Shortcuts</div>
             <div className="space-y-1 text-muted-foreground">
-              <div>Alt + 1-7: Navigate sections</div>
+              <div>Alt + 1-5: Navigate sections</div>
               <div>Tab: Navigate elements</div>
               <div>Escape: Return to top</div>
               <div>Arrow keys: Navigate interactive elements</div>

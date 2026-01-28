@@ -403,10 +403,7 @@ export function ColophonSection() {
         <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-3 sm:gap-4">
           <div className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-6">
             <p className="font-mono text-[9px] sm:text-[10px] text-muted-foreground uppercase tracking-widest">
-              © 2026 Lumeo Labs. All rights reserved.
-            </p>
-            <p className="font-mono text-[9px] sm:text-[10px] text-muted-foreground">
-              Built with ❤️ for the future of payments
+              © 2026 Qore Labs. All rights reserved.
             </p>
           </div>
           <div className="flex items-center gap-4">
