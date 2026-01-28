@@ -1,6 +1,6 @@
 "use client"
 
-import { useRef, useEffect } from "react"
+import { useRef, useEffect, useState } from "react"
 import gsap from "gsap"
 import { ScrollTrigger } from "gsap/ScrollTrigger"
 
@@ -11,6 +11,10 @@ export function ColophonSection() {
   const headerRef = useRef<HTMLDivElement>(null)
   const gridRef = useRef<HTMLDivElement>(null)
   const footerRef = useRef<HTMLDivElement>(null)
+  const newsletterRef = useRef<HTMLDivElement>(null)
+  const [email, setEmail] = useState("")
+  const [isLoading, setIsLoading] = useState(false)
+  const [message, setMessage] = useState<string | null>(null)
 
   useEffect(() => {
     if (!sectionRef.current) return
@@ -25,6 +29,21 @@ export function ColophonSection() {
           ease: "power3.out",
           scrollTrigger: {
             trigger: headerRef.current,
+            start: "top 85%",
+            toggleActions: "play none none reverse",
+          },
+        })
+      }
+
+      // Newsletter section animation
+      if (newsletterRef.current) {
+        gsap.from(newsletterRef.current, {
+          y: 30,
+          opacity: 0,
+          duration: 0.8,
+          ease: "power3.out",
+          scrollTrigger: {
+            trigger: newsletterRef.current,
             start: "top 85%",
             toggleActions: "play none none reverse",
           },
@@ -67,55 +86,251 @@ export function ColophonSection() {
     return () => ctx.revert()
   }, [])
 
+  const handleNewsletterSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+    if (!email.trim()) return
+
+    setIsLoading(true)
+    setMessage(null)
+
+    try {
+      const response = await fetch('/api/subscribe', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ 
+          email: email.trim(),
+          source: 'footer-newsletter'
+        }),
+      })
+
+      const data = await response.json()
+
+      if (response.ok) {
+        setMessage("✓ Subscribed! You'll receive updates about Lumeo's progress.")
+        setEmail("")
+      } else {
+        setMessage(data.error || "Something went wrong. Please try again.")
+      }
+    } catch (error) {
+      setMessage("Network error. Please check your connection and try again.")
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
   return (
-    <section
+    <footer
       ref={sectionRef}
       id="colophon"
       className="relative py-16 sm:py-24 md:py-32 px-4 sm:px-6 md:pl-28 md:pr-12 border-t border-border/30 mb-16 md:mb-0"
+      role="contentinfo"
+      aria-label="Site footer with company information and links"
     >
       {/* Section header */}
       <div ref={headerRef} className="mb-12 sm:mb-16">
-        <span className="font-mono text-[9px] sm:text-[10px] uppercase tracking-[0.3em] text-accent">04 / Colophon</span>
-        <h2 className="mt-3 sm:mt-4 font-[var(--font-bebas)] text-4xl sm:text-5xl md:text-7xl tracking-tight">CREDITS</h2>
+        <span className="font-mono text-[9px] sm:text-[10px] uppercase tracking-[0.3em] text-accent">04 / Footer</span>
+        <h2 className="mt-3 sm:mt-4 font-[var(--font-bebas)] text-4xl sm:text-5xl md:text-7xl tracking-tight">LUMEO</h2>
+        <p className="mt-4 text-sm sm:text-base text-muted-foreground max-w-2xl">
+          The post-UPI global settlement layer. Rebuilding how value settles across borders with wallet-first, 
+          non-custodial architecture where payments are final by design.
+        </p>
+      </div>
+
+      {/* Newsletter signup section */}
+      <div ref={newsletterRef} className="mb-16 sm:mb-20">
+        <div className="max-w-md">
+          <h3 className="font-mono text-[10px] sm:text-[11px] uppercase tracking-[0.3em] text-accent mb-4">
+            Stay Updated
+          </h3>
+          <p className="text-sm text-muted-foreground mb-6">
+            Get notified about Lumeo's progress, beta releases, and early access opportunities.
+          </p>
+          
+          <form onSubmit={handleNewsletterSubmit} className="space-y-4">
+            <div className="flex flex-col sm:flex-row gap-3">
+              <input
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="your@email.com"
+                required
+                disabled={isLoading}
+                className="flex-1 px-4 py-3 bg-background/50 border border-border/50 rounded-none font-mono text-sm 
+                         placeholder:text-muted-foreground/60 focus:outline-none focus:border-accent focus:ring-1 
+                         focus:ring-accent transition-colors duration-200 disabled:opacity-50"
+                aria-label="Email address for newsletter subscription"
+              />
+              <button
+                type="submit"
+                disabled={isLoading || !email.trim()}
+                className="px-6 py-3 bg-accent text-black font-mono text-sm uppercase tracking-wider 
+                         hover:bg-accent/90 focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2 
+                         focus:ring-offset-background transition-all duration-200 disabled:opacity-50 
+                         disabled:cursor-not-allowed touch-manipulation"
+                aria-label={isLoading ? "Subscribing to newsletter" : "Subscribe to newsletter"}
+              >
+                {isLoading ? "Subscribing..." : "Subscribe"}
+              </button>
+            </div>
+            
+            {message && (
+              <div 
+                className={`text-sm font-mono ${
+                  message.startsWith('✓') ? 'text-accent' : 'text-red-400'
+                }`}
+                role="status"
+                aria-live="polite"
+              >
+                {message}
+              </div>
+            )}
+          </form>
+        </div>
       </div>
 
       {/* Multi-column layout - responsive grid */}
-      <div ref={gridRef} className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-6 sm:gap-8 md:gap-12">
-        {/* Team */}
+      <div ref={gridRef} className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-6 sm:gap-8 md:gap-12 mb-16 sm:mb-20">
+        {/* Company */}
         <div className="col-span-1">
-          <h4 className="font-mono text-[8px] sm:text-[9px] uppercase tracking-[0.3em] text-muted-foreground mb-3 sm:mb-4">Team</h4>
+          <h4 className="font-mono text-[8px] sm:text-[9px] uppercase tracking-[0.3em] text-muted-foreground mb-3 sm:mb-4">Company</h4>
           <ul className="space-y-1.5 sm:space-y-2">
-            <li className="font-mono text-xs text-foreground/80">Lumeo Labs</li>
-            <li className="font-mono text-xs text-foreground/80">Core Team</li>
+            <li>
+              <a
+                href="/about"
+                className="font-mono text-xs text-foreground/80 hover:text-accent focus:text-accent transition-colors duration-200 touch-manipulation"
+                aria-label="Learn about Lumeo"
+              >
+                About
+              </a>
+            </li>
+            <li>
+              <a
+                href="/careers"
+                className="font-mono text-xs text-foreground/80 hover:text-accent focus:text-accent transition-colors duration-200 touch-manipulation"
+                aria-label="View career opportunities at Lumeo"
+              >
+                Careers
+              </a>
+            </li>
+            <li>
+              <a
+                href="/press"
+                className="font-mono text-xs text-foreground/80 hover:text-accent focus:text-accent transition-colors duration-200 touch-manipulation"
+                aria-label="Press and media resources"
+              >
+                Press
+              </a>
+            </li>
           </ul>
         </div>
 
-        {/* Technology */}
+        {/* Product */}
         <div className="col-span-1">
-          <h4 className="font-mono text-[8px] sm:text-[9px] uppercase tracking-[0.3em] text-muted-foreground mb-3 sm:mb-4">Technology</h4>
+          <h4 className="font-mono text-[8px] sm:text-[9px] uppercase tracking-[0.3em] text-muted-foreground mb-3 sm:mb-4">Product</h4>
           <ul className="space-y-1.5 sm:space-y-2">
-            <li className="font-mono text-xs text-foreground/80">Next.js</li>
-            <li className="font-mono text-xs text-foreground/80">GSAP</li>
-            <li className="font-mono text-xs text-foreground/80">Supabase</li>
+            <li>
+              <a
+                href="/docs"
+                className="font-mono text-xs text-foreground/80 hover:text-accent focus:text-accent transition-colors duration-200 touch-manipulation"
+                aria-label="Technical documentation"
+              >
+                Documentation
+              </a>
+            </li>
+            <li>
+              <a
+                href="/api"
+                className="font-mono text-xs text-foreground/80 hover:text-accent focus:text-accent transition-colors duration-200 touch-manipulation"
+                aria-label="API reference"
+              >
+                API
+              </a>
+            </li>
+            <li>
+              <a
+                href="/roadmap"
+                className="font-mono text-xs text-foreground/80 hover:text-accent focus:text-accent transition-colors duration-200 touch-manipulation"
+                aria-label="Product roadmap"
+              >
+                Roadmap
+              </a>
+            </li>
           </ul>
         </div>
 
-        {/* Typography */}
+        {/* Community */}
         <div className="col-span-1">
-          <h4 className="font-mono text-[8px] sm:text-[9px] uppercase tracking-[0.3em] text-muted-foreground mb-3 sm:mb-4">Typography</h4>
+          <h4 className="font-mono text-[8px] sm:text-[9px] uppercase tracking-[0.3em] text-muted-foreground mb-3 sm:mb-4">Community</h4>
           <ul className="space-y-1.5 sm:space-y-2">
-            <li className="font-mono text-xs text-foreground/80">Bebas Neue</li>
-            <li className="font-mono text-xs text-foreground/80">IBM Plex Sans</li>
-            <li className="font-mono text-xs text-foreground/80">IBM Plex Mono</li>
+            <li>
+              <a
+                href="https://discord.gg/lumeo"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="font-mono text-xs text-foreground/80 hover:text-accent focus:text-accent transition-colors duration-200 touch-manipulation"
+                aria-label="Join Lumeo Discord community (opens in new tab)"
+              >
+                Discord
+              </a>
+            </li>
+            <li>
+              <a
+                href="https://twitter.com/lumeonetwork"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="font-mono text-xs text-foreground/80 hover:text-accent focus:text-accent transition-colors duration-200 touch-manipulation"
+                aria-label="Follow Lumeo on Twitter (opens in new tab)"
+              >
+                Twitter
+              </a>
+            </li>
+            <li>
+              <a
+                href="https://github.com/lumeo-network"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="font-mono text-xs text-foreground/80 hover:text-accent focus:text-accent transition-colors duration-200 touch-manipulation"
+                aria-label="View Lumeo on GitHub (opens in new tab)"
+              >
+                GitHub
+              </a>
+            </li>
           </ul>
         </div>
 
-        {/* Network */}
+        {/* Legal */}
         <div className="col-span-1">
-          <h4 className="font-mono text-[8px] sm:text-[9px] uppercase tracking-[0.3em] text-muted-foreground mb-3 sm:mb-4">Network</h4>
+          <h4 className="font-mono text-[8px] sm:text-[9px] uppercase tracking-[0.3em] text-muted-foreground mb-3 sm:mb-4">Legal</h4>
           <ul className="space-y-1.5 sm:space-y-2">
-            <li className="font-mono text-xs text-foreground/80">Multi-Chain</li>
-            <li className="font-mono text-xs text-foreground/80">Global</li>
+            <li>
+              <a
+                href="/privacy"
+                className="font-mono text-xs text-foreground/80 hover:text-accent focus:text-accent transition-colors duration-200 touch-manipulation"
+                aria-label="Privacy policy"
+              >
+                Privacy
+              </a>
+            </li>
+            <li>
+              <a
+                href="/terms"
+                className="font-mono text-xs text-foreground/80 hover:text-accent focus:text-accent transition-colors duration-200 touch-manipulation"
+                aria-label="Terms of service"
+              >
+                Terms
+              </a>
+            </li>
+            <li>
+              <a
+                href="/security"
+                className="font-mono text-xs text-foreground/80 hover:text-accent focus:text-accent transition-colors duration-200 touch-manipulation"
+                aria-label="Security information"
+              >
+                Security
+              </a>
+            </li>
           </ul>
         </div>
 
@@ -129,45 +344,78 @@ export function ColophonSection() {
                 className="font-mono text-xs text-foreground/80 hover:text-accent focus:text-accent transition-colors duration-200 touch-manipulation"
                 aria-label="Send email to hello@lumeo.network"
               >
-                Email
+                General
               </a>
             </li>
             <li>
               <a
-                href="#"
+                href="mailto:partnerships@lumeo.network"
                 className="font-mono text-xs text-foreground/80 hover:text-accent focus:text-accent transition-colors duration-200 touch-manipulation"
-                aria-label="Join Lumeo Discord community"
-                onClick={(e) => {
-                  e.preventDefault()
-                  // Could open Discord invite or show coming soon message
-                }}
+                aria-label="Send email to partnerships@lumeo.network"
               >
-                Discord
+                Partnerships
+              </a>
+            </li>
+            <li>
+              <a
+                href="mailto:support@lumeo.network"
+                className="font-mono text-xs text-foreground/80 hover:text-accent focus:text-accent transition-colors duration-200 touch-manipulation"
+                aria-label="Send email to support@lumeo.network"
+              >
+                Support
               </a>
             </li>
           </ul>
         </div>
 
-        {/* Launch */}
+        {/* Technology */}
         <div className="col-span-1">
-          <h4 className="font-mono text-[8px] sm:text-[9px] uppercase tracking-[0.3em] text-muted-foreground mb-3 sm:mb-4">Launch</h4>
+          <h4 className="font-mono text-[8px] sm:text-[9px] uppercase tracking-[0.3em] text-muted-foreground mb-3 sm:mb-4">Technology</h4>
           <ul className="space-y-1.5 sm:space-y-2">
-            <li className="font-mono text-xs text-foreground/80">Q3 2026</li>
-            <li className="font-mono text-xs text-foreground/80">Alpha v0.1</li>
+            <li className="font-mono text-xs text-foreground/80">Multi-Chain</li>
+            <li className="font-mono text-xs text-foreground/80">Zero-Knowledge</li>
+            <li className="font-mono text-xs text-foreground/80">Non-Custodial</li>
           </ul>
         </div>
       </div>
 
-      {/* Bottom copyright */}
+      {/* Bottom section with copyright and additional info */}
       <div
         ref={footerRef}
-        className="mt-16 sm:mt-20 md:mt-24 pt-6 sm:pt-8 border-t border-border/20 flex flex-col md:flex-row md:items-center md:justify-between gap-3 sm:gap-4"
+        className="pt-8 sm:pt-10 border-t border-border/20"
       >
-        <p className="font-mono text-[9px] sm:text-[10px] text-muted-foreground uppercase tracking-widest">
-          © 2026 Lumeo. All rights reserved.
-        </p>
-        <p className="font-mono text-[9px] sm:text-[10px] text-muted-foreground">The future of instant payments.</p>
+        {/* Status and launch info */}
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
+          <div className="flex items-center gap-4">
+            <div className="flex items-center gap-2">
+              <div className="w-2 h-2 bg-accent rounded-full animate-pulse" aria-hidden="true" />
+              <span className="font-mono text-[10px] text-accent uppercase tracking-wider">
+                Alpha v0.1 - In Development
+              </span>
+            </div>
+          </div>
+          <div className="font-mono text-[10px] text-muted-foreground uppercase tracking-wider">
+            Beta Launch: Q2 2026 • Full Launch: Q3 2026
+          </div>
+        </div>
+
+        {/* Copyright and tagline */}
+        <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-3 sm:gap-4">
+          <div className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-6">
+            <p className="font-mono text-[9px] sm:text-[10px] text-muted-foreground uppercase tracking-widest">
+              © 2026 Lumeo Labs. All rights reserved.
+            </p>
+            <p className="font-mono text-[9px] sm:text-[10px] text-muted-foreground">
+              Built with ❤️ for the future of payments
+            </p>
+          </div>
+          <div className="flex items-center gap-4">
+            <span className="font-mono text-[9px] sm:text-[10px] text-muted-foreground uppercase tracking-wider">
+              Making borders irrelevant to how money moves
+            </span>
+          </div>
+        </div>
       </div>
-    </section>
+    </footer>
   )
 }

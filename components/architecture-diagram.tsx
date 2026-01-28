@@ -307,12 +307,18 @@ export function ArchitectureDiagram({ className = "" }: ArchitectureDiagramProps
     >
       <div className="max-w-7xl mx-auto">
         {/* Section Header */}
-        <div className="text-center mb-12">
-          <h2 className="font-[var(--font-bebas)] text-white text-4xl md:text-6xl mb-4 tracking-wide">
-            Revolutionary Architecture
+        <div className="text-center mb-16">
+          <div className="inline-block mb-6">
+            <span className="font-mono text-xs uppercase tracking-[0.3em] text-accent border border-accent/30 px-4 py-2">
+              Revolutionary Design
+            </span>
+          </div>
+          <h2 className="font-[var(--font-bebas)] text-white text-5xl md:text-7xl mb-6 tracking-wide">
+            Beyond Banking
           </h2>
-          <p className="font-mono text-sm text-muted-foreground max-w-2xl mx-auto">
-            From fragmented traditional rails to unified settlement layer
+          <p className="font-mono text-sm text-muted-foreground max-w-3xl mx-auto leading-relaxed">
+            This isn't just another payment system. It's a complete reimagining of how value moves. 
+            From wallet-first identity to instant settlement, every component is designed for the future.
           </p>
         </div>
 
