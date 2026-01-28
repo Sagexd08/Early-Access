@@ -164,7 +164,7 @@ This implementation plan breaks down the Lumeo Early Access Frontend into discre
     - **Validates: Requirements 5.4**
 
 - [ ] 9. Implement accessibility features
-  - [x] 9.1 Add comprehensive keyboard navigation support
+  - [-] 9.1 Add comprehensive keyboard navigation support
     - Implement full keyboard navigation throughout the site
     - Add visible focus indicators for all interactive elements
     - Ensure all functionality works without mouse interaction

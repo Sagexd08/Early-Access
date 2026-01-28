@@ -58,6 +58,7 @@ export function GlobalVisualization({ className = "" }: GlobalVisualizationProps
   })
   const [activeFlows, setActiveFlows] = useState<PaymentFlow[]>([])
   const [hoveredNode, setHoveredNode] = useState<string | null>(null)
+  const [focusedNode, setFocusedNode] = useState<string | null>(null)
   const animationRef = useRef<gsap.core.Timeline | null>(null)
 
   // Convert lat/lng to SVG coordinates
@@ -87,6 +88,59 @@ export function GlobalVisualization({ className = "" }: GlobalVisualizationProps
       timestamp: new Date()
     }
   }, [])
+
+  // Handle node interaction
+  const handleNodeInteraction = (nodeId: string | null, type: 'hover' | 'focus') => {
+    if (type === 'hover') {
+      setHoveredNode(nodeId)
+    } else {
+      setFocusedNode(nodeId)
+    }
+  }
+
+  // Keyboard navigation for payment nodes
+  const handleKeyDown = useCallback((event: KeyboardEvent) => {
+    if (!svgRef.current) return
+
+    const nodes = PAYMENT_NODES
+    const currentIndex = focusedNode ? nodes.findIndex(n => n.id === focusedNode) : -1
+
+    let nextIndex = currentIndex
+
+    switch (event.key) {
+      case 'ArrowRight':
+      case 'ArrowDown':
+        event.preventDefault()
+        nextIndex = currentIndex < nodes.length - 1 ? currentIndex + 1 : 0
+        break
+      case 'ArrowLeft':
+      case 'ArrowUp':
+        event.preventDefault()
+        nextIndex = currentIndex > 0 ? currentIndex - 1 : nodes.length - 1
+        break
+      case 'Home':
+        event.preventDefault()
+        nextIndex = 0
+        break
+      case 'End':
+        event.preventDefault()
+        nextIndex = nodes.length - 1
+        break
+      default:
+        return
+    }
+
+    const nextNode = nodes[nextIndex]
+    if (nextNode) {
+      setFocusedNode(nextNode.id)
+      
+      // Focus the corresponding SVG element
+      const nodeElement = svgRef.current?.querySelector(`[data-node-id="${nextNode.id}"]`) as SVGElement
+      if (nodeElement) {
+        nodeElement.focus()
+      }
+    }
+  }, [focusedNode])
 
   // Update live statistics
   useEffect(() => {
@@ -206,6 +260,15 @@ export function GlobalVisualization({ className = "" }: GlobalVisualizationProps
     })
   }, [activeFlows])
 
+  // Set up keyboard navigation
+  useEffect(() => {
+    const container = containerRef.current
+    if (!container) return
+
+    container.addEventListener('keydown', handleKeyDown)
+    return () => container.removeEventListener('keydown', handleKeyDown)
+  }, [handleKeyDown])
+
   const handleNodeHover = (nodeId: string | null) => {
     setHoveredNode(nodeId)
   }
@@ -267,7 +330,12 @@ export function GlobalVisualization({ className = "" }: GlobalVisualizationProps
         </div>
 
         {/* World Map Visualization */}
-        <div className="relative bg-black/30 border border-white/10 rounded-lg overflow-hidden">
+        <div 
+          className="relative bg-black/30 border border-white/10 rounded-lg overflow-hidden focus-within:ring-2 focus-within:ring-accent/50"
+          tabIndex={-1}
+          role="application"
+          aria-label="Interactive world map showing payment nodes and flows. Use arrow keys to navigate between nodes."
+        >
           <svg
             ref={svgRef}
             viewBox="0 0 1000 500"
@@ -304,6 +372,8 @@ export function GlobalVisualization({ className = "" }: GlobalVisualizationProps
             {PAYMENT_NODES.map(node => {
               const [x, y] = projectCoordinates(node.coordinates[0], node.coordinates[1], 1000, 500)
               const isHovered = hoveredNode === node.id
+              const isFocused = focusedNode === node.id
+              const isActive = isHovered || isFocused
               
               return (
                 <g key={node.id}>
@@ -311,7 +381,7 @@ export function GlobalVisualization({ className = "" }: GlobalVisualizationProps
                   <circle
                     cx={x}
                     cy={y}
-                    r={isHovered ? 20 : 15}
+                    r={isActive ? 20 : 15}
                     fill="rgba(249, 115, 22, 0.2)"
                     className="transition-all duration-300"
                   />
@@ -320,11 +390,30 @@ export function GlobalVisualization({ className = "" }: GlobalVisualizationProps
                   <circle
                     cx={x}
                     cy={y}
-                    r={isHovered ? 8 : 6}
+                    r={isActive ? 8 : 6}
                     fill="#f97316"
                     className="payment-node cursor-pointer transition-all duration-300"
-                    onMouseEnter={() => handleNodeHover(node.id)}
-                    onMouseLeave={() => handleNodeHover(null)}
+                    data-node-id={node.id}
+                    tabIndex={0}
+                    role="button"
+                    aria-label={`Payment node: ${node.city}, ${node.country}. Volume: ${formatNumber(node.volume)}. Press Enter for details.`}
+                    onMouseEnter={() => handleNodeInteraction(node.id, 'hover')}
+                    onMouseLeave={() => handleNodeInteraction(null, 'hover')}
+                    onFocus={() => handleNodeInteraction(node.id, 'focus')}
+                    onBlur={() => handleNodeInteraction(null, 'focus')}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault()
+                        // Announce node details
+                        const announcement = `${node.city}, ${node.country}. Transaction volume: ${formatNumber(node.volume)}`
+                        const announcer = document.createElement('div')
+                        announcer.setAttribute('aria-live', 'polite')
+                        announcer.className = 'sr-only'
+                        announcer.textContent = announcement
+                        document.body.appendChild(announcer)
+                        setTimeout(() => document.body.removeChild(announcer), 1000)
+                      }
+                    }}
                   />
                   
                   {/* Node label */}
@@ -332,19 +421,19 @@ export function GlobalVisualization({ className = "" }: GlobalVisualizationProps
                     x={x}
                     y={y - 25}
                     textAnchor="middle"
-                    className="fill-white font-mono text-xs"
+                    className="fill-white font-mono text-xs pointer-events-none"
                     style={{ fontSize: '10px' }}
                   >
                     {node.city}
                   </text>
                   
                   {/* Volume indicator */}
-                  {isHovered && (
+                  {isActive && (
                     <text
                       x={x}
                       y={y + 35}
                       textAnchor="middle"
-                      className="fill-accent font-mono text-xs"
+                      className="fill-accent font-mono text-xs pointer-events-none"
                       style={{ fontSize: '8px' }}
                     >
                       {formatNumber(node.volume)}

@@ -38,8 +38,22 @@ export default function RootLayout({
       <body
         className={`${ibmPlexSans.variable} ${bebasNeue.variable} ${ibmPlexMono.variable} font-sans antialiased overflow-x-hidden`}
       >
+        {/* Skip Links for Accessibility */}
+        <div className="skip-links">
+          <a href="#main-content" className="skip-link">
+            Skip to main content
+          </a>
+          <a href="#navigation" className="skip-link">
+            Skip to navigation
+          </a>
+        </div>
+        
         <div className="noise-overlay" aria-hidden="true" />
-        <SmoothScroll>{children}</SmoothScroll>
+        <SmoothScroll>
+          <main id="main-content" tabIndex={-1}>
+            {children}
+          </main>
+        </SmoothScroll>
         <Analytics />
       </body>
     </html>

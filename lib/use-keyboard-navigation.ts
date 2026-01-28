@@ -246,3 +246,132 @@ export function useSkipLinks() {
 
   return { addSkipLink, removeSkipLink }
 }
+
+// Hook for managing focus trapping in modals/overlays
+export function useFocusTrap() {
+  const trapRef = useRef<HTMLElement>(null)
+  const previousFocusRef = useRef<HTMLElement | null>(null)
+
+  const activate = useCallback(() => {
+    if (!trapRef.current) return
+
+    // Store the currently focused element
+    previousFocusRef.current = document.activeElement as HTMLElement
+
+    // Focus the first focusable element in the trap
+    const focusableElements = trapRef.current.querySelectorAll(
+      'button:not([disabled]), a[href], input:not([disabled]), textarea:not([disabled]), select:not([disabled]), [tabindex]:not([tabindex="-1"])'
+    ) as NodeListOf<HTMLElement>
+
+    if (focusableElements.length > 0) {
+      focusableElements[0].focus()
+    }
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key !== 'Tab') return
+
+      const firstElement = focusableElements[0]
+      const lastElement = focusableElements[focusableElements.length - 1]
+
+      if (event.shiftKey) {
+        if (document.activeElement === firstElement) {
+          event.preventDefault()
+          lastElement.focus()
+        }
+      } else {
+        if (document.activeElement === lastElement) {
+          event.preventDefault()
+          firstElement.focus()
+        }
+      }
+    }
+
+    document.addEventListener('keydown', handleKeyDown)
+    return () => document.removeEventListener('keydown', handleKeyDown)
+  }, [])
+
+  const deactivate = useCallback(() => {
+    // Restore focus to the previously focused element
+    if (previousFocusRef.current) {
+      previousFocusRef.current.focus()
+      previousFocusRef.current = null
+    }
+  }, [])
+
+  return { trapRef, activate, deactivate }
+}
+
+// Hook for managing roving tabindex (for component groups like toolbars)
+export function useRovingTabIndex(orientation: 'horizontal' | 'vertical' = 'horizontal') {
+  const containerRef = useRef<HTMLElement>(null)
+  const [activeIndex, setActiveIndex] = useState(0)
+
+  const updateTabIndices = useCallback(() => {
+    if (!containerRef.current) return
+
+    const items = Array.from(
+      containerRef.current.querySelectorAll('[role="tab"], [role="menuitem"], [role="option"], [data-roving-item]')
+    ) as HTMLElement[]
+
+    items.forEach((item, index) => {
+      item.tabIndex = index === activeIndex ? 0 : -1
+    })
+  }, [activeIndex])
+
+  const handleKeyDown = useCallback((event: KeyboardEvent) => {
+    if (!containerRef.current) return
+
+    const items = Array.from(
+      containerRef.current.querySelectorAll('[role="tab"], [role="menuitem"], [role="option"], [data-roving-item]')
+    ) as HTMLElement[]
+
+    if (items.length === 0) return
+
+    const currentIndex = items.findIndex(item => item === document.activeElement)
+    if (currentIndex === -1) return
+
+    let nextIndex = currentIndex
+
+    const isHorizontal = orientation === 'horizontal'
+    const nextKey = isHorizontal ? 'ArrowRight' : 'ArrowDown'
+    const prevKey = isHorizontal ? 'ArrowLeft' : 'ArrowUp'
+
+    switch (event.key) {
+      case nextKey:
+        event.preventDefault()
+        nextIndex = currentIndex < items.length - 1 ? currentIndex + 1 : 0
+        break
+      case prevKey:
+        event.preventDefault()
+        nextIndex = currentIndex > 0 ? currentIndex - 1 : items.length - 1
+        break
+      case 'Home':
+        event.preventDefault()
+        nextIndex = 0
+        break
+      case 'End':
+        event.preventDefault()
+        nextIndex = items.length - 1
+        break
+      default:
+        return
+    }
+
+    setActiveIndex(nextIndex)
+    items[nextIndex].focus()
+  }, [orientation])
+
+  useEffect(() => {
+    updateTabIndices()
+  }, [updateTabIndices])
+
+  useEffect(() => {
+    const container = containerRef.current
+    if (!container) return
+
+    container.addEventListener('keydown', handleKeyDown)
+    return () => container.removeEventListener('keydown', handleKeyDown)
+  }, [handleKeyDown])
+
+  return { containerRef, activeIndex, setActiveIndex }
+}

@@ -90,6 +90,7 @@ export function ArchitectureDiagram({ className = "" }: ArchitectureDiagramProps
   const containerRef = useRef<HTMLDivElement>(null)
   const svgRef = useRef<SVGSVGElement>(null)
   const [activeNode, setActiveNode] = useState<string | null>(null)
+  const [focusedNode, setFocusedNode] = useState<string | null>(null)
   const [showComparison, setShowComparison] = useState(false)
   const [animationPhase, setAnimationPhase] = useState<'intro' | 'lumeo' | 'comparison'>('intro')
 
@@ -97,6 +98,65 @@ export function ArchitectureDiagram({ className = "" }: ArchitectureDiagramProps
   const handleNodeClick = (nodeId: string) => {
     setActiveNode(activeNode === nodeId ? null : nodeId)
   }
+
+  // Handle node focus
+  const handleNodeFocus = (nodeId: string | null) => {
+    setFocusedNode(nodeId)
+    if (nodeId) {
+      setActiveNode(nodeId)
+    }
+  }
+
+  // Keyboard navigation for architecture nodes
+  const handleKeyDown = useCallback((event: KeyboardEvent) => {
+    if (!svgRef.current) return
+
+    const nodes = ARCHITECTURE_NODES
+    const currentIndex = focusedNode ? nodes.findIndex(n => n.id === focusedNode) : -1
+
+    let nextIndex = currentIndex
+
+    switch (event.key) {
+      case 'ArrowRight':
+      case 'ArrowDown':
+        event.preventDefault()
+        nextIndex = currentIndex < nodes.length - 1 ? currentIndex + 1 : 0
+        break
+      case 'ArrowLeft':
+      case 'ArrowUp':
+        event.preventDefault()
+        nextIndex = currentIndex > 0 ? currentIndex - 1 : nodes.length - 1
+        break
+      case 'Home':
+        event.preventDefault()
+        nextIndex = 0
+        break
+      case 'End':
+        event.preventDefault()
+        nextIndex = nodes.length - 1
+        break
+      case 'Enter':
+      case ' ':
+        if (focusedNode) {
+          event.preventDefault()
+          handleNodeClick(focusedNode)
+        }
+        return
+      default:
+        return
+    }
+
+    const nextNode = nodes[nextIndex]
+    if (nextNode) {
+      setFocusedNode(nextNode.id)
+      
+      // Focus the corresponding SVG element
+      const nodeElement = svgRef.current?.querySelector(`[data-node-id="${nextNode.id}"]`) as SVGElement
+      if (nodeElement) {
+        nodeElement.focus()
+      }
+    }
+  }, [focusedNode])
 
   // Initialize animations
   useEffect(() => {
@@ -170,6 +230,15 @@ export function ArchitectureDiagram({ className = "" }: ArchitectureDiagramProps
 
     return () => ctx.revert()
   }, [])
+
+  // Set up keyboard navigation
+  useEffect(() => {
+    const container = containerRef.current
+    if (!container) return
+
+    container.addEventListener('keydown', handleKeyDown)
+    return () => container.removeEventListener('keydown', handleKeyDown)
+  }, [handleKeyDown])
 
   // Data flow animation
   useEffect(() => {
@@ -248,7 +317,12 @@ export function ArchitectureDiagram({ className = "" }: ArchitectureDiagramProps
         </div>
 
         {/* Architecture Visualization */}
-        <div className="relative bg-black/30 border border-white/10 rounded-lg overflow-hidden min-h-[600px]">
+        <div 
+          className="relative bg-black/30 border border-white/10 rounded-lg overflow-hidden min-h-[600px] focus-within:ring-2 focus-within:ring-accent/50"
+          tabIndex={-1}
+          role="application"
+          aria-label="Interactive architecture diagram. Use arrow keys to navigate between nodes, Enter to select."
+        >
           <svg
             ref={svgRef}
             viewBox="0 0 800 600"
@@ -356,75 +430,93 @@ export function ArchitectureDiagram({ className = "" }: ArchitectureDiagramProps
             <g className="lumeo-nodes">
               {ARCHITECTURE_NODES
                 .filter(node => node.type !== 'traditional')
-                .map(node => (
-                  <g key={node.id}>
-                    {/* Node glow */}
-                    <circle
-                      cx={node.position.x}
-                      cy={node.position.y}
-                      r={activeNode === node.id ? 35 : 25}
-                      fill={getNodeColor(node.type)}
-                      opacity="0.2"
-                      className="transition-all duration-300"
-                    />
-                    
-                    {/* Main node */}
-                    <circle
-                      cx={node.position.x}
-                      cy={node.position.y}
-                      r={activeNode === node.id ? 20 : 15}
-                      fill={getNodeColor(node.type)}
-                      className="architecture-node cursor-pointer transition-all duration-300"
-                      onClick={() => handleNodeClick(node.id)}
-                      filter="url(#glow)"
-                    />
-                    
-                    {/* Node icon */}
-                    <text
-                      x={node.position.x}
-                      y={node.position.y + 5}
-                      textAnchor="middle"
-                      className="fill-black font-bold pointer-events-none"
-                      style={{ fontSize: '12px' }}
-                    >
-                      {getNodeIcon(node.type)}
-                    </text>
-                    
-                    {/* Node label */}
-                    <text
-                      x={node.position.x}
-                      y={node.position.y - 35}
-                      textAnchor="middle"
-                      className="fill-white font-mono text-xs font-bold"
-                    >
-                      {node.label}
-                    </text>
-                    
-                    {/* Description on hover */}
-                    {activeNode === node.id && (
-                      <g>
-                        <rect
-                          x={node.position.x - 80}
-                          y={node.position.y + 30}
-                          width="160"
-                          height="40"
-                          fill="rgba(0,0,0,0.8)"
-                          stroke={getNodeColor(node.type)}
-                          strokeWidth="1"
-                          rx="4"
-                        />
-                        <text
-                          x={node.position.x}
-                          y={node.position.y + 50}
-                          textAnchor="middle"
-                          className="fill-white font-mono text-xs"
-                        >
-                          {node.description}
-                        </text>
-                      </g>
-                    )}
-                  </g>
-                ))}
+                .map(node => {
+                  const isActive = activeNode === node.id
+                  const isFocused = focusedNode === node.id
+                  const isHighlighted = isActive || isFocused
+                  
+                  return (
+                    <g key={node.id}>
+                      {/* Node glow */}
+                      <circle
+                        cx={node.position.x}
+                        cy={node.position.y}
+                        r={isHighlighted ? 35 : 25}
+                        fill={getNodeColor(node.type)}
+                        opacity="0.2"
+                        className="transition-all duration-300"
+                      />
+                      
+                      {/* Main node */}
+                      <circle
+                        cx={node.position.x}
+                        cy={node.position.y}
+                        r={isHighlighted ? 20 : 15}
+                        fill={getNodeColor(node.type)}
+                        className="architecture-node cursor-pointer transition-all duration-300"
+                        data-node-id={node.id}
+                        tabIndex={0}
+                        role="button"
+                        aria-label={`${node.label}: ${node.description}. Press Enter to toggle details.`}
+                        onClick={() => handleNodeClick(node.id)}
+                        onFocus={() => handleNodeFocus(node.id)}
+                        onBlur={() => handleNodeFocus(null)}
+                        onKeyDown={(e) => {
+                          if (e.key === 'Enter' || e.key === ' ') {
+                            e.preventDefault()
+                            handleNodeClick(node.id)
+                          }
+                        }}
+                        filter="url(#glow)"
+                      />
+                      
+                      {/* Node icon */}
+                      <text
+                        x={node.position.x}
+                        y={node.position.y + 5}
+                        textAnchor="middle"
+                        className="fill-black font-bold pointer-events-none"
+                        style={{ fontSize: '12px' }}
+                      >
+                        {getNodeIcon(node.type)}
+                      </text>
+                      
+                      {/* Node label */}
+                      <text
+                        x={node.position.x}
+                        y={node.position.y - 35}
+                        textAnchor="middle"
+                        className="fill-white font-mono text-xs font-bold pointer-events-none"
+                      >
+                        {node.label}
+                      </text>
+                      
+                      {/* Description on hover/focus */}
+                      {isHighlighted && (
+                        <g>
+                          <rect
+                            x={node.position.x - 80}
+                            y={node.position.y + 30}
+                            width="160"
+                            height="40"
+                            fill="rgba(0,0,0,0.8)"
+                            stroke={getNodeColor(node.type)}
+                            strokeWidth="1"
+                            rx="4"
+                          />
+                          <text
+                            x={node.position.x}
+                            y={node.position.y + 50}
+                            textAnchor="middle"
+                            className="fill-white font-mono text-xs pointer-events-none"
+                          >
+                            {node.description}
+                          </text>
+                        </g>
+                      )}
+                    </g>
+                  )
+                })}
             </g>
 
             {/* Traditional Banking Nodes */}
