@@ -134,7 +134,7 @@ export function SideNav() {
         
         {/* Keyboard navigation hint */}
         <div className="absolute bottom-6 left-1/2 -translate-x-1/2 keyboard-hint visible">
-          <span className="text-[8px] text-muted-foreground/60 whitespace-nowrap">↑↓ Navigate</span>
+          <span className="text-[8px] text-muted-foreground/60 whitespace-nowrap">↑↓ Navigate • Enter Select</span>
         </div>
       </nav>
 

@@ -248,6 +248,7 @@ export function ParticleSystem({
         transition: 'opacity 0.5s ease-in-out'
       }}
       aria-hidden="true"
+      role="presentation"
     />
   )
 }

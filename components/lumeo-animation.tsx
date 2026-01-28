@@ -66,7 +66,7 @@ export function LumeoAnimation() {
         onKeyDown={handleKeyDown}
         tabIndex={0}
         role="button"
-        aria-label="LUMEO Payment Protocol - Click to continue to early access page"
+        aria-label="LUMEO Payment Protocol - Press Enter or Space to continue to early access page"
       >
         <SplitFlapAudioProvider>
           {/* Centered LUMEO animation */}
@@ -115,6 +115,11 @@ export function LumeoAnimation() {
         <div className="absolute top-8 right-8 w-8 h-8 border-t border-r border-white/10" />
         <div className="absolute bottom-8 left-8 w-8 h-8 border-b border-l border-white/10" />
         <div className="absolute bottom-8 right-8 w-8 h-8 border-b border-r border-white/10" />
+      </div>
+
+      {/* Screen reader instructions */}
+      <div className="sr-only" aria-live="polite">
+        Welcome to Lumeo Payment Protocol. This is an interactive landing page. Press Enter or Space to continue to the early access page.
       </div>
     </div>
   )

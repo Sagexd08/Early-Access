@@ -118,7 +118,7 @@ export function SplitFlapMuteToggle({ className = "" }: { className?: string }) 
     <button
       onClick={audio.toggleMute}
       onKeyDown={handleKeyDown}
-      className={`inline-flex items-center gap-2 font-mono text-[10px] uppercase tracking-widest text-muted-foreground hover:text-foreground focus:text-foreground transition-colors duration-200 ${className}`}
+      className={`inline-flex items-center gap-2 font-mono text-[10px] uppercase tracking-widest text-muted-foreground hover:text-foreground focus:text-foreground focus-visible:outline-2 focus-visible:outline-accent focus-visible:outline-offset-2 transition-colors duration-200 ${className}`}
       aria-label={audio.isMuted ? "Unmute sound effects" : "Mute sound effects"}
       aria-pressed={!audio.isMuted}
       type="button"

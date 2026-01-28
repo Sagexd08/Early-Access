@@ -93,13 +93,6 @@ export default function EarlyAccessPage() {
         <div className="grid-bg fixed inset-0 opacity-30" aria-hidden="true" />
 
         <div className="relative z-10">
-          {/* Background particle system */}
-          <ParticleSystem 
-            particleCount={30} 
-            type="ambient" 
-            className="fixed inset-0 z-0" 
-          />
-          
           <HeroSection />
           <SignalsSection />
           <WorkSection />
@@ -110,17 +103,21 @@ export default function EarlyAccessPage() {
         </div>
 
         {/* Keyboard navigation help - visible on focus */}
-        <div className="fixed bottom-4 left-4 z-50 opacity-0 focus-within:opacity-100 transition-opacity duration-300">
+        <div className="fixed bottom-4 left-4 z-50 opacity-0 focus-within:opacity-100 hover:opacity-100 transition-opacity duration-300">
           <div className="bg-background/90 backdrop-blur-sm border border-border/50 p-3 rounded font-mono text-xs">
             <div className="text-accent mb-2 uppercase tracking-wider">Keyboard Shortcuts</div>
             <div className="space-y-1 text-muted-foreground">
               <div>Alt + 1-7: Navigate sections</div>
               <div>Tab: Navigate elements</div>
               <div>Escape: Return to top</div>
-              <div>Arrow keys: Navigate lists</div>
+              <div>Arrow keys: Navigate interactive elements</div>
+              <div>Enter/Space: Activate buttons</div>
             </div>
           </div>
         </div>
+
+        {/* Focus indicator for screen readers */}
+        <div id="focus-announcer" className="sr-only" aria-live="polite" aria-atomic="true"></div>
       </main>
     </>
   )

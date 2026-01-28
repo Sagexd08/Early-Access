@@ -292,12 +292,18 @@ export function GlobalVisualization({ className = "" }: GlobalVisualizationProps
     >
       <div className="max-w-7xl mx-auto">
         {/* Section Header */}
-        <div className="text-center mb-12">
-          <h2 className="font-[var(--font-bebas)] text-white text-4xl md:text-6xl mb-4 tracking-wide">
-            Global Payment Network
+        <div className="text-center mb-16">
+          <div className="inline-block mb-4">
+            <span className="font-mono text-[10px] uppercase tracking-[0.3em] text-accent bg-accent/10 px-3 py-1 rounded-full">
+              Global Network
+            </span>
+          </div>
+          <h2 className="font-[var(--font-bebas)] text-white text-5xl md:text-7xl mb-6 tracking-wide">
+            INSTANT GLOBAL SETTLEMENT
           </h2>
-          <p className="font-mono text-sm text-muted-foreground max-w-2xl mx-auto">
-            Real-time visualization of Lumeo's instant settlement network across major financial centers
+          <p className="font-mono text-sm text-muted-foreground max-w-3xl mx-auto leading-relaxed">
+            Watch real-time payment flows across Lumeo's quantum-speed settlement network. 
+            Every pulse represents value moving at the speed of light across borders.
           </p>
         </div>
 
