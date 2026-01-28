@@ -9,8 +9,6 @@ const navItems = [
   { id: "signals", label: "Signals", description: "Navigate to latest updates" },
   { id: "work", label: "Experiments", description: "Navigate to key features" },
   { id: "principles", label: "Principles", description: "Navigate to core principles" },
-  { id: "global-network", label: "Network", description: "Navigate to global network visualization" },
-  { id: "architecture", label: "Architecture", description: "Navigate to architecture diagram" },
   { id: "colophon", label: "Colophon", description: "Navigate to footer section" },
 ]
 
