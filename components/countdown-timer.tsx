@@ -61,7 +61,7 @@ export function CountdownTimer() {
   }, [])
 
   return (
-    <div ref={timerRef} className="relative">
+    <div ref={timerRef} className="relative max-w-full">
       {/* Main timer container */}
       <div className="relative border border-white/20 bg-black/60 backdrop-blur-md overflow-hidden">
         {/* Background pattern */}
@@ -81,15 +81,15 @@ export function CountdownTimer() {
         </div>
 
         {/* Content */}
-        <div className="relative px-8 py-6">
+        <div className="relative px-4 sm:px-6 md:px-8 py-4 sm:py-5 md:py-6">
           {/* Header */}
-          <div className="text-center mb-6">
-            <div className="text-[11px] text-accent mb-2 font-mono tracking-widest">UNTIL GENESIS BLOCK</div>
-            <div className="text-[9px] text-white/40 font-mono tracking-wider">Q3 2026 • MAINNET LAUNCH</div>
+          <div className="text-center mb-4 sm:mb-6">
+            <div className="text-[10px] sm:text-[11px] text-accent mb-2 font-mono tracking-widest">UNTIL GENESIS BLOCK</div>
+            <div className="text-[8px] sm:text-[9px] text-white/40 font-mono tracking-wider">Q3 2026 • MAINNET LAUNCH</div>
           </div>
 
-          {/* Timer display */}
-          <div className="flex gap-6 items-center justify-center mb-4">
+          {/* Timer display - responsive layout */}
+          <div className="flex gap-3 sm:gap-4 md:gap-6 items-center justify-center mb-3 sm:mb-4 overflow-x-auto">
             <TimeUnit value={timeLeft.days} label="days" />
             <TimeSeparator />
             <TimeUnit value={timeLeft.hours} label="hrs" />
@@ -100,9 +100,10 @@ export function CountdownTimer() {
           </div>
 
           {/* Progress indicator */}
-          <div className="flex items-center justify-center gap-3 text-[9px] text-white/50 font-mono">
-            <span>DEVELOPMENT</span>
-            <div className="flex-1 max-w-24 h-px bg-white/20 relative">
+          <div className="flex items-center justify-center gap-2 sm:gap-3 text-[8px] sm:text-[9px] text-white/50 font-mono">
+            <span className="hidden sm:inline">DEVELOPMENT</span>
+            <span className="sm:hidden">DEV</span>
+            <div className="flex-1 max-w-16 sm:max-w-24 h-px bg-white/20 relative">
               <div 
                 className="absolute left-0 top-0 h-full bg-accent transition-all duration-1000"
                 style={{ width: `${progress}%` }}
@@ -113,20 +114,20 @@ export function CountdownTimer() {
         </div>
 
         {/* Corner accents */}
-        <div className="absolute top-0 left-0 w-3 h-3 border-t border-l border-accent/60" />
-        <div className="absolute top-0 right-0 w-3 h-3 border-t border-r border-accent/60" />
-        <div className="absolute bottom-0 left-0 w-3 h-3 border-b border-l border-accent/60" />
-        <div className="absolute bottom-0 right-0 w-3 h-3 border-b border-r border-accent/60" />
+        <div className="absolute top-0 left-0 w-2 h-2 sm:w-3 sm:h-3 border-t border-l border-accent/60" />
+        <div className="absolute top-0 right-0 w-2 h-2 sm:w-3 sm:h-3 border-t border-r border-accent/60" />
+        <div className="absolute bottom-0 left-0 w-2 h-2 sm:w-3 sm:h-3 border-b border-l border-accent/60" />
+        <div className="absolute bottom-0 right-0 w-2 h-2 sm:w-3 sm:h-3 border-b border-r border-accent/60" />
       </div>
 
       {/* Floating status indicators */}
-      <div className="absolute -top-3 -right-3 flex gap-2">
-        <div className="w-2 h-2 rounded-full bg-green-400" title="System Online" />
-        <div className="w-2 h-2 rounded-full bg-accent" title="Development Active" />
+      <div className="absolute -top-2 sm:-top-3 -right-2 sm:-right-3 flex gap-1 sm:gap-2">
+        <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-green-400" title="System Online" />
+        <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-accent" title="Development Active" />
       </div>
 
-      {/* Side labels */}
-      <div className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-full pr-4">
+      {/* Side labels - hidden on mobile for space */}
+      <div className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-full pr-4 hidden md:block">
         <div className="text-[8px] text-white/30 font-mono tracking-widest -rotate-90 origin-center whitespace-nowrap">
           COUNTDOWN
         </div>
@@ -137,17 +138,17 @@ export function CountdownTimer() {
 
 function TimeUnit({ value, label }: { value: number; label: string }) {
   return (
-    <div className="text-center group">
+    <div className="text-center group min-w-0 flex-shrink-0">
       <div className="relative">
-        <div className="text-3xl font-bold text-white tabular-nums group-hover:text-accent transition-colors duration-300">
+        <div className="text-xl sm:text-2xl md:text-3xl font-bold text-white tabular-nums group-hover:text-accent transition-colors duration-300">
           {label === 'days' ? value : String(value).padStart(2, "0")}
         </div>
         {/* Subtle glow effect */}
-        <div className="absolute inset-0 text-3xl font-bold text-accent tabular-nums opacity-0 group-hover:opacity-20 transition-opacity duration-300 blur-sm">
+        <div className="absolute inset-0 text-xl sm:text-2xl md:text-3xl font-bold text-accent tabular-nums opacity-0 group-hover:opacity-20 transition-opacity duration-300 blur-sm">
           {label === 'days' ? value : String(value).padStart(2, "0")}
         </div>
       </div>
-      <div className="text-[10px] text-white/50 mt-2 tracking-wider uppercase">
+      <div className="text-[9px] sm:text-[10px] text-white/50 mt-1 sm:mt-2 tracking-wider uppercase">
         {label}
       </div>
     </div>

@@ -107,11 +107,21 @@ export function SplitFlapMuteToggle({ className = "" }: { className?: string }) 
   const audio = useSplitFlapAudio()
   if (!audio) return null
 
+  const handleKeyDown = (event: React.KeyboardEvent) => {
+    if (event.key === 'Enter' || event.key === ' ') {
+      event.preventDefault()
+      audio.toggleMute()
+    }
+  }
+
   return (
     <button
       onClick={audio.toggleMute}
-      className={`inline-flex items-center gap-2 font-mono text-[10px] uppercase tracking-widest text-muted-foreground hover:text-foreground transition-colors duration-200 ${className}`}
+      onKeyDown={handleKeyDown}
+      className={`inline-flex items-center gap-2 font-mono text-[10px] uppercase tracking-widest text-muted-foreground hover:text-foreground focus:text-foreground transition-colors duration-200 ${className}`}
       aria-label={audio.isMuted ? "Unmute sound effects" : "Mute sound effects"}
+      aria-pressed={!audio.isMuted}
+      type="button"
     >
       {audio.isMuted ? <VolumeX className="w-4 h-4" /> : <Volume2 className="w-4 h-4" />}
       <span>{audio.isMuted ? "Sound Off" : "Sound On"}</span>

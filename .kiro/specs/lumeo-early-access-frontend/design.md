@@ -2,18 +2,21 @@
 
 ## Overview
 
-The Lumeo Early Access Frontend is a sophisticated, animation-rich landing page built with Next.js App Router, TypeScript, and GSAP. The design emphasizes modern aesthetics, smooth animations, and responsive functionality to create an engaging user experience that effectively communicates Lumeo's value proposition as a revolutionary payment settlement layer.
+The Lumeo Early Access Frontend is a revolutionary, immersive landing page built with Next.js App Router, TypeScript, and advanced GSAP animations. The design creates an awe-inspiring experience that positions Lumeo as the future of global payments through cutting-edge visual effects, interactive visualizations, and cinematic storytelling. The application showcases Lumeo's vision as the post-UPI global settlement layer through sophisticated particle systems, real-time payment flow animations, and immersive user interactions.
 
-The application follows a mobile-first design approach with progressive enhancement for larger screens, utilizing Tailwind CSS for responsive layouts and GSAP for high-performance animations. The architecture prioritizes performance, accessibility, and maintainability while delivering a visually impressive experience.
+The application follows a performance-first approach with advanced animation optimization, utilizing GSAP, Three.js for 3D effects, and custom WebGL shaders for particle systems. The architecture prioritizes 60fps performance while delivering a visually stunning experience that makes visitors feel they're witnessing the future of money movement.
 
 ## Architecture
 
 ### Technology Stack
 - **Framework**: Next.js 14+ with App Router and TypeScript
-- **Styling**: Tailwind CSS with custom CSS for complex animations
-- **Animation**: GSAP (GreenSock Animation Platform) with ScrollTrigger plugin
+- **Styling**: Tailwind CSS with custom CSS for complex animations and glassmorphism effects
+- **Animation**: GSAP (GreenSock Animation Platform) with ScrollTrigger, MotionPath, and Physics plugins
+- **3D Graphics**: Three.js for 3D visualizations and WebGL particle systems
+- **Interactive Visualizations**: D3.js for data-driven animations and world map interactions
 - **Form Handling**: React state management with fetch API to `/api/subscribe`
-- **Build System**: Next.js built-in bundling and optimization
+- **Performance**: Web Workers for heavy computations and Intersection Observer for scroll optimization
+- **Build System**: Next.js built-in bundling with custom webpack configuration for shaders
 
 ### Project Structure
 ```
@@ -257,6 +260,150 @@ const BackgroundEffects: React.FC<BackgroundEffectsProps> = ({ variant, intensit
 }
 ```
 
+### Advanced Visual Components
+
+#### Global Payment Visualization
+```typescript
+interface PaymentNode {
+  id: string;
+  country: string;
+  coordinates: [number, number];
+  volume: number;
+  isActive: boolean;
+}
+
+interface PaymentFlow {
+  from: string;
+  to: string;
+  amount: number;
+  speed: 'instant' | 'traditional';
+  timestamp: Date;
+}
+
+interface GlobalVisualizationProps {
+  nodes: PaymentNode[];
+  flows: PaymentFlow[];
+  showComparison: boolean;
+}
+
+const GlobalVisualization: React.FC<GlobalVisualizationProps> = ({ 
+  nodes, 
+  flows, 
+  showComparison 
+}) => {
+  // Interactive world map with payment nodes
+  // Real-time payment flow animations
+  // Traditional vs Lumeo speed comparisons
+  // Live statistics display
+  // Performance-optimized WebGL rendering
+}
+```
+
+#### Architecture Diagram
+```typescript
+interface ArchitectureNode {
+  id: string;
+  type: 'wallet' | 'settlement' | 'compliance' | 'rails';
+  position: { x: number; y: number };
+  connections: string[];
+  isHighlighted: boolean;
+}
+
+interface ArchitectureDiagramProps {
+  nodes: ArchitectureNode[];
+  activeFlow: string | null;
+  onNodeInteraction: (nodeId: string) => void;
+}
+
+const ArchitectureDiagram: React.FC<ArchitectureDiagramProps> = ({ 
+  nodes, 
+  activeFlow, 
+  onNodeInteraction 
+}) => {
+  // Interactive architecture visualization
+  // Animated data flow between components
+  // Principle explanations with visual demonstrations
+  // Regulatory compliance integration display
+}
+```
+
+#### Particle System
+```typescript
+interface ParticleConfig {
+  count: number;
+  size: { min: number; max: number };
+  speed: { min: number; max: number };
+  color: string | string[];
+  physics: 'gravity' | 'magnetic' | 'flow';
+}
+
+interface ParticleSystemProps {
+  config: ParticleConfig;
+  trigger: 'scroll' | 'interaction' | 'continuous';
+  bounds: { width: number; height: number };
+}
+
+const ParticleSystem: React.FC<ParticleSystemProps> = ({ 
+  config, 
+  trigger, 
+  bounds 
+}) => {
+  // WebGL-based particle rendering
+  // Physics-based movement and interactions
+  // Performance optimization with object pooling
+  // Responsive to user interactions
+}
+```
+
+#### Cinematic Loader
+```typescript
+interface LoaderProps {
+  stage: 'initial' | 'content' | 'complete';
+  progress: number;
+  onComplete: () => void;
+}
+
+const CinematicLoader: React.FC<LoaderProps> = ({ 
+  stage, 
+  progress, 
+  onComplete 
+}) => {
+  // Branded loading sequence with logo assembly
+  // Progress indication with smooth animations
+  // Seamless transition to main content
+  // Optimized for perceived performance
+}
+```
+
+#### Premium Email Form
+```typescript
+interface PremiumEmailFormProps {
+  onSubmit: (email: string, preferences: UserPreferences) => Promise<void>;
+  isLoading: boolean;
+  message: string | null;
+  showOnboarding: boolean;
+}
+
+interface UserPreferences {
+  interests: string[];
+  role: 'developer' | 'business' | 'investor' | 'other';
+  company?: string;
+}
+
+const PremiumEmailForm: React.FC<PremiumEmailFormProps> = ({ 
+  onSubmit, 
+  isLoading, 
+  message, 
+  showOnboarding 
+}) => {
+  // Glassmorphic design with animated focus states
+  // Multi-step onboarding flow
+  // Personalized welcome messages
+  // Celebration animations on success
+  // Exclusive perks reveal
+}
+```
+
 ## Data Models
 
 ### Email Subscription
@@ -393,6 +540,26 @@ interface ResponsiveConfig {
 ### Property 14: Scroll Event Performance
 *For any* scroll event, the system should handle it efficiently without causing performance degradation or blocking the main thread
 **Validates: Requirements 10.5**
+
+### Property 15: Interactive Visualization Performance
+*For any* interactive visualization element, it should maintain smooth 60fps performance while providing responsive feedback to user interactions
+**Validates: Requirements 11.1, 11.2, 11.3, 11.4, 11.5, 11.6**
+
+### Property 16: Storytelling Animation Consistency
+*For any* storytelling section, animations should trigger consistently based on scroll position and maintain narrative flow without jarring transitions
+**Validates: Requirements 13.1, 13.2, 13.3, 13.4, 13.5**
+
+### Property 17: Particle System Performance
+*For any* particle system, it should render efficiently using WebGL optimization and scale particle count based on device performance capabilities
+**Validates: Requirements 14.1, 14.2, 14.3, 14.4, 14.5, 14.6**
+
+### Property 18: Cinematic Transition Smoothness
+*For any* page transition or loading sequence, it should maintain cinematic quality with smooth easing curves and respect user motion preferences
+**Validates: Requirements 16.1, 16.2, 16.3, 16.4, 16.5, 16.6**
+
+### Property 19: Premium Form Experience
+*For any* form interaction, it should provide delightful feedback with glassmorphic effects and personalized responses based on user input
+**Validates: Requirements 15.1, 15.2, 15.3, 15.4, 15.5, 15.6**
 
 ## Error Handling
 

@@ -71,20 +71,20 @@ export function ColophonSection() {
     <section
       ref={sectionRef}
       id="colophon"
-      className="relative py-32 pl-6 md:pl-28 pr-6 md:pr-12 border-t border-border/30"
+      className="relative py-16 sm:py-24 md:py-32 px-4 sm:px-6 md:pl-28 md:pr-12 border-t border-border/30 mb-16 md:mb-0"
     >
       {/* Section header */}
-      <div ref={headerRef} className="mb-16">
-        <span className="font-mono text-[10px] uppercase tracking-[0.3em] text-accent">04 / Colophon</span>
-        <h2 className="mt-4 font-[var(--font-bebas)] text-5xl md:text-7xl tracking-tight">CREDITS</h2>
+      <div ref={headerRef} className="mb-12 sm:mb-16">
+        <span className="font-mono text-[9px] sm:text-[10px] uppercase tracking-[0.3em] text-accent">04 / Colophon</span>
+        <h2 className="mt-3 sm:mt-4 font-[var(--font-bebas)] text-4xl sm:text-5xl md:text-7xl tracking-tight">CREDITS</h2>
       </div>
 
-      {/* Multi-column layout */}
-      <div ref={gridRef} className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-8 md:gap-12">
+      {/* Multi-column layout - responsive grid */}
+      <div ref={gridRef} className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-6 sm:gap-8 md:gap-12">
         {/* Team */}
         <div className="col-span-1">
-          <h4 className="font-mono text-[9px] uppercase tracking-[0.3em] text-muted-foreground mb-4">Team</h4>
-          <ul className="space-y-2">
+          <h4 className="font-mono text-[8px] sm:text-[9px] uppercase tracking-[0.3em] text-muted-foreground mb-3 sm:mb-4">Team</h4>
+          <ul className="space-y-1.5 sm:space-y-2">
             <li className="font-mono text-xs text-foreground/80">Lumeo Labs</li>
             <li className="font-mono text-xs text-foreground/80">Core Team</li>
           </ul>
@@ -92,8 +92,8 @@ export function ColophonSection() {
 
         {/* Technology */}
         <div className="col-span-1">
-          <h4 className="font-mono text-[9px] uppercase tracking-[0.3em] text-muted-foreground mb-4">Technology</h4>
-          <ul className="space-y-2">
+          <h4 className="font-mono text-[8px] sm:text-[9px] uppercase tracking-[0.3em] text-muted-foreground mb-3 sm:mb-4">Technology</h4>
+          <ul className="space-y-1.5 sm:space-y-2">
             <li className="font-mono text-xs text-foreground/80">Next.js</li>
             <li className="font-mono text-xs text-foreground/80">GSAP</li>
             <li className="font-mono text-xs text-foreground/80">Supabase</li>
@@ -102,8 +102,8 @@ export function ColophonSection() {
 
         {/* Typography */}
         <div className="col-span-1">
-          <h4 className="font-mono text-[9px] uppercase tracking-[0.3em] text-muted-foreground mb-4">Typography</h4>
-          <ul className="space-y-2">
+          <h4 className="font-mono text-[8px] sm:text-[9px] uppercase tracking-[0.3em] text-muted-foreground mb-3 sm:mb-4">Typography</h4>
+          <ul className="space-y-1.5 sm:space-y-2">
             <li className="font-mono text-xs text-foreground/80">Bebas Neue</li>
             <li className="font-mono text-xs text-foreground/80">IBM Plex Sans</li>
             <li className="font-mono text-xs text-foreground/80">IBM Plex Mono</li>
@@ -112,8 +112,8 @@ export function ColophonSection() {
 
         {/* Network */}
         <div className="col-span-1">
-          <h4 className="font-mono text-[9px] uppercase tracking-[0.3em] text-muted-foreground mb-4">Network</h4>
-          <ul className="space-y-2">
+          <h4 className="font-mono text-[8px] sm:text-[9px] uppercase tracking-[0.3em] text-muted-foreground mb-3 sm:mb-4">Network</h4>
+          <ul className="space-y-1.5 sm:space-y-2">
             <li className="font-mono text-xs text-foreground/80">Multi-Chain</li>
             <li className="font-mono text-xs text-foreground/80">Global</li>
           </ul>
@@ -121,12 +121,13 @@ export function ColophonSection() {
 
         {/* Contact */}
         <div className="col-span-1">
-          <h4 className="font-mono text-[9px] uppercase tracking-[0.3em] text-muted-foreground mb-4">Contact</h4>
-          <ul className="space-y-2">
+          <h4 className="font-mono text-[8px] sm:text-[9px] uppercase tracking-[0.3em] text-muted-foreground mb-3 sm:mb-4">Contact</h4>
+          <ul className="space-y-1.5 sm:space-y-2">
             <li>
               <a
                 href="mailto:hello@lumeo.network"
-                className="font-mono text-xs text-foreground/80 hover:text-accent transition-colors duration-200"
+                className="font-mono text-xs text-foreground/80 hover:text-accent focus:text-accent transition-colors duration-200 touch-manipulation"
+                aria-label="Send email to hello@lumeo.network"
               >
                 Email
               </a>
@@ -134,7 +135,12 @@ export function ColophonSection() {
             <li>
               <a
                 href="#"
-                className="font-mono text-xs text-foreground/80 hover:text-accent transition-colors duration-200"
+                className="font-mono text-xs text-foreground/80 hover:text-accent focus:text-accent transition-colors duration-200 touch-manipulation"
+                aria-label="Join Lumeo Discord community"
+                onClick={(e) => {
+                  e.preventDefault()
+                  // Could open Discord invite or show coming soon message
+                }}
               >
                 Discord
               </a>
@@ -144,8 +150,8 @@ export function ColophonSection() {
 
         {/* Launch */}
         <div className="col-span-1">
-          <h4 className="font-mono text-[9px] uppercase tracking-[0.3em] text-muted-foreground mb-4">Launch</h4>
-          <ul className="space-y-2">
+          <h4 className="font-mono text-[8px] sm:text-[9px] uppercase tracking-[0.3em] text-muted-foreground mb-3 sm:mb-4">Launch</h4>
+          <ul className="space-y-1.5 sm:space-y-2">
             <li className="font-mono text-xs text-foreground/80">Q3 2026</li>
             <li className="font-mono text-xs text-foreground/80">Alpha v0.1</li>
           </ul>
@@ -155,12 +161,12 @@ export function ColophonSection() {
       {/* Bottom copyright */}
       <div
         ref={footerRef}
-        className="mt-24 pt-8 border-t border-border/20 flex flex-col md:flex-row md:items-center md:justify-between gap-4"
+        className="mt-16 sm:mt-20 md:mt-24 pt-6 sm:pt-8 border-t border-border/20 flex flex-col md:flex-row md:items-center md:justify-between gap-3 sm:gap-4"
       >
-        <p className="font-mono text-[10px] text-muted-foreground uppercase tracking-widest">
+        <p className="font-mono text-[9px] sm:text-[10px] text-muted-foreground uppercase tracking-widest">
           © 2026 Lumeo. All rights reserved.
         </p>
-        <p className="font-mono text-[10px] text-muted-foreground">The future of instant payments.</p>
+        <p className="font-mono text-[9px] sm:text-[10px] text-muted-foreground">The future of instant payments.</p>
       </div>
     </section>
   )
