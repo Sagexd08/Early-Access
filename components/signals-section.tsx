@@ -9,29 +9,29 @@ gsap.registerPlugin(ScrollTrigger)
 
 const signals = [
   {
-    date: "2025.06.10",
-    title: "Signal Field",
-    note: "New interface paradigm for ambient computing environments.",
+    date: "2026.01.15",
+    title: "Quantum Settlement",
+    note: "Sub-millisecond transaction finality through quantum-verified consensus.",
   },
   {
-    date: "2025.05.28",
-    title: "Silent Agent",
-    note: "Orchestration layer for autonomous design systems.",
+    date: "2026.01.08",
+    title: "Zero-Knowledge Pools",
+    note: "Privacy-preserving liquidity aggregation across multiple chains.",
   },
   {
-    date: "2025.05.15",
-    title: "Noir Grid",
-    note: "Typographic system for editorial interfaces.",
+    date: "2025.12.20",
+    title: "Cross-Chain Bridge",
+    note: "Seamless value transfer between Bitcoin, Ethereum, and Solana.",
   },
   {
-    date: "2025.04.30",
-    title: "Project Lattice",
-    note: "Structural framework for adaptive layouts.",
+    date: "2025.12.10",
+    title: "Wallet Integration",
+    note: "Native support for MetaMask, Phantom, and hardware wallets.",
   },
   {
-    date: "2025.04.12",
-    title: "Echo Chamber",
-    note: "Audio-visual synthesis in browser environments.",
+    date: "2025.11.28",
+    title: "Gas-Free Transactions",
+    note: "Eliminate network fees through innovative settlement architecture.",
   },
 ]
 
@@ -135,8 +135,8 @@ export function SignalsSection() {
 
       {/* Section header */}
       <div ref={headerRef} className="mb-16 pr-6 md:pr-12">
-        <span className="font-mono text-[10px] uppercase tracking-[0.3em] text-accent">01 / Signals</span>
-        <h2 className="mt-4 font-[var(--font-bebas)] text-5xl md:text-7xl tracking-tight">WHAT&apos;S NEW</h2>
+        <span className="font-mono text-[10px] uppercase tracking-[0.3em] text-accent">01 / USP</span>
+        <h2 className="mt-4 font-[var(--font-bebas)] text-5xl md:text-7xl tracking-tight">LATEST UPDATES</h2>
       </div>
 
       {/* Horizontal scroll container */}

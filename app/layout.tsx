@@ -21,13 +21,10 @@ export const metadata: Metadata = {
   title: "Lumeo — Alpha v0.1 Early Access",
   description:
     "Get early access to Lumeo. Join the quantum revolution in instant payments. Limited alpha spots available. Sign up now for the full launch in 6 months.",
-  generator: "",
   icons: {
-    icon: [
-      {
-     icon: "/images/favicon.ico",
-    shortcut: "/images/favicon.ico",
-    apple: "/images/favicon.ico",
+    icon: "/favicon.ico",
+    shortcut: "/favicon.ico",
+    apple: "/favicon.ico",
   },
 }
 

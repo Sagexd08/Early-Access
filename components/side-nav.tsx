@@ -43,6 +43,15 @@ export function SideNav() {
 
   return (
     <nav className="fixed left-0 top-0 z-50 h-screen w-16 md:w-20 hidden md:flex flex-col justify-center border-r border-border/30 bg-background/80 backdrop-blur-sm">
+      {/* Logo at top */}
+      <div className="absolute top-6 left-1/2 -translate-x-1/2">
+        <img 
+          src="/lumenpaylogo.png" 
+          alt="Lumeo" 
+          className="w-8 h-8 object-contain opacity-60 hover:opacity-100 transition-opacity"
+        />
+      </div>
+      
       <div className="flex flex-col gap-6 px-4">
         {navItems.map(({ id, label }) => (
           <button key={id} onClick={() => scrollToSection(id)} className="group relative flex items-center gap-3">

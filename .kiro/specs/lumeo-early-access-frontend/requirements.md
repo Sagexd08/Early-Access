@@ -2,17 +2,19 @@
 
 ## Introduction
 
-The Lumeo Early Access Frontend is a modern, animated landing page that serves as the official entry point for the Lumeo Early Access program. Lumeo is a non-custodial, wallet-first settlement layer designed to revolutionize instant payments. This frontend will communicate Lumeo's mission, collect early access signups, and provide an engaging user experience through sophisticated animations and responsive design.
+The Lumeo Early Access Frontend is a revolutionary, animation-rich landing page that serves as the official entry point for the Lumeo Early Access program. Lumeo is a next-generation payment infrastructure designed to become the post-UPI global settlement layer for the internet, rebuilding how value settles across borders with wallet-first, non-custodial architecture. This frontend will create an awe-inspiring experience that communicates Lumeo's transformative vision through cutting-edge animations, interactive visualizations, and immersive storytelling.
 
 ## Glossary
 
-- **Lumeo_System**: The complete early access frontend application
-- **Animation_Engine**: GSAP-powered animation system for UI effects
-- **Email_Collector**: Form system for capturing early access signups
-- **Navigation_System**: Header and side navigation components
-- **Content_Sections**: Main page sections (Hero, Signals, Work, Principles)
-- **Responsive_Layout**: Adaptive design system for mobile, tablet, and desktop
+- **Lumeo_System**: The complete early access frontend application with immersive visual experiences
+- **Animation_Engine**: GSAP-powered animation system with advanced visual effects and transitions
+- **Email_Collector**: Form system for capturing early access signups with animated feedback
+- **Navigation_System**: Floating header and immersive navigation components
+- **Content_Sections**: Main page sections (Hero, Vision, Architecture, Principles, Global Impact, Future)
+- **Interactive_Visualizations**: Real-time payment flow animations and global network displays
+- **Responsive_Layout**: Adaptive design system optimized for all devices and screen sizes
 - **Accessibility_Layer**: ARIA labels, keyboard navigation, and contrast compliance
+- **Performance_Engine**: Optimized rendering system for smooth 60fps animations
 
 ## Requirements
 
@@ -28,20 +30,20 @@ The Lumeo Early Access Frontend is a modern, animated landing page that serves a
 4. THE Lumeo_System SHALL organize content into distinct sections: Hero, Signals, Work, Principles, and Footer
 5. WHEN a user clicks navigation elements, THE Lumeo_System SHALL smoothly scroll to the corresponding section
 
-### Requirement 2: Hero Section with Animated Branding
+### Requirement 2: Immersive Hero Section with Revolutionary Messaging
 
-**User Story:** As a visitor, I want to see an impressive hero section with animated branding and clear messaging, so that I immediately understand what Lumeo offers.
+**User Story:** As a visitor, I want to experience a breathtaking hero section that immediately conveys Lumeo's revolutionary impact on global payments, so that I understand this is the future of money movement.
 
 #### Acceptance Criteria
 
-1. THE Lumeo_System SHALL display an animated LUMEO logo with text scramble/flip effects
-2. THE Lumeo_System SHALL show the tagline "Early Access to Lumeo" prominently
-3. THE Lumeo_System SHALL display the subheading "We are dismantling the slow rails of legacy banking. Lumeo is a non-custodial, wallet-first settlement layer. Money moves as fast as data. No intermediaries."
-4. THE Lumeo_System SHALL include animated background elements with noise and chevron effects
-5. THE Lumeo_System SHALL display a countdown timer to July 28, 2026 launch date
-6. THE Lumeo_System SHALL display an "Alpha Badge" showing "v0.1 / Alpha"
-7. THE Lumeo_System SHALL include a left vertical label "EARLY ACCESS" (rotated)
-8. THE Lumeo_System SHALL display "Beta release in 6 months. Secure your spot now." message
+1. THE Lumeo_System SHALL display an animated LUMEO logo with sophisticated text morphing and particle effects
+2. THE Lumeo_System SHALL show the tagline "The Post-UPI Global Settlement Layer" prominently with animated reveal
+3. THE Lumeo_System SHALL display the revolutionary subheading "Rebuilding how value settles across borders. Wallet-first, non-custodial architecture where payments are final by design. Making borders irrelevant to how money moves."
+4. THE Lumeo_System SHALL include dynamic background elements with animated payment flow visualizations
+5. THE Lumeo_System SHALL display a countdown timer to July 28, 2026 launch date with glowing effects
+6. THE Lumeo_System SHALL display an "Alpha Badge" showing "v0.1 / Alpha" with pulsing animation
+7. THE Lumeo_System SHALL include animated floating elements representing global connectivity
+8. THE Lumeo_System SHALL display "Join the revolution. Secure your spot in the future of payments." message
 
 ### Requirement 3: Email Collection and Early Access Signup
 

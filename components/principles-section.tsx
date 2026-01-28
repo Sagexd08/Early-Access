@@ -16,37 +16,37 @@ export function PrinciplesSection() {
     {
       number: "01",
       titleParts: [
-        { text: "INTERFACE", highlight: true },
-        { text: " MINIMALISM", highlight: false },
+        { text: "INSTANT", highlight: true },
+        { text: " SETTLEMENT", highlight: false },
       ],
-      description: "Reduce until only the essential remains. Every element earns its place.",
+      description: "Value transfers complete in milliseconds, not days. Quantum-speed verification eliminates waiting.",
       align: "left",
     },
     {
       number: "02",
       titleParts: [
-        { text: "SYSTEMS", highlight: true },
-        { text: " OVER SCREENS", highlight: false },
+        { text: "ZERO", highlight: true },
+        { text: " FRICTION", highlight: false },
       ],
-      description: "Design behaviors, not just layouts. Build logic that scales.",
+      description: "No intermediaries, no gas fees, no hidden costs. Pure peer-to-peer value flow.",
       align: "right",
     },
     {
       number: "03",
       titleParts: [
-        { text: "CONTROLLED ", highlight: false },
-        { text: "TENSION", highlight: true },
+        { text: "CRYPTOGRAPHIC ", highlight: false },
+        { text: "TRUST", highlight: true },
       ],
-      description: "Balance between restraint and expression. Confidence without excess.",
+      description: "Powered by zero-knowledge proofs, not trust in institutions. Math is your guarantee.",
       align: "left",
     },
     {
       number: "04",
       titleParts: [
-        { text: "SIGNAL ", highlight: false },
-        { text: "CLARITY", highlight: true },
+        { text: "INFINITE ", highlight: false },
+        { text: "LIQUIDITY", highlight: true },
       ],
-      description: "Communication that cuts through noise. Precision in every interaction.",
+      description: "Cross-chain pooling ensures deep liquidity for any trading pair, anywhere, anytime.",
       align: "right",
     },
   ]
