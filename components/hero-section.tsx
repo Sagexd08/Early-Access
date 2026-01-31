@@ -199,11 +199,11 @@ export function HeroSection() {
 
       </div>
 
-      {/* Decorative Elements */}
-      <div className="absolute bottom-0 right-0 p-8 hidden md:block opacity-20 pointer-events-none">
-        <div className="grid grid-cols-4 gap-1">
-          {[1, 0, 1, 1, 0, 1, 0, 0, 1, 0, 1, 1, 0, 1, 0, 1].map((active, i) => (
-            <div key={i} className={`w-1 h-1 ${active ? 'bg-accent' : 'bg-transparent'}`} />
+      {/* Decorative Elements - Architectural Marks */}
+      <div className="absolute bottom-0 right-0 p-8 hidden md:block opacity-30 pointer-events-none">
+        <div className="grid grid-cols-6 gap-2">
+          {[...Array(24)].map((_, i) => (
+            <div key={i} className={`w-0.5 h-0.5 ${Math.random() > 0.7 ? 'bg-accent' : 'bg-white/20'}`} />
           ))}
         </div>
       </div>
