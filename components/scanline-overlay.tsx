@@ -2,10 +2,10 @@
 
 export function ScanlineOverlay() {
     return (
-        <div className="fixed inset-0 pointer-events-none z-[90] overflow-hidden select-none" aria-hidden="true">
+        <div className="fixed inset-0 pointer-events-none z-90 overflow-hidden select-none" aria-hidden="true">
             {/* Scanlines */}
             <div
-                className="absolute inset-0 bg-[linear-gradient(to_bottom,rgba(0,0,0,0)_50%,rgba(0,0,0,0.2)_50%)] bg-[size:100%_4px] opacity-10"
+                className="absolute inset-0 bg-[linear-gradient(to_bottom,rgba(0,0,0,0)_50%,rgba(0,0,0,0.2)_50%)] bg-size-[100%_4px] opacity-10"
                 style={{ backgroundSize: '100% 4px' }}
             />
 

@@ -119,7 +119,7 @@ export function HeroSection() {
         </h1>
 
         {/* Subheading */}
-        <p className="max-w-xl font-mono text-xs sm:text-sm text-muted-foreground leading-relaxed mb-10 border-l mb-10 pl-6 border-white/10">
+        <p className="max-w-xl font-mono text-xs sm:text-sm text-muted-foreground leading-relaxed mb-10 border-l pl-6 border-white/10">
           Lumeo dismantles the friction of legacy banking. A wallet-native, non-custodial protocol where money moves at the speed of data.
           <br /><br />
           <span className="text-white/60">STATUS:</span> <span className="text-accent">PRE-ALPHA</span>
@@ -156,7 +156,7 @@ export function HeroSection() {
                 disabled={isLoading || !email}
                 className="px-8 py-4 bg-white/5 border border-white/10 border-l-0 text-accent font-mono text-xs uppercase tracking-widest hover:bg-accent hover:text-black focus:bg-accent focus:text-black transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed min-h-[56px] relative overflow-hidden group"
               >
-                <div className="absolute inset-0 bg-accent/20 translate-x-[-100%] group-hover:translate-x-0 transition-transform duration-300" />
+                <div className="absolute inset-0 bg-accent/20 -translate-x-full group-hover:translate-x-0 transition-transform duration-300" />
                 <span className="relative z-10">{isLoading ? "PROCESSING..." : "REQUEST ACCESS"}</span>
               </button>
             </div>

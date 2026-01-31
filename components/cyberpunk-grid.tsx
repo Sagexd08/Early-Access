@@ -101,7 +101,7 @@ export function CyberpunkGrid() {
             aria-hidden="true"
         >
             <canvas ref={canvasRef} className="w-full h-full" />
-            <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-background/50" />
+            <div className="absolute inset-0 bg-linear-to-t from-background via-transparent to-background/50" />
         </motion.div>
     )
 }
