@@ -1,4 +1,5 @@
 import { createClient } from "@supabase/supabase-js"
+import { Database } from "./database.types"
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
 const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY
@@ -7,19 +8,11 @@ if (!supabaseUrl || !supabaseServiceKey) {
   throw new Error("Missing Supabase environment variables")
 }
 
-const supabase = createClient(supabaseUrl, supabaseServiceKey)
+const supabase = createClient<Database>(supabaseUrl, supabaseServiceKey)
 
-export interface EarlyAccessSignup {
-  id?: string
-  email: string
-  confirmation_token?: string
-  confirmed: boolean
-  created_at?: string
-  confirmed_at?: string
-  source?: string
-  user_agent?: string
-  ip_address?: string
-}
+export type EarlyAccessSignup = Database['public']['Tables']['early_access_signups']['Row']
+export type EarlyAccessSignupInsert = Database['public']['Tables']['early_access_signups']['Insert']
+export type EarlyAccessSignupUpdate = Database['public']['Tables']['early_access_signups']['Update']
 
 export class DatabaseService {
   async createSignup(signup: EarlyAccessSignup): Promise<{ success: boolean; data?: any; error?: string }> {

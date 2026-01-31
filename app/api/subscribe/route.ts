@@ -70,39 +70,44 @@ export async function POST(request: NextRequest) {
       }, { status: 429 })
     }
     
-    // Check if email already exists
-    const existingSignup = await db.findSignupByEmail(email)
-    if (existingSignup) {
-      if (existingSignup.confirmed) {
-        return NextResponse.json({ 
-          message: "You're already on the waitlist and confirmed!", 
-          success: true 
-        }, { status: 200 })
-      } else {
-        return NextResponse.json({ 
-          message: "Please check your email and confirm your signup.", 
-          success: true 
-        }, { status: 200 })
-      }
-    }
-    
     // Generate confirmation token
     const confirmationToken = crypto.randomBytes(32).toString('hex')
     
-    // Create signup record
-    const signupResult = await db.createSignup({
-      email,
-      confirmation_token: confirmationToken,
-      confirmed: false,
-      source,
-      user_agent: userAgent,
-      ip_address: clientIP,
-    })
-    
-    if (!signupResult.success) {
-      return NextResponse.json({ 
-        error: "Failed to register. Please try again." 
-      }, { status: 500 })
+    // Try to create signup record, but don't fail if database is not ready
+    try {
+      // Check if email already exists
+      const existingSignup = await db.findSignupByEmail(email)
+      if (existingSignup) {
+        if (existingSignup.confirmed) {
+          return NextResponse.json({ 
+            message: "You're already on the waitlist and confirmed!", 
+            success: true 
+          }, { status: 200 })
+        } else {
+          return NextResponse.json({ 
+            message: "Please check your email and confirm your signup.", 
+            success: true 
+          }, { status: 200 })
+        }
+      }
+      
+      // Create signup record
+      const signupResult = await db.createSignup({
+        email,
+        confirmation_token: confirmationToken,
+        confirmed: false,
+        source,
+        user_agent: userAgent,
+        ip_address: clientIP,
+      })
+      
+      if (!signupResult.success) {
+        console.error('Database error:', signupResult.error)
+        // Continue without database - just send email
+      }
+    } catch (dbError) {
+      console.error('Database connection error:', dbError)
+      // Continue without database - just send email for now
     }
     
     // Send welcome email
@@ -115,7 +120,9 @@ export async function POST(request: NextRequest) {
     
     if (!emailSent) {
       console.error('Failed to send welcome email to:', email)
-      // Don't fail the request - user is still registered
+      return NextResponse.json({ 
+        error: "Failed to send confirmation email. Please try again." 
+      }, { status: 500 })
     }
     
     return NextResponse.json({ 
