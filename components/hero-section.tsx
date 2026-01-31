@@ -62,16 +62,34 @@ export function HeroSection() {
     announce("Initiating sequence...")
 
     try {
-      // Simulate API call for now (or replace with real one)
-      await new Promise(resolve => setTimeout(resolve, 1500))
+      const response = await fetch('/api/subscribe', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          email: email.trim(),
+          source: 'hero-form'
+        }),
+      })
 
-      const successMessage = "✓ ACCESS REQUEST REGISTERED. STAND BY."
-      setMessage(successMessage)
-      setEmail("")
-      announce(successMessage)
+      const data = await response.json()
+
+      if (response.ok && data.success) {
+        const successMessage = data.message || "✓ ACCESS REQUEST REGISTERED. STAND BY."
+        setMessage(successMessage)
+        setEmail("")
+        announce(successMessage)
+      } else {
+        const errorMessage = data.error || "CONNECTION FAILURE. RETRY SEQUENCE."
+        setMessage(errorMessage)
+        announce(errorMessage)
+        emailInputRef.current?.focus()
+      }
 
     } catch (error) {
-      const errorMessage = "CONNECTION FAILURE. RETRY LEASE."
+      console.error('Subscription error:', error)
+      const errorMessage = "NETWORK ERROR. RETRY SEQUENCE."
       setMessage(errorMessage)
       announce(errorMessage)
       emailInputRef.current?.focus()
@@ -165,10 +183,21 @@ export function HeroSection() {
               <motion.div
                 initial={{ opacity: 0, y: -10 }}
                 animate={{ opacity: 1, y: 0 }}
-                className={`absolute -bottom-8 left-0 font-mono text-[10px] uppercase tracking-wider ${message.startsWith("✓") ? "text-accent" : "text-destructive"}`}
+                className={`mt-4 p-4 border transition-all duration-300 ${
+                  message.startsWith("✓") 
+                    ? "border-accent/30 bg-accent/5 text-accent" 
+                    : "border-destructive/30 bg-destructive/5 text-destructive"
+                }`}
                 role="status"
               >
-                {`> ${message}`}
+                <div className="font-mono text-xs uppercase tracking-wider">
+                  {`> ${message}`}
+                </div>
+                {message.startsWith("✓") && (
+                  <div className="mt-2 text-xs text-accent/80 font-mono normal-case tracking-normal">
+                    Check your email for a confirmation link to secure your spot in the protocol queue.
+                  </div>
+                )}
               </motion.div>
             )}
           </fieldset>

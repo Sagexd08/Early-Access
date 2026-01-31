@@ -1,12 +1,9 @@
 "use client"
-
 import { useEffect, useRef } from "react"
-
 interface AnimatedNoiseProps {
   opacity?: number
   className?: string
 }
-
 export function AnimatedNoise({ opacity = 0.05, className }: AnimatedNoiseProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null)
 
