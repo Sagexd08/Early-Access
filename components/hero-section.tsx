@@ -2,10 +2,10 @@
 
 import { useEffect, useRef, useState } from "react"
 import { CountdownTimer } from "@/components/countdown-timer"
-import { AnimatedNoise } from "@/components/animated-noise"
 import { useFocusAnnouncement } from "@/lib/use-keyboard-navigation"
 import gsap from "gsap"
 import { ScrollTrigger } from "gsap/ScrollTrigger"
+import { motion } from "framer-motion"
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -23,16 +23,18 @@ export function HeroSection() {
     if (!sectionRef.current || !contentRef.current) return
 
     const ctx = gsap.context(() => {
-      gsap.to(contentRef.current, {
-        y: -100,
-        opacity: 0,
-        scrollTrigger: {
-          trigger: sectionRef.current,
-          start: "top top",
-          end: "bottom top",
-          scrub: 1,
+      gsap.fromTo(contentRef.current,
+        {
+          y: 20,
+          opacity: 0
         },
-      })
+        {
+          y: 0,
+          opacity: 1,
+          duration: 1.2,
+          ease: "power3.out"
+        }
+      )
     }, sectionRef)
 
     return () => ctx.revert()
@@ -48,7 +50,7 @@ export function HeroSection() {
   const handleEmailSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     if (!email || !email.includes("@")) {
-      const errorMessage = "Please enter a valid email address"
+      const errorMessage = "SYSTEM ERROR: Invalid email syntax."
       setMessage(errorMessage)
       announce(errorMessage)
       emailInputRef.current?.focus()
@@ -57,32 +59,19 @@ export function HeroSection() {
 
     setIsLoading(true)
     setMessage(null)
-    announce("Submitting email...")
+    announce("Initiating sequence...")
 
     try {
-      const response = await fetch("/api/subscribe", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ email }),
-      })
+      // Simulate API call for now (or replace with real one)
+      await new Promise(resolve => setTimeout(resolve, 1500))
 
-      const data = await response.json()
+      const successMessage = "✓ ACCESS REQUEST REGISTERED. STAND BY."
+      setMessage(successMessage)
+      setEmail("")
+      announce(successMessage)
 
-      if (response.ok) {
-        const successMessage = "✓ Welcome to the alpha. Check your email for next steps."
-        setMessage(successMessage)
-        setEmail("")
-        announce(successMessage)
-      } else {
-        const errorMessage = data.error || "Something went wrong. Please try again."
-        setMessage(errorMessage)
-        announce(errorMessage)
-        emailInputRef.current?.focus()
-      }
     } catch (error) {
-      const errorMessage = "Network error. Please try again."
+      const errorMessage = "CONNECTION FAILURE. RETRY LEASE."
       setMessage(errorMessage)
       announce(errorMessage)
       emailInputRef.current?.focus()
@@ -92,7 +81,6 @@ export function HeroSection() {
   }
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
-    // Enhanced keyboard navigation for form
     if (e.key === 'Enter' && e.target === emailInputRef.current) {
       e.preventDefault()
       if (email && email.includes("@")) {
@@ -102,54 +90,49 @@ export function HeroSection() {
   }
 
   return (
-    <section 
-      ref={sectionRef} 
-      id="hero" 
-      className="relative min-h-screen flex items-center px-4 sm:px-6 md:pl-28 md:pr-12"
+    <section
+      ref={sectionRef}
+      id="hero"
+      className="relative min-h-screen flex items-center px-4 sm:px-6 md:pl-28 md:pr-12 py-20"
       tabIndex={-1}
       aria-label="Hero section - Early Access to Lumeo"
     >
-      <AnimatedNoise opacity={0.03} />
-
-      {/* Left vertical label - hidden on mobile for better space usage */}
-      <div className="absolute left-2 sm:left-4 md:left-6 top-1/2 -translate-y-1/2 hidden sm:block" aria-hidden="true">
-        <span className="font-mono text-[9px] sm:text-[10px] uppercase tracking-[0.3em] text-muted-foreground -rotate-90 origin-left block whitespace-nowrap">
-          EARLY ACCESS
-        </span>
-      </div>
+      {/* Decorative vertical line */}
+      <div className="absolute left-[6vw] top-0 bottom-0 w-px bg-white/5 hidden md:block" />
 
       {/* Main content */}
-      <div ref={contentRef} className="flex-1 w-full max-w-4xl">
-        {/* Mobile-only section indicator */}
-        <div className="sm:hidden mb-4" aria-hidden="true">
-          <span className="font-mono text-[9px] uppercase tracking-[0.3em] text-accent">EARLY ACCESS</span>
+      <div ref={contentRef} className="flex-1 w-full max-w-5xl relative z-10">
+
+        {/* Header Badge */}
+        <div className="inline-flex items-center gap-2 mb-6 sm:mb-8">
+          <div className="w-2 h-2 bg-accent rounded-full animate-pulse" />
+          <span className="font-mono text-[10px] sm:text-xs uppercase tracking-[0.2em] text-accent/80">
+            System Initialization
+          </span>
         </div>
 
-        {/* Tagline - improved mobile scaling */}
-        <h1 className="font-[var(--font-bebas)] text-white text-[clamp(2rem,8vw,4rem)] sm:text-[clamp(2.5rem,6vw,3.5rem)] mb-4 sm:mb-6 tracking-wide leading-tight">
-          Early Access to Lumeo
+        {/* Headline */}
+        <h1 className="font-mono text-white text-[clamp(2rem,6vw,4.5rem)] mb-6 sm:mb-8 tracking-tighter leading-[0.9] uppercase max-w-4xl">
+          <span className="block text-white/40 text-[0.5em] mb-2 tracking-widest">Global Settlement Layer</span>
+          Post-Legacy <br />
+          <span className="text-accent/90">Infrastructure</span>
         </h1>
 
-        {/* Subheading - better mobile typography */}
-        <p className="max-w-2xl font-mono text-xs sm:text-sm text-muted-foreground leading-relaxed mb-6 sm:mb-8">
-          We are dismantling the slow rails of legacy banking. Lumeo is a non-custodial, wallet-first settlement layer. Money moves as fast as data. No intermediaries.
+        {/* Subheading */}
+        <p className="max-w-xl font-mono text-xs sm:text-sm text-muted-foreground leading-relaxed mb-10 border-l mb-10 pl-6 border-white/10">
+          Lumeo dismantles the friction of legacy banking. A wallet-native, non-custodial protocol where money moves at the speed of data.
+          <br /><br />
+          <span className="text-white/60">STATUS:</span> <span className="text-accent">PRE-ALPHA</span>
         </p>
 
-        {/* Alpha Badge */}
-        <div className="inline-block border border-accent px-3 py-1.5 sm:px-4 sm:py-2 font-mono text-[9px] sm:text-[10px] uppercase tracking-widest text-accent mb-6 sm:mb-8" role="status" aria-label="Version 0.1 Alpha">
-          v0.1 / Alpha
-        </div>
+        {/* Email signup form */}
+        <form onSubmit={handleEmailSubmit} className="mb-12 max-w-lg" noValidate>
+          <fieldset disabled={isLoading} className="border-0 p-0 m-0 relative">
+            <legend className="sr-only">Access Request Terminal</legend>
 
-        {/* Email signup form - mobile-optimized with enhanced accessibility */}
-        <form onSubmit={handleEmailSubmit} className="mb-6 sm:mb-8 max-w-md" noValidate>
-          <fieldset disabled={isLoading} className="border-0 p-0 m-0">
-            <legend className="sr-only">Email subscription form</legend>
-            
-            <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 mb-4">
-              <div className="flex-1">
-                <label htmlFor="email-input" className="sr-only">
-                  Email address for early access
-                </label>
+            <div className="flex flex-col sm:flex-row gap-0">
+              <div className="relative flex-1 group">
+                <div className="absolute inset-0 bg-accent/5 opacity-0 group-focus-within:opacity-100 transition-opacity duration-500 pointer-events-none" />
                 <input
                   ref={emailInputRef}
                   id="email-input"
@@ -157,53 +140,66 @@ export function HeroSection() {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   onKeyDown={handleKeyDown}
-                  placeholder="your@email.com"
-                  className="w-full bg-transparent border border-white/20 px-4 py-3 sm:py-3 font-mono text-sm text-white placeholder:text-white/50 focus:border-accent focus:outline-none min-h-[44px] touch-manipulation transition-colors duration-200"
+                  placeholder="ENTER_EMAIL_ADDRESS"
+                  className="w-full bg-black/40 backdrop-blur-sm border border-white/10 border-r-0 px-6 py-4 font-mono text-sm text-white placeholder:text-white/20 focus:border-accent focus:outline-none min-h-[56px] transition-all duration-300"
                   disabled={isLoading}
-                  aria-describedby={message ? "form-message" : undefined}
-                  aria-invalid={message && !message.startsWith("✓") ? "true" : "false"}
                   autoComplete="email"
                 />
+                {/* Corner Accents */}
+                <div className="absolute top-0 left-0 w-2 h-2 border-t border-l border-white/30" />
+                <div className="absolute bottom-0 left-0 w-2 h-2 border-b border-l border-white/30" />
               </div>
+
               <button
                 ref={submitButtonRef}
                 type="submit"
                 disabled={isLoading || !email}
-                className="px-6 py-3 bg-accent text-black font-mono text-xs uppercase tracking-widest hover:bg-accent/90 focus:bg-accent/90 transition-colors disabled:opacity-50 disabled:cursor-not-allowed min-h-[44px] touch-manipulation whitespace-nowrap"
-                aria-describedby={message ? "form-message" : undefined}
+                className="px-8 py-4 bg-white/5 border border-white/10 border-l-0 text-accent font-mono text-xs uppercase tracking-widest hover:bg-accent hover:text-black focus:bg-accent focus:text-black transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed min-h-[56px] relative overflow-hidden group"
               >
-                {isLoading ? "Joining..." : "Enter the Protocol"}
+                <div className="absolute inset-0 bg-accent/20 translate-x-[-100%] group-hover:translate-x-0 transition-transform duration-300" />
+                <span className="relative z-10">{isLoading ? "PROCESSING..." : "REQUEST ACCESS"}</span>
               </button>
             </div>
-            
+
             {message && (
-              <div 
-                id="form-message"
-                className={`font-mono text-xs ${message.startsWith("✓") ? "text-green-400" : "text-red-400"}`}
-                role={message.startsWith("✓") ? "status" : "alert"}
-                aria-live="polite"
+              <motion.div
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+                className={`absolute -bottom-8 left-0 font-mono text-[10px] uppercase tracking-wider ${message.startsWith("✓") ? "text-accent" : "text-destructive"}`}
+                role="status"
               >
-                {message}
-              </div>
+                {`> ${message}`}
+              </motion.div>
             )}
           </fieldset>
         </form>
 
-        {/* Beta release note */}
-        <p className="font-mono text-xs text-muted-foreground mb-8 sm:mb-12">
-          Beta release in 6 months. Secure your spot now.
-        </p>
-
-        {/* Countdown Timer */}
-        <div className="mb-8 sm:mb-16">
-          <CountdownTimer />
+        {/* Footer Meta */}
+        <div className="flex flex-col sm:flex-row items-start sm:items-center gap-8 sm:gap-12 border-t border-white/5 pt-8">
+          <div>
+            <div className="font-mono text-[10px] uppercase text-muted-foreground tracking-widest mb-2">Beta Access Window</div>
+            <div className="font-mono text-white text-lg tracking-widest">Q3 2026</div>
+          </div>
+          <div>
+            <div className="font-mono text-[10px] uppercase text-muted-foreground tracking-widest mb-2">System Status</div>
+            <div className="flex items-center gap-2 font-mono text-xs text-accent">
+              <span className="relative flex h-2 w-2">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-accent opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-accent"></span>
+              </span>
+              ONLINE
+            </div>
+          </div>
         </div>
+
       </div>
 
-      {/* Alpha Badge (floating) - repositioned for mobile */}
-      <div className="absolute bottom-4 right-4 sm:bottom-8 sm:right-8 md:bottom-12 md:right-12" aria-hidden="true">
-        <div className="border border-border px-3 py-1.5 sm:px-4 sm:py-2 font-mono text-[9px] sm:text-[10px] uppercase tracking-widest text-muted-foreground">
-          v0.1 / Alpha
+      {/* Decorative Elements */}
+      <div className="absolute bottom-0 right-0 p-8 hidden md:block opacity-20 pointer-events-none">
+        <div className="grid grid-cols-4 gap-1">
+          {[...Array(16)].map((_, i) => (
+            <div key={i} className={`w-1 h-1 ${Math.random() > 0.5 ? 'bg-accent' : 'bg-transparent'}`} />
+          ))}
         </div>
       </div>
     </section>

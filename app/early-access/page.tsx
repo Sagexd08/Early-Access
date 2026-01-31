@@ -8,6 +8,8 @@ import { PrinciplesSection } from "@/components/principles-section"
 import { ColophonSection } from "@/components/colophon-section"
 import { SideNav } from "@/components/side-nav"
 import { useSkipLinks } from "@/lib/use-keyboard-navigation"
+import { CyberpunkGrid } from "@/components/cyberpunk-grid"
+import { ScanlineOverlay } from "@/components/scanline-overlay"
 
 export default function EarlyAccessPage() {
   const { addSkipLink } = useSkipLinks()
@@ -39,12 +41,12 @@ export default function EarlyAccessPage() {
       if (event.altKey && !event.ctrlKey && !event.shiftKey) {
         const keyMap: Record<string, string> = {
           '1': 'hero',
-          '2': 'signals', 
+          '2': 'signals',
           '3': 'work',
           '4': 'principles',
           '5': 'colophon'
         }
-        
+
         const sectionId = keyMap[event.key]
         if (sectionId) {
           event.preventDefault()
@@ -55,7 +57,7 @@ export default function EarlyAccessPage() {
           }
         }
       }
-      
+
       // Escape key to return to top
       if (event.key === 'Escape') {
         event.preventDefault()
@@ -76,14 +78,16 @@ export default function EarlyAccessPage() {
 
   return (
     <>
-      {/* Screen reader announcement for page structure */}
       <div className="sr-only" aria-live="polite">
         Lumeo Early Access page loaded. Use Alt + 1-5 to navigate sections, or Tab to navigate interactive elements.
       </div>
-      
-      <main className="relative min-h-screen">
+
+      <main className="relative min-h-screen bg-background text-foreground overflow-x-hidden">
+        {/* Cyberpunk Environment Layers */}
+        <CyberpunkGrid />
+        <ScanlineOverlay />
+
         <SideNav />
-        <div className="grid-bg fixed inset-0 opacity-30" aria-hidden="true" />
 
         <div className="relative z-10">
           <HeroSection />
@@ -95,19 +99,19 @@ export default function EarlyAccessPage() {
 
         {/* Keyboard navigation help - visible on focus */}
         <div className="fixed bottom-4 left-4 z-50 opacity-0 focus-within:opacity-100 hover:opacity-100 transition-opacity duration-300">
-          <div className="bg-background/90 backdrop-blur-sm border border-border/50 p-3 rounded font-mono text-xs">
-            <div className="text-accent mb-2 uppercase tracking-wider">Keyboard Shortcuts</div>
+          <div className="bg-black/90 backdrop-blur-md border border-white/10 p-4 rounded-none font-mono text-xs shadow-[0_0_20px_rgba(0,0,0,0.5)]">
+            <div className="text-accent mb-2 uppercase tracking-wider flex items-center gap-2">
+              <div className="w-1.5 h-1.5 bg-accent rounded-full animate-pulse" />
+              Keyboard Shortcuts
+            </div>
             <div className="space-y-1 text-muted-foreground">
-              <div>Alt + 1-5: Navigate sections</div>
-              <div>Tab: Navigate elements</div>
-              <div>Escape: Return to top</div>
-              <div>Arrow keys: Navigate interactive elements</div>
-              <div>Enter/Space: Activate buttons</div>
+              <div><span className="text-white">Alt + 1-5</span> : Navigate sections</div>
+              <div><span className="text-white">Tab</span> : Navigate elements</div>
+              <div><span className="text-white">Esc</span> : Return to top</div>
             </div>
           </div>
         </div>
 
-        {/* Focus indicator for screen readers */}
         <div id="focus-announcer" className="sr-only" aria-live="polite" aria-atomic="true"></div>
       </main>
     </>
