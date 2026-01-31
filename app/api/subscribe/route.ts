@@ -1,5 +1,8 @@
 import { NextRequest, NextResponse } from "next/server"
 import { createClient } from "@supabase/supabase-js"
+import { emailService } from "@/lib/email-service"
+import { welcomeEmailTemplate } from "@/lib/email-templates"
+import crypto from "crypto"
 
 export async function POST(request: NextRequest) {
   try {
@@ -9,38 +12,78 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "Email is required" }, { status: 400 })
     }
 
-    // Initialize Supabase Admin Client (Service Role) to send magic link
-    // We use service role to avoid RLS issues if any, or just standard client if preferred.
-    // For signInWithOtp, standard public key client usually works client-side, 
-    // but server-side we can use service role for higher limits or specific admin actions.
-    // However, for just Auth, standard client created with NEXT_PUBLIC_... works fine too.
-    // Let's use the standard flow to mimic a user signing up.
+    // Validate email format
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+    if (!emailRegex.test(email)) {
+      return NextResponse.json({ error: "Invalid email format" }, { status: 400 })
+    }
 
     const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!
-    const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-    const supabase = createClient(supabaseUrl, supabaseKey)
+    const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY!
+    const supabase = createClient(supabaseUrl, supabaseServiceKey)
 
-    // Trigger Magic Link
-    const { error } = await supabase.auth.signInWithOtp({
-      email,
-      options: {
-        // You can set this to your confirmation page URL:
-        // emailRedirectTo: `${request.nextUrl.origin}/confirm`,
-        data: {
-          signup_source: source
-        }
+    // Check if email already exists
+    const { data: existingSignup } = await supabase
+      .from('early_access_signups')
+      .select('email, confirmed')
+      .eq('email', email.toLowerCase())
+      .single()
+
+    if (existingSignup) {
+      if (existingSignup.confirmed) {
+        return NextResponse.json({
+          message: "✓ You're already on the early access list! We'll be in touch soon.",
+          success: true
+        }, { status: 200 })
+      } else {
+        return NextResponse.json({
+          message: "✓ You've already signed up! Check your email for the confirmation link.",
+          success: true
+        }, { status: 200 })
       }
+    }
+
+    // Generate confirmation token
+    const confirmationToken = crypto.randomBytes(32).toString('hex')
+
+    // Store in database
+    const { error: insertError } = await supabase
+      .from('early_access_signups')
+      .insert({
+        email: email.toLowerCase(),
+        confirmation_token: confirmationToken,
+        source,
+        confirmed: false,
+        created_at: new Date().toISOString(),
+      })
+
+    if (insertError) {
+      console.error("Database insert error:", insertError)
+      if (insertError.code === '23505') {
+        return NextResponse.json({
+          message: "✓ You're already on the early access list!",
+          success: true
+        }, { status: 200 })
+      }
+    }
+
+    // Send welcome email with our beautiful HTML template
+    const emailHtml = welcomeEmailTemplate(email, confirmationToken)
+    const emailSent = await emailService.sendEmail({
+      to: email,
+      subject: "Welcome to Lumeo - Your Early Access is Confirmed! 🚀",
+      html: emailHtml,
     })
 
-    if (error) {
-      console.error("Supabase Auth Error:", error.message)
+    if (!emailSent) {
+      console.error('Failed to send welcome email to:', email)
       return NextResponse.json({
-        error: error.message
-      }, { status: 400 })
+        error: "Failed to send confirmation email. Please try again."
+      }, { status: 500 })
     }
 
     return NextResponse.json({
-      message: "✓ Check your email for the secure login link.",
+      message: "✓ Thank you for joining Lumeo! Check your email for next steps.",
       success: true
     }, { status: 200 })
 
