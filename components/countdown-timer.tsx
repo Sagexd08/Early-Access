@@ -34,7 +34,7 @@ export function CountdownTimer() {
 
     // Set initial values immediately
     calculateTimeLeft()
-    
+
     // Update every second
     const timer = setInterval(calculateTimeLeft, 1000)
     return () => clearInterval(timer)
@@ -63,7 +63,7 @@ export function CountdownTimer() {
   return (
     <div ref={timerRef} className="relative max-w-full">
       {/* Main timer container */}
-      <div 
+      <div
         className="relative border border-white/20 bg-black/60 backdrop-blur-md overflow-hidden"
         role="timer"
         aria-label={`Countdown to Lumeo mainnet launch: ${timeLeft.days} days, ${timeLeft.hours} hours, ${timeLeft.minutes} minutes, ${timeLeft.seconds} seconds remaining`}
@@ -80,7 +80,7 @@ export function CountdownTimer() {
 
         {/* Progress bar */}
         <div className="absolute top-0 left-0 right-0 h-0.5 bg-white/10" aria-hidden="true">
-          <div 
+          <div
             className="h-full bg-gradient-to-r from-accent via-accent/80 to-accent transition-all duration-1000"
             style={{ width: `${progress}%` }}
             role="progressbar"
@@ -104,7 +104,7 @@ export function CountdownTimer() {
           </header>
 
           {/* Timer display - responsive layout */}
-          <div 
+          <div
             className="flex gap-3 sm:gap-4 md:gap-6 items-center justify-center mb-3 sm:mb-4 overflow-x-auto"
             role="group"
             aria-label="Countdown timer display"
@@ -119,7 +119,7 @@ export function CountdownTimer() {
           </div>
 
           {/* Progress indicator */}
-          <div 
+          <div
             className="flex items-center justify-center gap-2 sm:gap-3 text-[8px] sm:text-[9px] text-white/50 font-mono"
             role="group"
             aria-label="Development progress indicator"
@@ -127,7 +127,7 @@ export function CountdownTimer() {
             <span className="hidden sm:inline">DEVELOPMENT</span>
             <span className="sm:hidden">DEV</span>
             <div className="flex-1 max-w-16 sm:max-w-24 h-px bg-white/20 relative" aria-hidden="true">
-              <div 
+              <div
                 className="absolute left-0 top-0 h-full bg-accent transition-all duration-1000"
                 style={{ width: `${progress}%` }}
               />
@@ -145,17 +145,17 @@ export function CountdownTimer() {
 
       {/* Floating status indicators */}
       <div className="absolute -top-2 sm:-top-3 -right-2 sm:-right-3 flex gap-1 sm:gap-2" role="group" aria-label="System status indicators">
-        <div 
-          className="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-green-400" 
+        <div
+          className="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-green-400"
           role="status"
           aria-label="System online"
-          title="System Online" 
+          title="System Online"
         />
-        <div 
-          className="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-accent" 
+        <div
+          className="w-1.5 h-1.5 sm:w-2 sm:h-2 rounded-full bg-accent"
           role="status"
           aria-label="Development active"
-          title="Development Active" 
+          title="Development Active"
         />
       </div>
 
@@ -173,8 +173,8 @@ function TimeUnit({ value, label }: { value: number; label: string }) {
   return (
     <div className="text-center group min-w-0 flex-shrink-0" role="group" aria-label={`${value} ${label}`}>
       <div className="relative">
-        <div 
-          className="text-xl sm:text-2xl md:text-3xl font-bold text-white tabular-nums group-hover:text-accent transition-colors duration-300"
+        <div
+          className="text-xl sm:text-2xl md:text-3xl font-bold font-mono text-white tabular-nums group-hover:text-accent transition-colors duration-300"
           aria-label={`${label === 'days' ? value : String(value).padStart(2, "0")} ${label}`}
         >
           {label === 'days' ? value : String(value).padStart(2, "0")}
@@ -194,8 +194,7 @@ function TimeUnit({ value, label }: { value: number; label: string }) {
 function TimeSeparator() {
   return (
     <div className="flex flex-col gap-1" aria-hidden="true">
-      <span className="text-white/30 text-lg">•</span>
-      <span className="text-white/30 text-lg">•</span>
+      <span className="text-accent/50 text-xl font-mono animate-pulse">:</span>
     </div>
   )
 }

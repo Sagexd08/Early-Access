@@ -174,6 +174,11 @@ export function HeroSection() {
           </fieldset>
         </form>
 
+        {/* Countdown Timer Module */}
+        <div className="mb-12">
+          <CountdownTimer />
+        </div>
+
         {/* Footer Meta */}
         <div className="flex flex-col sm:flex-row items-start sm:items-center gap-8 sm:gap-12 border-t border-white/5 pt-8">
           <div>
