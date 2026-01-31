@@ -373,7 +373,7 @@ select:focus-visible,
   }
 
   .input-advanced {
-    @apply bg-black/20 backdrop-blur-sm border border-white/10 text-white placeholder:text-white/20 transition-all duration-300 focus:border-accent/50 focus:bg-accent/5 focus:shadow-[0_0_20px_rgba(var(--accent-rgb), 0.1)];
+    @apply bg-black/20 backdrop-blur-sm border border-white/10 text-white placeholder:text-white/20 transition-all duration-300 focus:border-accent/50 focus:bg-accent/5;
   }
 }
 
