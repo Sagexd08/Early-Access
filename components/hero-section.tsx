@@ -159,7 +159,7 @@ export function HeroSection() {
                   onChange={(e) => setEmail(e.target.value)}
                   onKeyDown={handleKeyDown}
                   placeholder="ENTER_EMAIL_ADDRESS"
-                  className="w-full bg-black/40 backdrop-blur-sm border border-white/10 border-r-0 px-6 py-4 font-mono text-sm text-white placeholder:text-white/20 focus:border-accent focus:outline-none min-h-[56px] transition-all duration-300"
+                  className="w-full input-advanced px-6 py-4 font-mono text-sm min-h-[56px] border-r-0 focus:z-10"
                   disabled={isLoading}
                   autoComplete="email"
                 />
@@ -172,10 +172,10 @@ export function HeroSection() {
                 ref={submitButtonRef}
                 type="submit"
                 disabled={isLoading || !email}
-                className="px-8 py-4 bg-white/5 border border-white/10 border-l-0 text-accent font-mono text-xs uppercase tracking-widest hover:bg-accent hover:text-black focus:bg-accent focus:text-black transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed min-h-[56px] relative overflow-hidden group"
+                className="px-8 py-4 bg-white/5 border border-white/10 border-l-0 text-accent font-mono text-xs uppercase tracking-widest hover:bg-accent hover:text-black hover:shadow-[0_0_30px_var(--accent)] focus:bg-accent focus:text-black transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed min-h-[56px] relative overflow-hidden group"
               >
                 <div className="absolute inset-0 bg-accent/20 -translate-x-full group-hover:translate-x-0 transition-transform duration-300" />
-                <span className="relative z-10">{isLoading ? "PROCESSING..." : "REQUEST ACCESS"}</span>
+                <span className="relative z-10 font-bold">{isLoading ? "PROCESSING..." : "REQUEST ACCESS"}</span>
               </button>
             </div>
 
@@ -183,11 +183,10 @@ export function HeroSection() {
               <motion.div
                 initial={{ opacity: 0, y: -10 }}
                 animate={{ opacity: 1, y: 0 }}
-                className={`mt-4 p-4 border transition-all duration-300 ${
-                  message.startsWith("✓") 
-                    ? "border-accent/30 bg-accent/5 text-accent" 
+                className={`mt-4 p-4 border transition-all duration-300 ${message.startsWith("✓")
+                    ? "border-accent/30 bg-accent/5 text-accent"
                     : "border-destructive/30 bg-destructive/5 text-destructive"
-                }`}
+                  }`}
                 role="status"
               >
                 <div className="font-mono text-xs uppercase tracking-wider">

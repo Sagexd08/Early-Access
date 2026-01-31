@@ -339,96 +339,352 @@ export const confirmationEmailTemplate = (email: string) => {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lumeo Protocol - Verification Complete</title>
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap');
+        
         body { 
             margin: 0; 
             padding: 0; 
-            background-color: #000000; 
-            font-family: 'Courier New', Courier, monospace; 
+            background: linear-gradient(135deg, #000000 0%, #0a0a0a 50%, #000000 100%); 
+            font-family: 'JetBrains Mono', 'Courier New', monospace; 
             color: #e5e5e5; 
+            line-height: 1.6;
         }
         .container { 
             max-width: 600px; 
             margin: 0 auto; 
-            background-color: #0a0a0a; 
+            background: linear-gradient(180deg, #0a0a0a 0%, #050505 100%); 
             border: 1px solid #1a1a1a; 
+            box-shadow: 0 0 50px rgba(16, 185, 129, 0.15);
+            position: relative;
+            overflow: hidden;
+        }
+        .container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #10b981, transparent);
+            animation: scan 3s linear infinite;
+        }
+        @keyframes scan {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
         }
         .header { 
-            padding: 40px 20px; 
-            border-bottom: 1px solid #10b981; 
+            padding: 50px 30px 40px; 
+            border-bottom: 1px solid rgba(16, 185, 129, 0.3); 
             text-align: center; 
-            background: linear-gradient(180deg, rgba(16, 185, 129, 0.05) 0%, rgba(0,0,0,0) 100%); 
+            background: radial-gradient(circle at center, rgba(16, 185, 129, 0.08) 0%, transparent 70%); 
+            position: relative;
         }
         .logo { 
             color: #10b981; 
-            font-size: 24px; 
-            letter-spacing: 0.3em; 
-            font-weight: bold; 
+            font-size: 28px; 
+            letter-spacing: 0.4em; 
+            font-weight: 700; 
             text-transform: uppercase; 
+            text-shadow: 0 0 20px rgba(16, 185, 129, 0.5);
+            margin-bottom: 8px;
+        }
+        .tagline {
+            font-size: 11px;
+            color: #666;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
         }
         .content { 
-            padding: 40px 30px; 
+            padding: 50px 40px; 
+            position: relative;
+        }
+        .success-indicator {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 30px;
+        }
+        .success-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #10b981, #059669);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+            box-shadow: 0 0 20px rgba(16, 185, 129, 0.4);
+            animation: pulse-success 2s infinite;
+        }
+        @keyframes pulse-success {
+            0%, 100% { transform: scale(1); box-shadow: 0 0 20px rgba(16, 185, 129, 0.4); }
+            50% { transform: scale(1.05); box-shadow: 0 0 30px rgba(16, 185, 129, 0.6); }
+        }
+        .checkmark {
+            color: #000;
+            font-size: 20px;
+            font-weight: bold;
         }
         .badge { 
             display: inline-block; 
-            background: rgba(16, 185, 129, 0.1); 
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.15), rgba(16, 185, 129, 0.05)); 
             color: #10b981; 
-            padding: 6px 12px; 
-            border: 1px solid rgba(16, 185, 129, 0.2); 
+            padding: 8px 16px; 
+            border: 1px solid rgba(16, 185, 129, 0.3); 
             font-size: 10px; 
             letter-spacing: 0.2em; 
-            margin-bottom: 24px; 
             text-transform: uppercase; 
+            font-weight: 500;
+            border-radius: 2px;
         }
         h1 { 
-            font-size: 28px; 
-            font-weight: normal; 
-            margin: 0 0 24px 0; 
+            font-size: 32px; 
+            font-weight: 500; 
+            margin: 30px 0; 
             letter-spacing: -0.02em; 
             color: #ffffff; 
+            text-align: center;
+            text-shadow: 0 0 30px rgba(255, 255, 255, 0.1);
         }
-        p { 
+        .intro-text { 
             line-height: 1.8; 
-            font-size: 14px; 
-            color: #888; 
-            margin-bottom: 24px; 
+            font-size: 15px; 
+            color: #aaa; 
+            margin-bottom: 30px; 
+            text-align: center;
         }
         .highlight { 
+            color: #fff; 
+            font-weight: 500;
+        }
+        .accent { 
             color: #10b981; 
+            font-weight: 500;
+        }
+        .status-panel {
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.1), rgba(16, 185, 129, 0.05));
+            border: 1px solid rgba(16, 185, 129, 0.2);
+            padding: 30px;
+            margin: 30px 0;
+            border-radius: 4px;
+            text-align: center;
+            position: relative;
+        }
+        .status-panel::before {
+            content: 'VERIFICATION STATUS';
+            position: absolute;
+            top: -8px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #0a0a0a;
+            color: #666;
+            font-size: 9px;
+            letter-spacing: 0.2em;
+            padding: 0 12px;
+        }
+        .status-text {
+            font-size: 18px;
+            color: #10b981;
+            font-weight: 500;
+            letter-spacing: 0.1em;
+            margin-bottom: 10px;
+        }
+        .status-subtext {
+            font-size: 13px;
+            color: #888;
+        }
+        .benefits-section {
+            margin: 40px 0;
+        }
+        .benefits-title {
+            font-size: 16px;
+            color: #fff;
+            margin-bottom: 20px;
+            text-align: center;
+            font-weight: 500;
+        }
+        .benefit-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+            padding: 12px;
+            background: rgba(26, 26, 26, 0.5);
+            border-radius: 4px;
+            border-left: 3px solid #10b981;
+        }
+        .benefit-icon {
+            color: #10b981;
+            margin-right: 12px;
+            font-size: 16px;
+        }
+        .benefit-text {
+            color: #aaa;
+            font-size: 13px;
+        }
+        .timeline-section {
+            background: rgba(26, 26, 26, 0.3);
+            padding: 25px;
+            margin: 30px 0;
+            border-radius: 4px;
+            border: 1px solid #2a2a2a;
+        }
+        .timeline-title {
+            color: #fff;
+            font-size: 14px;
+            margin-bottom: 20px;
+            text-align: center;
+            font-weight: 500;
+        }
+        .timeline-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(42, 42, 42, 0.5);
+            font-size: 12px;
+        }
+        .timeline-item:last-child {
+            border-bottom: none;
+        }
+        .timeline-phase {
+            color: #666;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+        .timeline-date {
+            color: #10b981;
+            font-weight: 500;
         }
         .footer { 
-            padding: 30px; 
+            padding: 40px 30px; 
             text-align: center; 
-            border-top: 1px solid #1a1a1a; 
-            font-size: 10px; 
+            border-top: 1px solid rgba(26, 26, 26, 0.8); 
+            font-size: 11px; 
             color: #444; 
             letter-spacing: 0.1em; 
+            background: linear-gradient(180deg, transparent, rgba(10, 10, 10, 0.5));
         }
-        .scanline { 
-            height: 2px; 
-            width: 100%; 
-            background: repeating-linear-gradient(90deg, #10b981 0%, #10b981 50%, transparent 50%, transparent 100%); 
-            background-size: 10px 100%; 
-            opacity: 0.3; 
-            margin-bottom: 20px; 
+        .social-links {
+            margin-top: 20px;
+        }
+        .social-links a {
+            color: #666;
+            text-decoration: none;
+            margin: 0 10px;
+            font-size: 10px;
+            letter-spacing: 0.1em;
+            transition: color 0.3s ease;
+        }
+        .social-links a:hover {
+            color: #10b981;
+        }
+        .grid-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: 
+                linear-gradient(rgba(16, 185, 129, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(16, 185, 129, 0.03) 1px, transparent 1px);
+            background-size: 20px 20px;
+            pointer-events: none;
+            opacity: 0.3;
         }
     </style>
 </head>
 <body>
     <div class="container">
+        <div class="grid-bg"></div>
         <div class="header">
-            <div class="logo">QORE // LABS</div>
+            <div class="logo">LUMEO</div>
+            <div class="tagline">Decentralized Settlement Protocol</div>
         </div>
         <div class="content">
-            <div class="scanline"></div>
-            <div class="badge">Verification :: Complete</div>
-            <h1>Node Authenticated.</h1>
-            <p>Your position in the protocol queue has been <span class="highlight">confirmed and secured</span>.</p>
-            <p>You will receive priority access to Lumeo's revolutionary settlement layer when we launch in Q3 2026.</p>
-            <p>Stay tuned for exclusive updates, beta access opportunities, and technical previews as we approach the Genesis Block.</p>
+            <div class="success-indicator">
+                <div class="success-icon">
+                    <div class="checkmark">✓</div>
+                </div>
+                <div class="badge">Verification :: Complete</div>
+            </div>
+            
+            <h1>Welcome Aboard!</h1>
+            
+            <p class="intro-text">
+                Your email has been <span class="highlight">successfully verified</span> and your position 
+                in the Lumeo early access program is now <span class="accent">confirmed and secured</span>.
+            </p>
+            
+            <div class="status-panel">
+                <div class="status-text">✓ EARLY ACCESS CONFIRMED</div>
+                <div class="status-subtext">You're now part of an exclusive group of early adopters</div>
+            </div>
+            
+            <div class="benefits-section">
+                <div class="benefits-title">What's Next?</div>
+                
+                <div class="benefit-item">
+                    <div class="benefit-icon">🚀</div>
+                    <div class="benefit-text">
+                        <strong>Priority Access:</strong> First to experience Lumeo's revolutionary settlement layer
+                    </div>
+                </div>
+                
+                <div class="benefit-item">
+                    <div class="benefit-icon">📊</div>
+                    <div class="benefit-text">
+                        <strong>Exclusive Updates:</strong> Technical previews, development insights, and beta releases
+                    </div>
+                </div>
+                
+                <div class="benefit-item">
+                    <div class="benefit-icon">💎</div>
+                    <div class="benefit-text">
+                        <strong>Community Access:</strong> Join our private Discord for direct feedback and discussions
+                    </div>
+                </div>
+                
+                <div class="benefit-item">
+                    <div class="benefit-icon">⚡</div>
+                    <div class="benefit-text">
+                        <strong>Beta Testing:</strong> Help shape the future of decentralized finance
+                    </div>
+                </div>
+            </div>
+            
+            <div class="timeline-section">
+                <div class="timeline-title">Development Roadmap</div>
+                
+                <div class="timeline-item">
+                    <div class="timeline-phase">Alpha Testing</div>
+                    <div class="timeline-date">Q1 2026</div>
+                </div>
+                
+                <div class="timeline-item">
+                    <div class="timeline-phase">Beta Release</div>
+                    <div class="timeline-date">Q2 2026</div>
+                </div>
+                
+                <div class="timeline-item">
+                    <div class="timeline-phase">Public Launch</div>
+                    <div class="timeline-date">Q3 2026</div>
+                </div>
+            </div>
+            
+            <p style="font-size: 13px; color: #666; text-align: center; margin-top: 30px;">
+                Keep an eye on your inbox for exclusive updates, technical insights, and early access 
+                opportunities. We're building something revolutionary, and you're part of the journey.
+            </p>
         </div>
         <div class="footer">
-            QORE LABS <br>
-            DECENTRALIZED SETTLEMENT LAYER
+            <div>LUMEO PROTOCOL</div>
+            <div style="margin-top: 5px;">Building the Future of Decentralized Settlement</div>
+            <div class="social-links">
+                <a href="#">Twitter</a>
+                <a href="#">Discord</a>
+                <a href="#">GitHub</a>
+                <a href="#">Documentation</a>
+            </div>
         </div>
     </div>
 </body>
