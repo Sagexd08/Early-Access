@@ -14,7 +14,7 @@ export function CountdownTimer() {
     minutes: 48,
     seconds: 25,
   })
-  const [progress] = useState(75) // Static progress for now
+  const [progress] = useState(45) // Static progress for now
 
   useEffect(() => {
     const calculateTimeLeft = () => {
