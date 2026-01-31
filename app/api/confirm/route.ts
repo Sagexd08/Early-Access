@@ -1,84 +1,30 @@
-import { NextRequest, NextResponse } from "next/server"
-import { db } from "@/lib/database"
-import { emailService } from "@/lib/email-service"
-import { confirmationEmailTemplate } from "@/lib/email-templates"
+import { type EmailOtpType } from '@supabase/supabase-js'
+import { type NextRequest, NextResponse } from 'next/server'
+import { createClient } from '@supabase/supabase-js'
 
 export async function GET(request: NextRequest) {
-  try {
-    const { searchParams } = new URL(request.url)
-    const token = searchParams.get('token')
-    const email = searchParams.get('email')
-    
-    if (!token || !email) {
-      return NextResponse.json({ 
-        error: "Missing confirmation token or email" 
-      }, { status: 400 })
-    }
-    
-    // Confirm the signup
-    const result = await db.confirmSignup(email, token)
-    
-    if (!result.success) {
-      return NextResponse.json({ 
-        error: result.error || "Invalid confirmation link" 
-      }, { status: 400 })
-    }
-    
-    // Send confirmation email
-    const confirmationHtml = confirmationEmailTemplate(email)
-    await emailService.sendEmail({
-      to: email,
-      subject: "Lumeo Protocol - Verification Complete",
-      html: confirmationHtml,
-    })
-    
-    // Redirect to success page
-    return NextResponse.redirect(new URL('/confirmed', request.url))
-    
-  } catch (error) {
-    console.error("Confirmation error:", error)
-    return NextResponse.json({ 
-      error: "Internal server error" 
-    }, { status: 500 })
-  }
-}
+  const { searchParams } = new URL(request.url)
+  const token_hash = searchParams.get('token_hash')
+  const type = searchParams.get('type') as EmailOtpType | null
+  const next = searchParams.get('next') ?? '/'
 
-export async function POST(request: NextRequest) {
-  try {
-    const { token, email } = await request.json()
-    
-    if (!token || !email) {
-      return NextResponse.json({ 
-        error: "Missing confirmation token or email" 
-      }, { status: 400 })
-    }
-    
-    // Confirm the signup
-    const result = await db.confirmSignup(email, token)
-    
-    if (!result.success) {
-      return NextResponse.json({ 
-        error: result.error || "Invalid confirmation token" 
-      }, { status: 400 })
-    }
-    
-    // Send confirmation email
-    const confirmationHtml = confirmationEmailTemplate(email)
-    await emailService.sendEmail({
-      to: email,
-      subject: "Lumeo Protocol - Verification Complete",
-      html: confirmationHtml,
+  if (token_hash && type) {
+    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!
+    const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+    const supabase = createClient(supabaseUrl, supabaseKey)
+
+    const { error } = await supabase.auth.verifyOtp({
+      type,
+      token_hash,
     })
-    
-    return NextResponse.json({ 
-      message: "Email confirmed successfully!",
-      success: true 
-    }, { status: 200 })
-    
-  } catch (error) {
-    console.error("Confirmation error:", error)
-    return NextResponse.json({ 
-      error: "Internal server error" 
-    }, { status: 500 })
+
+    if (!error) {
+      // Successful authentication
+      // Redirect to the "next" page (usually home or dashboard)
+      return NextResponse.redirect(new URL(next, request.url))
+    }
   }
+
+  // If error or invalid, redirect to an error page or back to home
+  return NextResponse.redirect(new URL('/auth/auth-code-error', request.url))
 }
