@@ -134,7 +134,7 @@ export function LumeoAnimation() {
   return (
     <div
       ref={orchestratorRef}
-      className="relative min-h-screen flex items-center justify-center overflow-hidden bg-black"
+      className="relative min-h-screen flex items-center justify-center overflow-hidden bg-transparent"
     >
       <AnimatedNoise opacity={0.04} />
 

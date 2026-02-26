@@ -94,7 +94,7 @@ export function PrinciplesSection() {
       {/* Section header */}
       <div ref={headerRef} className="mb-16 sm:mb-20 md:mb-24">
         <span className="font-mono text-[9px] sm:text-[10px] uppercase tracking-[0.3em] text-accent">03 / Principles</span>
-        <h2 className="mt-4 font-(--font-bebas) text-4xl sm:text-5xl md:text-7xl tracking-tight">HOW WE WORK</h2>
+        <h2 className="mt-4 font-serif text-4xl sm:text-5xl md:text-7xl tracking-tight font-light">How We Work</h2>
       </div>
 
       {/* Staggered principles */}
@@ -110,7 +110,7 @@ export function PrinciplesSection() {
               {principle.number} / {principle.titleParts[0].text.split(" ")[0]}
             </span>
 
-            <h3 className="font-(--font-bebas) text-3xl sm:text-4xl md:text-6xl lg:text-8xl tracking-tight leading-none">
+            <h3 className="font-serif text-3xl sm:text-4xl md:text-6xl lg:text-8xl tracking-tight leading-none font-light">
               {principle.titleParts.map((part, i) =>
                 part.highlight ? (
                   <HighlightText key={i} parallaxSpeed={0.6}>

@@ -100,7 +100,7 @@ export function WorkSection() {
       <div ref={headerRef} className="mb-8 sm:mb-12 md:mb-16 flex flex-col md:flex-row md:items-end md:justify-between gap-4">
         <div>
           <span className="font-mono text-[9px] sm:text-[10px] uppercase tracking-[0.3em] text-accent">02 / Features</span>
-          <h2 className="mt-3 sm:mt-4 font-(--font-bebas) text-4xl sm:text-5xl md:text-7xl tracking-tight">KEY FEATURES</h2>
+          <h2 className="mt-3 sm:mt-4 font-serif text-4xl sm:text-5xl md:text-7xl tracking-tight font-light">Key Features</h2>
         </div>
         <p className="max-w-xs font-mono text-xs text-muted-foreground leading-relaxed md:text-right border-r border-white/10 pr-4">
           Revolutionary payment infrastructure built for the future of finance.

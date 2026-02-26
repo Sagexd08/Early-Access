@@ -175,7 +175,7 @@ export function HeroSection() {
           {/* Right Column - Massive Typography & Form */}
           <div className="md:w-[65vw] stagger-element order-1 md:order-2 parallax-fast relative z-10">
             {/* Headline */}
-            <h1 className="font-display text-white text-[clamp(3.8rem,10vw,10.5rem)] tracking-[-0.02em] leading-[0.85] uppercase mb-14">
+            <h1 className="font-serif text-white text-[clamp(3.8rem,10vw,10.5rem)] tracking-[-0.02em] leading-[0.85] mb-14">
               <span className="block text-white/30 font-mono text-[0.7rem] md:text-[0.85rem] tracking-[0.45em] uppercase mb-2 font-normal">Settlement Infrastructure</span>
               POST&#8209;<br />
               <span className="ml-[4vw] text-accent inline-block">LEGACY</span><br />

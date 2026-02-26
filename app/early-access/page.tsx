@@ -4,9 +4,9 @@ import { useEffect } from "react"
 import dynamic from "next/dynamic"
 import { SideNav } from "@/components/side-nav"
 import { useSkipLinks } from "@/lib/use-keyboard-navigation"
-import { CyberpunkGrid } from "@/components/cyberpunk-grid"
 import { ScanlineOverlay } from "@/components/scanline-overlay"
 
+const Plasma = dynamic(() => import("@/components/plasma").then(m => m.Plasma), { ssr: false })
 const HeroSection = dynamic(() => import("@/components/hero-section").then(mod => mod.HeroSection), { ssr: true })
 const SignalsSection = dynamic(() => import("@/components/signals-section").then(mod => mod.SignalsSection), { ssr: false })
 const WorkSection = dynamic(() => import("@/components/work-section").then(mod => mod.WorkSection), { ssr: false })
@@ -84,9 +84,18 @@ export default function EarlyAccessPage() {
         Lumeo Early Access page loaded. Use Alt + 1-5 to navigate sections, or Tab to navigate interactive elements.
       </div>
 
-      <main className="relative min-h-screen bg-background text-foreground overflow-x-hidden">
-        {/* Cyberpunk Environment Layers */}
-        <CyberpunkGrid />
+      <main className="relative min-h-screen text-foreground overflow-x-hidden">
+        {/* Full-screen Plasma background */}
+        <div className="fixed inset-0 z-0" aria-hidden="true">
+          <Plasma
+            color="#c8921a"
+            speed={0.3}
+            direction="forward"
+            scale={1.2}
+            opacity={0.55}
+            mouseInteractive={false}
+          />
+        </div>
         <ScanlineOverlay />
 
         <SideNav />
