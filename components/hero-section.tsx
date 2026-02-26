@@ -51,7 +51,7 @@ export function HeroSection() {
           scrub: true
         }
       })
-      
+
       gsap.to(".parallax-fast", {
         yPercent: -50,
         ease: "none",
@@ -62,6 +62,37 @@ export function HeroSection() {
           scrub: true
         }
       })
+
+      // Advanced 3D Mouse Parallax effect
+      const heroText = document.querySelector('.hero-text-3d');
+      if (heroText && sectionRef.current) {
+        sectionRef.current.addEventListener('mousemove', (e) => {
+          const { clientX, clientY } = e;
+          const { innerWidth, innerHeight } = window;
+
+          // Calculate normalized coordinates (-1 to 1)
+          const xPos = (clientX / innerWidth - 0.5) * 2;
+          const yPos = (clientY / innerHeight - 0.5) * 2;
+
+          gsap.to(heroText, {
+            rotationY: xPos * 15, // Max rotation 15deg
+            rotationX: -yPos * 15, // Max rotation 15deg
+            transformPerspective: 900,
+            transformOrigin: "center center",
+            ease: "power2.out",
+            duration: 0.5
+          });
+        });
+
+        sectionRef.current.addEventListener('mouseleave', () => {
+          gsap.to(heroText, {
+            rotationY: 0,
+            rotationX: 0,
+            ease: "power3.out",
+            duration: 1
+          });
+        });
+      }
     }, sectionRef)
 
     return () => ctx.revert()
@@ -148,11 +179,11 @@ export function HeroSection() {
 
       {/* Main content - Brutalist/Staggered */}
       <div ref={contentRef} className="flex-1 w-full relative z-10 pt-20">
-        
+
         <div className="flex flex-col md:flex-row justify-between items-start gap-12">
           {/* Left Column - Meta & Subheading */}
           <div className="md:w-[25vw] mt-12 md:mt-32 stagger-element order-2 md:order-1 relative z-20">
-             <div className="inline-flex items-center gap-2 mb-12 border border-white/10 px-3 py-1 bg-black">
+            <div className="inline-flex items-center gap-2 mb-12 border border-white/10 px-3 py-1 bg-black">
               <div className="w-1.5 h-1.5 bg-accent rounded-none animate-pulse" />
               <span className="font-mono text-[10px] sm:text-xs uppercase tracking-[0.2em] text-white">
                 SYSTEM INIT
@@ -163,27 +194,27 @@ export function HeroSection() {
               Lumeo dismantles the friction of legacy banking. A wallet-native, non-custodial protocol where money moves at the speed of data.
             </p>
             <div className="mt-8 font-mono text-[10px] sm:text-xs text-white uppercase tracking-widest border border-white/10 p-4 bg-white/5 inline-block">
-               STATUS: <span className="text-accent ml-2">PRE-ALPHA</span>
+              STATUS: <span className="text-accent ml-2">PRE-ALPHA</span>
             </div>
-            
-             {/* Countdown Timer Module */}
-             <div className="mt-12 scale-90 origin-left object-left">
-                <CountdownTimer />
-             </div>
+
+            {/* Countdown Timer Module */}
+            <div className="mt-12 scale-90 origin-left object-left">
+              <CountdownTimer />
+            </div>
           </div>
 
           {/* Right Column - Massive Typography & Form */}
-          <div className="md:w-[65vw] stagger-element order-1 md:order-2 parallax-fast relative z-10">
-             {/* Massive, Grid-Breaking Headline */}
-            <h1 className="font-display text-white text-[clamp(4rem,12vw,12rem)] tracking-tighter leading-[0.8] uppercase mb-12 mix-blend-difference">
-              <span className="block text-white/30 font-mono text-[1rem] md:text-[2rem] transform -translate-y-4 md:-translate-y-8 tracking-[1em] md:tracking-[2em] uppercase origin-left">Settlement</span>
-              POST-<br/>
-              <span className="ml-[10vw] text-accent">LEGACY</span><br/>
-              <span className="ml-[5vw]">INFRA</span>
+          <div className="md:w-[65vw] stagger-element order-1 md:order-2 parallax-fast relative z-10" style={{ perspective: "1000px" }}>
+            {/* Massive, Grid-Breaking Headline styled for 3D */}
+            <h1 className="hero-text-3d font-display text-white text-[clamp(4rem,12vw,12rem)] tracking-tighter leading-[0.8] uppercase mb-12 mix-blend-difference" style={{ transformStyle: "preserve-3d" }}>
+              <span className="block text-white/30 font-mono text-[1rem] md:text-[2rem] transform -translate-y-4 md:-translate-y-8 tracking-[1em] md:tracking-[2em] uppercase origin-left translate-z-[50px]">Settlement</span>
+              POST-<br />
+              <span className="ml-[10vw] text-accent translate-z-[80px] inline-block">LEGACY</span><br />
+              <span className="ml-[5vw] translate-z-[120px] inline-block">INFRA</span>
             </h1>
 
             {/* Email signup form - Placed asymmetrically */}
-            <form onSubmit={handleEmailSubmit} className="max-w-[30rem] ml-[5vw] stagger-element relative z-30" noValidate>
+            <form onSubmit={handleEmailSubmit} className="max-w-120 ml-[5vw] stagger-element relative z-30" noValidate>
               <fieldset disabled={isLoading} className="border-0 p-0 m-0 relative">
                 <legend className="sr-only">Access Request Terminal</legend>
 
@@ -210,7 +241,7 @@ export function HeroSection() {
                     className="w-full px-8 py-4 bg-white text-black font-mono text-xs uppercase tracking-[0.2em] font-bold hover:bg-accent hover:text-black transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed group relative overflow-hidden"
                   >
                     <span className="relative z-10 block mix-blend-difference text-white group-hover:text-black transition-colors">{isLoading ? "PROCESSING..." : "REQUEST ACCESS"}</span>
-                    <div className="absolute inset-0 bg-accent translate-y-[100%] group-hover:translate-y-0 transition-transform duration-300 ease-in-out" />
+                    <div className="absolute inset-0 bg-accent translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-in-out" />
                   </button>
                 </div>
 
@@ -219,8 +250,8 @@ export function HeroSection() {
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
                     className={`mt-4 p-4 border transition-all duration-300 ${message.startsWith("✓")
-                        ? "border-accent bg-accent/10 text-accent"
-                        : "border-destructive bg-destructive/10 text-destructive"
+                      ? "border-accent bg-accent/10 text-accent"
+                      : "border-destructive bg-destructive/10 text-destructive"
                       }`}
                     role="status"
                   >
@@ -241,8 +272,8 @@ export function HeroSection() {
             <div className="font-mono text-white text-sm tracking-[0.2em]">Q3 2026</div>
           </div>
           <div className="text-right border-r-2 border-accent pr-4">
-             <div className="font-mono text-[10px] uppercase text-white/50 tracking-[0.2em] mb-1">Status</div>
-             <div className="flex items-center justify-end gap-2 font-mono text-xs text-accent">
+            <div className="font-mono text-[10px] uppercase text-white/50 tracking-[0.2em] mb-1">Status</div>
+            <div className="flex items-center justify-end gap-2 font-mono text-xs text-accent">
               <span className="w-1.5 h-1.5 bg-accent rounded-none animate-pulse"></span>
               ONLINE
             </div>

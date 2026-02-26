@@ -9,7 +9,7 @@ gsap.registerPlugin(ScrollTrigger)
 export function CountdownTimer() {
   const timerRef = useRef<HTMLDivElement>(null)
   const [timeLeft, setTimeLeft] = useState({
-    days: 180,
+    days: 156,
     hours: 7,
     minutes: 48,
     seconds: 25,
@@ -18,7 +18,7 @@ export function CountdownTimer() {
 
   useEffect(() => {
     const calculateTimeLeft = () => {
-      const releaseDate = new Date('2026-07-28T00:00:00')
+      const releaseDate = new Date('2026-08-02T00:00:00')
       const now = new Date()
       const difference = releaseDate.getTime() - now.getTime()
 
