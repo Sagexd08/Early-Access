@@ -32,10 +32,7 @@ export function CountdownTimer() {
       }
     }
 
-    // Set initial values immediately
     calculateTimeLeft()
-
-    // Update every second
     const timer = setInterval(calculateTimeLeft, 1000)
     return () => clearInterval(timer)
   }, [])
@@ -44,7 +41,6 @@ export function CountdownTimer() {
     if (!timerRef.current) return
 
     const ctx = gsap.context(() => {
-      // Simple scroll animation only
       gsap.to(timerRef.current, {
         y: -60,
         opacity: 0,

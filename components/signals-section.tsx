@@ -305,7 +305,7 @@ export function SignalsSection() {
   }, [])
 
   return (
-    <section id="signals" ref={sectionRef} className="relative py-16 sm:py-24 md:py-32 px-4 sm:px-6 md:pl-28 md:pr-0">
+    <section id="signals" ref={sectionRef} className="relative py-24 sm:py-32 md:py-40 px-6 sm:px-8 md:pl-28 md:pr-0">
       <div
         ref={cursorRef}
         className={cn(

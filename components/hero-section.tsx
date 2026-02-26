@@ -169,7 +169,7 @@ export function HeroSection() {
     <section
       ref={sectionRef}
       id="hero"
-      className="relative min-h-screen flex items-center px-4 sm:px-6 md:pl-28 md:pr-12 py-20"
+      className="relative min-h-screen flex items-center px-6 sm:px-8 md:pl-28 md:pr-12 py-24"
       tabIndex={-1}
       aria-label="Hero section - Early Access to Lumeo"
     >

@@ -95,7 +95,7 @@ export function WorkSection() {
   }, [])
 
   return (
-    <section ref={sectionRef} id="work" className="relative py-16 sm:py-24 md:py-32 px-4 sm:px-6 md:pl-28 md:pr-12">
+    <section ref={sectionRef} id="work" className="relative py-24 sm:py-32 md:py-40 px-6 sm:px-8 md:pl-28 md:pr-12">
       {/* Section header */}
       <div ref={headerRef} className="mb-8 sm:mb-12 md:mb-16 flex flex-col md:flex-row md:items-end md:justify-between gap-4">
         <div>

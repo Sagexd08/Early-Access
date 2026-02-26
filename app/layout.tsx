@@ -1,6 +1,6 @@
 import type React from "react"
 import type { Metadata } from "next"
-import { IBM_Plex_Sans, IBM_Plex_Mono, Bebas_Neue } from "next/font/google"
+import { IBM_Plex_Sans, IBM_Plex_Mono, Bebas_Neue, Space_Mono } from "next/font/google"
 import { Analytics } from "@vercel/analytics/next"
 import { SmoothScroll } from "@/components/smooth-scroll"
 import "./globals.css"
@@ -16,6 +16,11 @@ const ibmPlexMono = IBM_Plex_Mono({
   variable: "--font-ibm-plex-mono",
 })
 const bebasNeue = Bebas_Neue({ weight: "400", subsets: ["latin"], variable: "--font-bebas" })
+const spaceMono = Space_Mono({
+  weight: ["400", "700"],
+  subsets: ["latin"],
+  variable: "--font-space-mono",
+})
 
 export const metadata: Metadata = {
   title: "Lumeo — Alpha v0.1 Early Access",
@@ -36,7 +41,7 @@ export default function RootLayout({
   return (
     <html lang="en" className="dark bg-background">
       <body
-        className={`${ibmPlexSans.variable} ${bebasNeue.variable} ${ibmPlexMono.variable} font-sans antialiased overflow-x-hidden`}
+        className={`${ibmPlexSans.variable} ${bebasNeue.variable} ${ibmPlexMono.variable} ${spaceMono.variable} font-sans antialiased overflow-x-hidden`}
       >
         {/* Skip Links for Accessibility */}
         <div className="skip-links">
@@ -47,7 +52,7 @@ export default function RootLayout({
             Skip to navigation
           </a>
         </div>
-        
+
         <div className="noise-overlay" aria-hidden="true" />
         <SmoothScroll>
           <main id="main-content" tabIndex={-1}>

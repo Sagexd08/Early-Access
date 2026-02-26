@@ -40,10 +40,11 @@
 }
 
 @theme inline {
-  /* Updated font-sans and font-mono to use IBM Plex */
+  /* Updated font-sans and font-mono - Space Mono for brutalist identity */
   --font-sans: "IBM Plex Sans", "IBM Plex Sans Fallback", sans-serif;
-  --font-mono: "IBM Plex Mono", "IBM Plex Mono Fallback", monospace;
+  --font-mono: var(--font-space-mono, "Space Mono"), "IBM Plex Mono", monospace;
   --font-display: "Bebas Neue", "Bebas Neue Fallback", sans-serif;
+  --font-technical: var(--font-space-mono, "Space Mono"), monospace;
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-card: var(--card);
