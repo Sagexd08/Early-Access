@@ -4,7 +4,7 @@ import { useRef, useState, useEffect, useCallback } from "react"
 import { cn } from "@/lib/utils"
 import gsap from "gsap"
 import { ScrollTrigger } from "gsap/ScrollTrigger"
-import { motion, useMotionTemplate, useMotionValue, useTransform } from "framer-motion"
+import { motion, useMotionTemplate, useMotionValue } from "framer-motion"
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -313,7 +313,7 @@ export function SignalsSection() {
           "w-14 h-14 border border-white/20 bg-black/40 backdrop-blur-md rounded-none",
           "transition-all duration-300 hidden md:flex",
           isHovering ? "opacity-100 scale-100" : "opacity-0 scale-50",
-          isDragging ? "bg-white text-black border-white mix-blend-difference" : "text-white"
+          isDragging ? "bg-white/90 text-black border-white" : "text-white"
         )}
       >
         <span className="font-mono text-[8px] uppercase tracking-[0.2em]">{isDragging ? "DRAG" : "SWIPE"}</span>
@@ -326,8 +326,8 @@ export function SignalsSection() {
 
       {/* Section header */}
       <div ref={headerRef} className="mb-8 sm:mb-12 md:mb-16 pr-4 sm:pr-6 md:pr-12">
-        <span className="font-mono text-[9px] sm:text-[10px] uppercase tracking-[0.3em] text-accent border border-accent px-2 py-1">01 / USP</span>
-        <h2 className="mt-6 sm:mt-8 font-display text-5xl sm:text-6xl md:text-8xl tracking-tighter text-white uppercase mix-blend-difference">LATEST <br />UPDATES</h2>
+        <span className="font-mono text-[9px] sm:text-[10px] uppercase tracking-[0.35em] text-accent/80">01 / USP</span>
+        <h2 className="mt-6 sm:mt-8 font-display text-5xl sm:text-6xl md:text-8xl tracking-[-0.02em] text-white uppercase leading-[0.85]">LATEST <br />UPDATES</h2>
       </div>
 
       {/* Horizontal scroll container - enhanced for touch devices */}
@@ -359,9 +359,9 @@ export function SignalsSection() {
       <div className="flex justify-center mt-6 sm:mt-8">
         <div className="flex items-center gap-2">
           {/* Progress bar */}
-          <div className="w-16 sm:w-20 h-1 bg-white/10 rounded-full overflow-hidden">
+          <div className="w-16 sm:w-24 h-px bg-white/10 overflow-hidden">
             <div
-              className="h-full bg-accent transition-all duration-300 ease-out rounded-full"
+              className="h-full bg-accent transition-all duration-300 ease-out"
               style={{ width: `${scrollProgress * 100}%` }}
             />
           </div>
@@ -400,99 +400,79 @@ function SignalCard({
     setIsPressed(false)
   }
 
-  // Mouse tracking for glow effect and 3D
-  const mouseX = useMotionValue(0.5);
-  const mouseY = useMotionValue(0.5);
-
-  let bounds: DOMRect | null = null;
+  // Mouse tracking for glow effect
+  const mouseX = useMotionValue(0);
+  const mouseY = useMotionValue(0);
 
   function handleMouseMove({ currentTarget, clientX, clientY }: React.MouseEvent) {
-    if (!bounds) bounds = currentTarget.getBoundingClientRect();
-    const xPct = (clientX - bounds.left) / bounds.width;
-    const yPct = (clientY - bounds.top) / bounds.height;
-
-    mouseX.set(xPct);
-    mouseY.set(yPct);
+    const { left, top } = currentTarget.getBoundingClientRect();
+    mouseX.set(clientX - left);
+    mouseY.set(clientY - top);
   }
-
-  function handleMouseLeave() {
-    bounds = null;
-    mouseX.set(0.5);
-    mouseY.set(0.5);
-  }
-
-  // Bind values for 3D tilt
-  const rotateX = useTransform(mouseY, [0, 1], [15, -15]);
-  const rotateY = useTransform(mouseX, [0, 1], [-15, 15]);
-  const maxGlowX = useTransform(mouseX, [0, 1], [0, 100]);
-  const maxGlowY = useTransform(mouseY, [0, 1], [0, 100]);
 
   return (
-    <div style={{ perspective: "1000px" }} className={cn("shrink-0 w-72 sm:w-80", isDragging && "pointer-events-none")}>
-      <motion.article
-        whileHover={{ zIndex: 10 }}
-        whileTap={{ scale: 0.98 }}
-        style={{ rotateX, rotateY, transformStyle: "preserve-3d" }}
-        transition={{ type: "spring", stiffness: 400, damping: 25 }}
-        onMouseMove={handleMouseMove}
-        onMouseLeave={handleMouseLeave}
-        className={cn(
-          "group relative touch-manipulation cursor-pointer border border-white/10 bg-black min-h-[320px] rounded-none overflow-hidden h-full",
-          "transition-colors duration-500 ease-out",
-          "hover:border-accent",
-          isPressed && "scale-95", // Touch feedback
-        )}
-        onTouchStart={handleTouchStart}
-        onTouchEnd={handleTouchEnd}
-        onTouchCancel={handleTouchEnd}
-      >
-        {/* Magnetic Glow Effect */}
-        <motion.div
-          className="pointer-events-none absolute -inset-px opacity-0 transition duration-300 group-hover:opacity-100"
-          style={{
-            background: useMotionTemplate`
+    <motion.article
+      whileHover={{ scale: 1.02, zIndex: 10 }}
+      whileTap={{ scale: 0.98 }}
+      transition={{ type: "spring", stiffness: 400, damping: 25 }}
+      onMouseMove={handleMouseMove}
+      className={cn(
+        "shrink-0 w-72 sm:w-80 group relative touch-manipulation cursor-pointer border border-white/10 bg-black min-h-[320px] rounded-none overflow-hidden h-full",
+        "transition-colors duration-500 ease-out",
+        "hover:border-accent",
+        isDragging && "pointer-events-none",
+        isPressed && "scale-95",
+      )}
+      onTouchStart={handleTouchStart}
+      onTouchEnd={handleTouchEnd}
+      onTouchCancel={handleTouchEnd}
+    >
+      {/* Magnetic Glow Effect */}
+      <motion.div
+        className="pointer-events-none absolute -inset-px opacity-0 transition duration-300 group-hover:opacity-100"
+        style={{
+          background: useMotionTemplate`
             radial-gradient(
-              400px circle at ${maxGlowX}% ${maxGlowY}%,
+              400px circle at ${mouseX}px ${mouseY}px,
               var(--accent) 0%,
               transparent 80%
             )
           `,
-            opacity: 0.15
-          }}
-        />
+          opacity: 0.15
+        }}
+      />
 
-        {/* Crosshair corner dots (Brutalist) */}
-        <div className="absolute top-2 left-2 w-1 h-1 bg-white/20" />
-        <div className="absolute top-2 right-2 w-1 h-1 bg-white/20" />
-        <div className="absolute bottom-2 left-2 w-1 h-1 bg-white/20" />
-        <div className="absolute bottom-2 right-2 w-1 h-1 bg-white/20" />
+      {/* Corner marks */}
+      <div className="absolute top-0 left-0 w-4 h-4 border-t border-l border-white/10 group-hover:border-accent/30 transition-colors duration-500" />
+      <div className="absolute top-0 right-0 w-4 h-4 border-t border-r border-white/10 group-hover:border-accent/30 transition-colors duration-500" />
+      <div className="absolute bottom-0 left-0 w-4 h-4 border-b border-l border-white/10" />
+      <div className="absolute bottom-0 right-0 w-4 h-4 border-b border-r border-white/10" />
 
-        {/* Card inner content */}
-        <div className="relative p-6 sm:p-8 flex flex-col h-full z-10">
+      {/* Card inner content */}
+      <div className="relative p-6 sm:p-8 flex flex-col h-full z-10">
 
-          {/* Issue number & date */}
-          <div className="flex items-baseline justify-between mb-12">
-            <span className="font-mono text-[9px] sm:text-[10px] uppercase tracking-[0.3em] text-white/50 border border-white/10 px-2 py-1 bg-white/5 inline-block">
-              No. {String(index + 1).padStart(2, "0")}
-            </span>
-            <time className="font-mono text-[9px] sm:text-[10px] text-white/40 tracking-widest">{signal.date}</time>
-          </div>
-
-          {/* Title */}
-          <h3 className="font-display text-4xl tracking-tighter uppercase mb-4 text-white group-hover:text-white mix-blend-difference transition-colors duration-300 leading-[0.9]">
-            {signal.title}
-          </h3>
-
-          {/* Divider line reveals on hover */}
-          <div className="w-[10%] h-[2px] bg-accent mb-6 shrink-0 group-hover:w-[50%] transition-all duration-500 ease-out" />
-
-          {/* Description */}
-          <p className="font-mono text-xs text-white/70 leading-relaxed max-w-[90%] mt-auto opacity-70 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-500 translate-y-2 translate-z-[10px]">
-            {signal.note}
-          </p>
-
+        {/* Issue number & date */}
+        <div className="flex items-baseline justify-between mb-12">
+          <span className="font-mono text-[9px] sm:text-[10px] uppercase tracking-[0.3em] text-white/50 border border-white/10 px-2 py-1 bg-white/5 inline-block">
+            No. {String(index + 1).padStart(2, "0")}
+          </span>
+          <time className="font-mono text-[9px] sm:text-[10px] text-white/40 tracking-widest">{signal.date}</time>
         </div>
-      </motion.article>
-    </div>
+
+        {/* Title */}
+        <h3 className="font-display text-4xl tracking-[-0.02em] uppercase mb-4 text-white transition-colors duration-300 leading-[0.9]">
+          {signal.title}
+        </h3>
+
+        {/* Divider line reveals on hover */}
+        <div className="w-[10%] h-[2px] bg-accent mb-6 shrink-0 group-hover:w-[50%] transition-all duration-500 ease-out" />
+
+        {/* Description */}
+        <p className="font-mono text-xs text-white/70 leading-relaxed max-w-[90%] mt-auto opacity-70 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-500 translate-y-2">
+          {signal.note}
+        </p>
+
+      </div>
+    </motion.article>
   )
 }

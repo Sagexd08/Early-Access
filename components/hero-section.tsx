@@ -62,37 +62,6 @@ export function HeroSection() {
           scrub: true
         }
       })
-
-      // Advanced 3D Mouse Parallax effect
-      const heroText = document.querySelector('.hero-text-3d');
-      if (heroText && sectionRef.current) {
-        sectionRef.current.addEventListener('mousemove', (e) => {
-          const { clientX, clientY } = e;
-          const { innerWidth, innerHeight } = window;
-
-          // Calculate normalized coordinates (-1 to 1)
-          const xPos = (clientX / innerWidth - 0.5) * 2;
-          const yPos = (clientY / innerHeight - 0.5) * 2;
-
-          gsap.to(heroText, {
-            rotationY: xPos * 15, // Max rotation 15deg
-            rotationX: -yPos * 15, // Max rotation 15deg
-            transformPerspective: 900,
-            transformOrigin: "center center",
-            ease: "power2.out",
-            duration: 0.5
-          });
-        });
-
-        sectionRef.current.addEventListener('mouseleave', () => {
-          gsap.to(heroText, {
-            rotationY: 0,
-            rotationX: 0,
-            ease: "power3.out",
-            duration: 1
-          });
-        });
-      }
     }, sectionRef)
 
     return () => ctx.revert()
@@ -183,18 +152,18 @@ export function HeroSection() {
         <div className="flex flex-col md:flex-row justify-between items-start gap-12">
           {/* Left Column - Meta & Subheading */}
           <div className="md:w-[25vw] mt-12 md:mt-32 stagger-element order-2 md:order-1 relative z-20">
-            <div className="inline-flex items-center gap-2 mb-12 border border-white/10 px-3 py-1 bg-black">
-              <div className="w-1.5 h-1.5 bg-accent rounded-none animate-pulse" />
-              <span className="font-mono text-[10px] sm:text-xs uppercase tracking-[0.2em] text-white">
-                SYSTEM INIT
+            <div className="inline-flex items-center gap-2 mb-10 border border-accent/25 px-3 py-1.5 bg-accent/[0.04]">
+              <div className="w-1.5 h-1.5 bg-accent rounded-full" />
+              <span className="font-mono text-[10px] sm:text-[11px] uppercase tracking-[0.25em] text-white/70">
+                System Online
               </span>
             </div>
 
-            <p className="font-mono text-xs sm:text-sm text-muted-foreground leading-relaxed border-l-2 pl-4 border-accent">
+            <p className="font-mono text-xs sm:text-sm text-muted-foreground leading-relaxed border-l border-accent/40 pl-4">
               Lumeo dismantles the friction of legacy banking. A wallet-native, non-custodial protocol where money moves at the speed of data.
             </p>
-            <div className="mt-8 font-mono text-[10px] sm:text-xs text-white uppercase tracking-widest border border-white/10 p-4 bg-white/5 inline-block">
-              STATUS: <span className="text-accent ml-2">PRE-ALPHA</span>
+            <div className="mt-8 font-mono text-[10px] sm:text-xs text-white/50 uppercase tracking-widest border border-white/8 px-4 py-3 bg-white/[0.02] inline-block">
+              Status <span className="text-accent font-medium">→ Pre-Alpha</span>
             </div>
 
             {/* Countdown Timer Module */}
@@ -204,22 +173,23 @@ export function HeroSection() {
           </div>
 
           {/* Right Column - Massive Typography & Form */}
-          <div className="md:w-[65vw] stagger-element order-1 md:order-2 parallax-fast relative z-10" style={{ perspective: "1000px" }}>
-            {/* Massive, Grid-Breaking Headline styled for 3D */}
-            <h1 className="hero-text-3d font-display text-white text-[clamp(4rem,12vw,12rem)] tracking-tighter leading-[0.8] uppercase mb-12 mix-blend-difference" style={{ transformStyle: "preserve-3d" }}>
-              <span className="block text-white/30 font-mono text-[1rem] md:text-[2rem] transform -translate-y-4 md:-translate-y-8 tracking-[1em] md:tracking-[2em] uppercase origin-left translate-z-[50px]">Settlement</span>
-              POST-<br />
-              <span className="ml-[10vw] text-accent translate-z-[80px] inline-block">LEGACY</span><br />
-              <span className="ml-[5vw] translate-z-[120px] inline-block">INFRA</span>
+          <div className="md:w-[65vw] stagger-element order-1 md:order-2 parallax-fast relative z-10">
+            {/* Headline */}
+            <h1 className="font-display text-white text-[clamp(3.8rem,10vw,10.5rem)] tracking-[-0.02em] leading-[0.85] uppercase mb-14">
+              <span className="block text-white/30 font-mono text-[0.7rem] md:text-[0.85rem] tracking-[0.45em] uppercase mb-2 font-normal">Settlement Infrastructure</span>
+              POST&#8209;<br />
+              <span className="ml-[4vw] text-accent inline-block">LEGACY</span><br />
+              <span className="ml-[2vw] inline-block">INFRA</span>
             </h1>
 
-            {/* Email signup form - Placed asymmetrically */}
-            <form onSubmit={handleEmailSubmit} className="max-w-120 ml-[5vw] stagger-element relative z-30" noValidate>
+            {/* Email signup form */}
+            <form onSubmit={handleEmailSubmit} className="max-w-md ml-[2vw] stagger-element relative z-30" noValidate>
               <fieldset disabled={isLoading} className="border-0 p-0 m-0 relative">
                 <legend className="sr-only">Access Request Terminal</legend>
 
-                <div className="flex flex-col gap-0 border border-white/20 p-2 bg-black/50 backdrop-blur-md">
-                  <div className="relative w-full group mb-2">
+                <div className="border border-white/12 bg-black/70 backdrop-blur-sm">
+                  <div className="relative">
+                    <label htmlFor="email-input" className="sr-only">Email address</label>
                     <input
                       ref={emailInputRef}
                       id="email-input"
@@ -227,22 +197,29 @@ export function HeroSection() {
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
                       onKeyDown={handleKeyDown}
-                      placeholder="ENTER_EMAIL_ADDRESS"
-                      className="w-full bg-transparent border-b border-white/20 px-4 py-4 font-mono text-sm min-h-[56px] focus:outline-none focus:border-accent text-white placeholder:text-white/30 transition-colors rounded-none"
+                      placeholder="you@domain.com"
+                      className="w-full bg-transparent px-5 py-4 font-mono text-sm text-white placeholder:text-white/25 focus:outline-none transition-colors duration-300 tracking-wide"
                       disabled={isLoading}
                       autoComplete="email"
                     />
+                    <div className="absolute bottom-0 left-0 h-px w-0 bg-accent transition-all duration-500 group-focus-within:w-full" />
                   </div>
-
-                  <button
-                    ref={submitButtonRef}
-                    type="submit"
-                    disabled={isLoading || !email}
-                    className="w-full px-8 py-4 bg-white text-black font-mono text-xs uppercase tracking-[0.2em] font-bold hover:bg-accent hover:text-black transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed group relative overflow-hidden"
-                  >
-                    <span className="relative z-10 block mix-blend-difference text-white group-hover:text-black transition-colors">{isLoading ? "PROCESSING..." : "REQUEST ACCESS"}</span>
-                    <div className="absolute inset-0 bg-accent translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-in-out" />
-                  </button>
+                  <div className="border-t border-white/12">
+                    <button
+                      ref={submitButtonRef}
+                      type="submit"
+                      disabled={isLoading || !email}
+                      className="w-full px-5 py-4 font-mono text-xs uppercase tracking-[0.28em] font-medium transition-all duration-300 disabled:opacity-30 disabled:cursor-not-allowed relative overflow-hidden group bg-white/[0.04] hover:bg-accent text-white/60 hover:text-black disabled:hover:bg-transparent disabled:hover:text-white/30"
+                    >
+                      {isLoading ? (
+                        <span className="flex items-center justify-center gap-2 text-white/40">
+                          <span className="w-3.5 h-px bg-current animate-pulse" />
+                          Processing
+                          <span className="w-3.5 h-px bg-current animate-pulse" />
+                        </span>
+                      ) : "Request Access"}
+                    </button>
+                  </div>
                 </div>
 
                 {message && (
@@ -265,17 +242,21 @@ export function HeroSection() {
           </div>
         </div>
 
-        {/* Footer Meta - Pushed to bottom right */}
-        <div className="absolute bottom-[-10vh] md:bottom-[-20vh] right-[5vw] flex flex-col items-end gap-6 stagger-element opacity-60">
-          <div className="text-right border-r-2 border-accent pr-4">
-            <div className="font-mono text-[10px] uppercase text-white/50 tracking-[0.2em] mb-1">Beta Access</div>
-            <div className="font-mono text-white text-sm tracking-[0.2em]">Q3 2026</div>
+        {/* Footer Meta */}
+        <div className="absolute bottom-[-10vh] md:bottom-[-20vh] right-[5vw] flex flex-col items-end gap-5 stagger-element">
+          <div className="text-right border-r border-white/10 pr-4">
+            <div className="font-mono text-[9px] uppercase text-white/30 tracking-[0.25em] mb-1">Beta Access</div>
+            <div className="font-mono text-white/60 text-xs tracking-[0.15em]">Q3 2026</div>
           </div>
-          <div className="text-right border-r-2 border-accent pr-4">
-            <div className="font-mono text-[10px] uppercase text-white/50 tracking-[0.2em] mb-1">Status</div>
+          <div className="text-right border-r border-white/10 pr-4">
+            <div className="font-mono text-[9px] uppercase text-white/30 tracking-[0.25em] mb-1">Protocol</div>
+            <div className="font-mono text-white/60 text-xs tracking-[0.15em]">v0.1 — Alpha</div>
+          </div>
+          <div className="text-right border-r border-accent/50 pr-4">
+            <div className="font-mono text-[9px] uppercase text-white/30 tracking-[0.25em] mb-1">Status</div>
             <div className="flex items-center justify-end gap-2 font-mono text-xs text-accent">
-              <span className="w-1.5 h-1.5 bg-accent rounded-none animate-pulse"></span>
-              ONLINE
+              <span className="w-1 h-1 bg-accent rounded-full" />
+              Online
             </div>
           </div>
         </div>

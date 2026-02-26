@@ -57,25 +57,16 @@ export function CountdownTimer() {
   }, [])
 
   return (
-    <div ref={timerRef} className="relative w-full py-8 border-y border-white/10 my-12">
-      {/* Accent Decoration - UK Futuristic */}
-      <div className="absolute top-0 left-0 w-1/3 h-px bg-accent" />
-      <div className="absolute top-0 right-0 w-[5%] h-px bg-accent" />
-      <div className="absolute top-0 right-[6%] w-[1%] h-px bg-accent" />
-      <div className="absolute bottom-0 right-0 w-1/3 h-px bg-white/20" />
-
-      {/* Decorative vertical markers */}
-      <div className="absolute top-0 left-0 h-2 w-px bg-accent" />
-      <div className="absolute top-0 right-0 h-2 w-px bg-accent" />
-      <div className="absolute bottom-0 right-0 h-2 w-px bg-white/20" />
-      <div className="absolute bottom-0 left-0 h-2 w-px bg-white/20" />
+    <div ref={timerRef} className="relative w-full py-8 border-y border-white/8 my-12">
+      {/* Top accent line */}
+      <div className="absolute top-0 left-0 w-1/2 h-px" style={{ background: 'linear-gradient(to right, var(--accent), transparent)' }} />
 
       {/* Header Info */}
       <div className="flex flex-col items-center justify-center mb-10 text-center">
-        <h3 className="font-mono text-accent text-xs tracking-[0.3em] uppercase mb-2 animate-pulse">
+        <h3 className="font-mono text-accent/80 text-[10px] tracking-[0.35em] uppercase mb-2">
           Until Genesis Block
         </h3>
-        <div className="text-[10px] text-white/40 font-mono tracking-widest uppercase">
+        <div className="text-[9px] text-white/30 font-mono tracking-[0.3em] uppercase">
           Q3 2026 • Mainnet Launch
         </div>
       </div>
@@ -101,7 +92,7 @@ export function CountdownTimer() {
           />
           {/* Progress blip */}
           <div
-            className="absolute top-1/2 -translate-y-1/2 w-1 h-3 bg-accent shadow-[0_0_10px_rgba(45,212,191,0.8)]"
+            className="absolute top-1/2 -translate-y-1/2 w-0.5 h-2.5 bg-accent"
             style={{ left: `${progress}%` }}
           />
         </div>
@@ -114,10 +105,10 @@ export function CountdownTimer() {
 function TimeUnit({ value, label }: { value: number; label: string }) {
   return (
     <div className="flex flex-col items-center text-center shrink-0 w-16 sm:w-20 md:w-24">
-      <div className="text-4xl sm:text-5xl md:text-6xl font-bold text-white tracking-[-0.05em] tabular-nums font-sans leading-none">
+      <div className="text-4xl sm:text-5xl md:text-6xl font-bold text-white tracking-[-0.03em] tabular-nums font-sans leading-none">
         {label === 'DAYS' ? value : String(value).padStart(2, "0")}
       </div>
-      <div className="text-[9px] text-white/30 font-mono mt-3 tracking-[0.2em] uppercase border-t border-white/10 pt-1 w-full">
+      <div className="text-[9px] text-white/25 font-mono mt-3 tracking-[0.25em] uppercase border-t border-white/8 pt-1.5 w-full">
         {label}
       </div>
     </div>
@@ -126,9 +117,9 @@ function TimeUnit({ value, label }: { value: number; label: string }) {
 
 function Separator() {
   return (
-    <div className="flex flex-col gap-1.5 pb-8 opacity-40">
-      <div className="w-0.5 h-0.5 bg-accent" />
-      <div className="w-0.5 h-0.5 bg-accent" />
+    <div className="flex flex-col gap-1.5 pb-8 opacity-20">
+      <div className="w-0.5 h-0.5 bg-white" />
+      <div className="w-0.5 h-0.5 bg-white" />
     </div>
   )
 }

@@ -106,7 +106,7 @@ export function PrinciplesSection() {
               }`}
           >
             {/* Annotation label */}
-            <span className="font-mono text-[9px] sm:text-[10px] uppercase tracking-[0.3em] text-muted-foreground mb-3 sm:mb-4">
+            <span className="font-mono text-[9px] sm:text-[10px] uppercase tracking-[0.3em] text-accent/70 mb-3 sm:mb-4 border-l border-accent/30 pl-2">
               {principle.number} / {principle.titleParts[0].text.split(" ")[0]}
             </span>
 
@@ -127,8 +127,17 @@ export function PrinciplesSection() {
               {principle.description}
             </p>
 
-            {/* Decorative line */}
-            <div className={`mt-6 sm:mt-8 h-px bg-border w-16 sm:w-24 md:w-48 ${principle.align === "right" ? "sm:mr-0" : "ml-0"}`} />
+            {/* Decorative line with gradient */}
+            <div
+              className={`mt-6 sm:mt-8 h-px w-16 sm:w-24 md:w-48 ${
+                principle.align === "right" ? "sm:mr-0" : "ml-0"
+              }`}
+              style={{
+                background: principle.align === "right"
+                  ? "linear-gradient(to left, var(--accent), transparent)"
+                  : "linear-gradient(to right, var(--accent), transparent)"
+              }}
+            />
           </article>
         ))}
       </div>

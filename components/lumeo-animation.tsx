@@ -158,18 +158,18 @@ export function LumeoAnimation() {
       {/* Corner Architectural Markers */}
       <div className="absolute inset-0 pointer-events-none z-20" aria-hidden="true">
         <div className="corner-mark absolute top-6 left-6 sm:top-8 sm:left-8">
-          <div className="w-6 h-6 sm:w-10 sm:h-10 border-t-2 border-l-2 border-white/20" />
-          <span className="block mt-2 font-mono text-[8px] sm:text-[9px] text-white/20 uppercase tracking-[0.3em]">SYS.01</span>
+          <div className="w-6 h-6 sm:w-10 sm:h-10 border-t-2 border-l-2 border-accent/30" />
+          <span className="block mt-2 font-mono text-[8px] sm:text-[9px] text-accent/40 uppercase tracking-[0.3em]">SYS.01</span>
         </div>
         <div className="corner-mark absolute top-6 right-6 sm:top-8 sm:right-8">
-          <div className="w-6 h-6 sm:w-10 sm:h-10 border-t-2 border-r-2 border-white/20" />
-          <span className="block mt-2 font-mono text-[8px] sm:text-[9px] text-white/20 uppercase tracking-[0.3em] text-right">INIT</span>
+          <div className="w-6 h-6 sm:w-10 sm:h-10 border-t-2 border-r-2 border-accent/30" />
+          <span className="block mt-2 font-mono text-[8px] sm:text-[9px] text-accent/40 uppercase tracking-[0.3em] text-right">INIT</span>
         </div>
         <div className="corner-mark absolute bottom-6 left-6 sm:bottom-8 sm:left-8">
-          <div className="w-6 h-6 sm:w-10 sm:h-10 border-b-2 border-l-2 border-white/20" />
+          <div className="w-6 h-6 sm:w-10 sm:h-10 border-b-2 border-l-2 border-white/15" />
         </div>
         <div className="corner-mark absolute bottom-6 right-6 sm:bottom-8 sm:right-8">
-          <div className="w-6 h-6 sm:w-10 sm:h-10 border-b-2 border-r-2 border-white/20" />
+          <div className="w-6 h-6 sm:w-10 sm:h-10 border-b-2 border-r-2 border-white/15" />
         </div>
       </div>
 
@@ -200,12 +200,12 @@ export function LumeoAnimation() {
 
           {/* Protocol Designation */}
           <div className="meta-stagger mb-3 sm:mb-4">
-            <div className="inline-flex items-center gap-3 border border-white/10 px-4 sm:px-6 py-2">
-              <div className="w-1.5 h-1.5 bg-white animate-pulse" />
-              <h1 className="font-mono text-[10px] sm:text-xs uppercase tracking-[0.4em] text-white font-bold">
+            <div className="inline-flex items-center gap-3 border border-white/10 px-5 sm:px-7 py-2 bg-white/[0.02]">
+              <div className="w-1 h-1 bg-accent rounded-full" />
+              <h1 className="font-mono text-[10px] sm:text-xs uppercase tracking-[0.4em] text-white/70 font-normal">
                 Payment Protocol
               </h1>
-              <div className="w-1.5 h-1.5 bg-white animate-pulse" />
+              <div className="w-1 h-1 bg-accent rounded-full" />
             </div>
           </div>
 
@@ -225,13 +225,13 @@ export function LumeoAnimation() {
         {/* CTA Hint — reveals on hover/focus */}
         <div className="cta-hint opacity-0 group-hover:opacity-100 group-focus-visible:opacity-100 transition-opacity duration-500">
           <div className="inline-flex flex-col items-center gap-3">
-            <p className="font-mono text-[10px] sm:text-xs text-white/50 uppercase tracking-[0.25em]">
+            <p className="font-mono text-[10px] sm:text-xs text-accent/70 uppercase tracking-[0.25em]">
               Enter Protocol
             </p>
             <div className="flex items-center gap-1">
-              <div className="w-6 h-px bg-white/30" />
-              <div className="w-2 h-2 border border-white/40 rotate-45 group-hover:bg-white/20 transition-colors duration-300" />
-              <div className="w-6 h-px bg-white/30" />
+              <div className="w-6 h-px bg-accent/40" />
+              <div className="w-2 h-2 border border-accent/60 rotate-45 group-hover:bg-accent/20 transition-colors duration-300" />
+              <div className="w-6 h-px bg-accent/40" />
             </div>
           </div>
         </div>
@@ -256,7 +256,7 @@ export function LumeoAnimation() {
       {/* Status Module — Bottom Left */}
       <div className="absolute bottom-6 left-6 sm:bottom-8 sm:left-8 z-20 meta-stagger" aria-hidden="true">
         <div className="flex items-center gap-2">
-          <div className="w-1 h-1 bg-white/40 animate-pulse" />
+          <div className="w-1 h-1 bg-accent rounded-full" />
           <span className="font-mono text-[8px] sm:text-[9px] uppercase tracking-[0.25em] text-white/30">
             System Online
           </span>

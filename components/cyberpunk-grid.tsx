@@ -47,7 +47,7 @@ export function CyberpunkGrid() {
             ctx.clearRect(0, 0, width, height)
 
             // Draw Particles
-            ctx.fillStyle = "rgba(45, 212, 191, 0.3)" // Cyan tint
+            ctx.fillStyle = "rgba(190, 140, 40, 0.25)" // Premium warm gold accent
             particles.forEach(p => {
                 p.y -= p.speed
                 if (p.y < 0) {
@@ -64,8 +64,8 @@ export function CyberpunkGrid() {
             const time = Date.now() / 1000
             const gridOffset = (time * 10) % 40
 
-            ctx.strokeStyle = "rgba(255, 255, 255, 0.03)"
-            ctx.lineWidth = 1
+            ctx.strokeStyle = "rgba(255, 255, 255, 0.025)"
+            ctx.lineWidth = 0.5
 
             // Vertical lines
             for (let x = 0; x <= width; x += 40) {

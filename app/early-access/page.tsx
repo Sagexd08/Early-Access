@@ -1,15 +1,17 @@
 "use client"
 
 import { useEffect } from "react"
-import { HeroSection } from "@/components/hero-section"
-import { SignalsSection } from "@/components/signals-section"
-import { WorkSection } from "@/components/work-section"
-import { PrinciplesSection } from "@/components/principles-section"
-import { ColophonSection } from "@/components/colophon-section"
+import dynamic from "next/dynamic"
 import { SideNav } from "@/components/side-nav"
 import { useSkipLinks } from "@/lib/use-keyboard-navigation"
 import { CyberpunkGrid } from "@/components/cyberpunk-grid"
 import { ScanlineOverlay } from "@/components/scanline-overlay"
+
+const HeroSection = dynamic(() => import("@/components/hero-section").then(mod => mod.HeroSection), { ssr: true })
+const SignalsSection = dynamic(() => import("@/components/signals-section").then(mod => mod.SignalsSection), { ssr: false })
+const WorkSection = dynamic(() => import("@/components/work-section").then(mod => mod.WorkSection), { ssr: false })
+const PrinciplesSection = dynamic(() => import("@/components/principles-section").then(mod => mod.PrinciplesSection), { ssr: false })
+const ColophonSection = dynamic(() => import("@/components/colophon-section").then(mod => mod.ColophonSection), { ssr: false })
 
 export default function EarlyAccessPage() {
   const { addSkipLink } = useSkipLinks()
@@ -101,7 +103,7 @@ export default function EarlyAccessPage() {
         <div className="fixed bottom-4 left-4 z-50 opacity-0 focus-within:opacity-100 hover:opacity-100 transition-opacity duration-300">
           <div className="bg-black/90 backdrop-blur-md border border-white/10 p-4 rounded-none font-mono text-xs shadow-[0_0_20px_rgba(0,0,0,0.5)]">
             <div className="text-accent mb-2 uppercase tracking-wider flex items-center gap-2">
-              <div className="w-1.5 h-1.5 bg-accent rounded-full animate-pulse" />
+              <div className="w-1.5 h-1.5 bg-accent rounded-full" />
               Keyboard Shortcuts
             </div>
             <div className="space-y-1 text-muted-foreground">

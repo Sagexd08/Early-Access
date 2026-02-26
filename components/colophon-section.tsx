@@ -130,9 +130,9 @@ export function ColophonSection() {
     >
       {/* Section header */}
       <div ref={headerRef} className="mb-12 sm:mb-16">
-        <span className="font-mono text-[9px] sm:text-[10px] uppercase tracking-[0.3em] text-accent">04 / Footer</span>
+        <span className="font-mono text-[9px] sm:text-[10px] uppercase tracking-[0.3em] text-accent/80">04 / Footer</span>
         <h2 className="mt-4 font-(--font-bebas) text-4xl sm:text-5xl md:text-7xl tracking-tight">LUMEO</h2>
-        <p className="mt-4 text-sm sm:text-base text-muted-foreground max-w-2xl">
+        <p className="mt-4 text-xs sm:text-sm font-mono text-muted-foreground/70 max-w-2xl leading-relaxed border-l border-accent/30 pl-4">
           The post-UPI global settlement layer. Rebuilding how value settles across borders with wallet-first,
           non-custodial architecture where payments are final by design.
         </p>
@@ -144,45 +144,48 @@ export function ColophonSection() {
           <h3 className="font-mono text-[10px] sm:text-[11px] uppercase tracking-[0.3em] text-accent mb-4">
             Stay Updated
           </h3>
-          <p className="text-sm text-muted-foreground mb-6">
-            Get notified about Lumeo's progress, beta releases, and early access opportunities.
+          <p className="text-xs font-mono text-muted-foreground/80 mb-6 leading-relaxed">
+            Get notified about Lumeo’s progress, beta releases, and early access slots.
           </p>
 
-          <form onSubmit={handleNewsletterSubmit} className="space-y-4">
-            <div className="flex flex-col sm:flex-row gap-3">
+          <form onSubmit={handleNewsletterSubmit} className="space-y-0">
+            <div className="border border-white/15 bg-black/60 backdrop-blur-md p-2 flex flex-col sm:flex-row gap-0">
               <input
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                placeholder="your@email.com"
+                placeholder="ENTER_EMAIL_ADDRESS"
                 required
                 disabled={isLoading}
-                className="flex-1 px-4 py-3 bg-background/50 border border-border/50 rounded-none font-mono text-sm 
-                         placeholder:text-muted-foreground/60 focus:outline-none focus:border-accent focus:ring-1 
-                         focus:ring-accent transition-colors duration-200 disabled:opacity-50"
+                className="flex-1 px-4 py-3 bg-transparent border-b sm:border-b-0 sm:border-r border-white/15 font-mono text-sm
+                         placeholder:text-white/25 text-white focus:outline-none focus:border-accent transition-all duration-300
+                         disabled:opacity-50 tracking-wider"
                 aria-label="Email address for newsletter subscription"
               />
               <button
                 type="submit"
                 disabled={isLoading || !email.trim()}
-                className="px-6 py-3 bg-accent text-black font-mono text-sm uppercase tracking-wider 
-                         hover:bg-accent/90 focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2 
-                         focus:ring-offset-background transition-all duration-200 disabled:opacity-50 
-                         disabled:cursor-not-allowed touch-manipulation"
+                className="px-6 py-3 bg-white text-black font-mono text-xs uppercase tracking-[0.25em] font-bold
+                         relative overflow-hidden group
+                         hover:text-black focus:outline-none focus:ring-2 focus:ring-accent focus:ring-offset-2
+                         focus:ring-offset-background transition-all duration-200 disabled:opacity-40
+                         disabled:cursor-not-allowed"
                 aria-label={isLoading ? "Subscribing to newsletter" : "Subscribe to newsletter"}
               >
-                {isLoading ? "Subscribing..." : "Subscribe"}
+                <span className="relative z-10">{isLoading ? "..." : "Subscribe"}</span>
+                <div className="absolute inset-0 bg-accent scale-x-0 origin-left group-hover:scale-x-100 transition-transform duration-300 ease-out" />
               </button>
             </div>
 
             {message && (
               <div
-                className={`text-sm font-mono ${message.startsWith('✓') ? 'text-accent' : 'text-red-400'
-                  }`}
+                className={`mt-3 text-xs font-mono tracking-wider ${
+                  message.startsWith('✓') ? 'text-accent' : 'text-red-400'
+                }`}
                 role="status"
                 aria-live="polite"
               >
-                {message}
+                {`> ${message}`}
               </div>
             )}
           </form>
@@ -387,9 +390,9 @@ export function ColophonSection() {
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
           <div className="flex items-center gap-4">
             <div className="flex items-center gap-2">
-              <div className="w-2 h-2 bg-accent animate-pulse" aria-hidden="true" />
+              <div className="w-2 h-2 bg-accent" aria-hidden="true" />
               <span className="font-mono text-[10px] text-accent uppercase tracking-wider">
-                Alpha v0.1 - In Development
+                Alpha v0.1 — In Development
               </span>
             </div>
           </div>

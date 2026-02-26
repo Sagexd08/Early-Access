@@ -112,10 +112,21 @@ export function SideNav() {
               aria-label={`${label} - ${description}`}
               aria-current={activeSection === id ? 'page' : undefined}
             >
+              {/* Active vertical indicator */}
+              <div
+                className={cn(
+                  "absolute left-0 top-1/2 -translate-y-1/2 w-[2px] rounded-none transition-all duration-300",
+                  activeSection === id
+                    ? "h-5 bg-accent shadow-[0_0_6px_var(--accent)]"
+                    : "h-0 bg-transparent"
+                )}
+              />
               <span
                 className={cn(
-                  "h-1.5 w-1.5 rounded-full transition-all duration-300",
-                  activeSection === id ? "bg-accent scale-125" : "bg-muted-foreground/40 group-hover:bg-foreground/60 group-focus-visible:bg-accent",
+                  "h-1.5 w-1.5 transition-all duration-300",
+                  activeSection === id
+                    ? "bg-accent"
+                    : "bg-muted-foreground/30 group-hover:bg-foreground/50 group-focus-visible:bg-accent",
                 )}
               />
               <span
@@ -138,7 +149,7 @@ export function SideNav() {
 
       {/* Mobile Bottom Navigation */}
       <nav 
-        className="fixed bottom-0 left-0 right-0 z-50 md:hidden bg-background/90 backdrop-blur-md border-t border-border/30"
+        className="fixed bottom-0 left-0 right-0 z-50 md:hidden bg-background/90 backdrop-blur-md border-t border-white/8"
         role="navigation"
         aria-label="Main navigation"
       >
@@ -149,24 +160,29 @@ export function SideNav() {
               onClick={() => scrollToSection(id)}
               onKeyDown={(e) => handleKeyDown(e, id)}
               data-section-id={id}
-              className="nav-item flex flex-col items-center gap-1 touch-manipulation min-h-[44px] justify-center px-2"
+              className="nav-item flex flex-col items-center gap-1 touch-manipulation min-h-[44px] justify-center px-2 relative"
               aria-label={`${label} - ${description}`}
               aria-current={activeSection === id ? 'page' : undefined}
             >
               <span
                 className={cn(
-                  "h-1.5 w-1.5 rounded-full transition-all duration-300",
-                  activeSection === id ? "bg-accent scale-125" : "bg-muted-foreground/40 group-hover:bg-foreground/60 group-focus-visible:bg-accent",
+                  "h-1.5 w-1.5 transition-all duration-300",
+                  activeSection === id
+                    ? "bg-accent"
+                    : "bg-muted-foreground/30",
                 )}
               />
               <span
                 className={cn(
                   "font-mono text-[8px] uppercase tracking-widest transition-colors duration-200",
-                  activeSection === id ? "text-accent" : "text-muted-foreground",
+                  activeSection === id ? "text-accent" : "text-muted-foreground/60",
                 )}
               >
                 {label}
               </span>
+              {activeSection === id && (
+                <div className="absolute top-0 left-1/2 -translate-x-1/2 h-[2px] w-6 bg-accent" />
+              )}
             </button>
           ))}
         </div>
