@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useCallback, useRef } from 'react'
+import { useEffect, useCallback, useRef, useState } from 'react'
 
 interface KeyboardNavigationOptions {
   enableArrowKeys?: boolean
@@ -21,8 +21,6 @@ export function useKeyboardNavigation(options: KeyboardNavigationOptions = {}) {
 
   const containerRef = useRef<HTMLElement>(null)
   const focusableElementsRef = useRef<HTMLElement[]>([])
-
-  // Get all focusable elements within the container
   const getFocusableElements = useCallback(() => {
     if (!containerRef.current) return []
 
@@ -45,9 +43,9 @@ export function useKeyboardNavigation(options: KeyboardNavigationOptions = {}) {
     return elements.filter(element => {
       // Filter out hidden elements
       const style = window.getComputedStyle(element)
-      return style.display !== 'none' && 
-             style.visibility !== 'hidden' && 
-             element.offsetParent !== null
+      return style.display !== 'none' &&
+        style.visibility !== 'hidden' &&
+        element.offsetParent !== null
     })
   }, [])
 
@@ -84,7 +82,6 @@ export function useKeyboardNavigation(options: KeyboardNavigationOptions = {}) {
     elements[nextIndex]?.focus()
   }, [enableArrowKeys])
 
-  // Handle tab trapping
   const handleTabTrapping = useCallback((event: KeyboardEvent) => {
     if (!enableTabTrapping || event.key !== 'Tab') return
 
@@ -95,47 +92,36 @@ export function useKeyboardNavigation(options: KeyboardNavigationOptions = {}) {
     const lastElement = elements[elements.length - 1]
 
     if (event.shiftKey) {
-      // Shift + Tab
       if (document.activeElement === firstElement) {
         event.preventDefault()
         lastElement.focus()
       }
     } else {
-      // Tab
       if (document.activeElement === lastElement) {
         event.preventDefault()
         firstElement.focus()
       }
     }
   }, [enableTabTrapping])
-
-  // Handle escape key
   const handleEscapeKey = useCallback((event: KeyboardEvent) => {
     if (!enableEscapeKey || event.key !== 'Escape') return
-    
+
     event.preventDefault()
     onEscape?.()
   }, [enableEscapeKey, onEscape])
-
-  // Main keyboard event handler
   const handleKeyDown = useCallback((event: KeyboardEvent) => {
-    // Update focusable elements on each interaction
     updateFocusableElements()
 
-    // Handle custom key handlers first
     const customHandler = customKeyHandlers[event.key]
     if (customHandler) {
       customHandler(event)
       return
     }
 
-    // Handle built-in navigation
     handleArrowKeys(event)
     handleTabTrapping(event)
     handleEscapeKey(event)
   }, [updateFocusableElements, customKeyHandlers, handleArrowKeys, handleTabTrapping, handleEscapeKey])
-
-  // Focus management utilities
   const focusFirst = useCallback(() => {
     const elements = getFocusableElements()
     elements[0]?.focus()
@@ -166,12 +152,12 @@ export function useKeyboardNavigation(options: KeyboardNavigationOptions = {}) {
     if (!container) return
 
     container.addEventListener('keydown', handleKeyDown)
-    
+
     // Update focusable elements when DOM changes
     const observer = new MutationObserver(updateFocusableElements)
-    observer.observe(container, { 
-      childList: true, 
-      subtree: true, 
+    observer.observe(container, {
+      childList: true,
+      subtree: true,
       attributes: true,
       attributeFilter: ['disabled', 'tabindex', 'hidden']
     })
@@ -204,9 +190,9 @@ export function useFocusAnnouncement() {
     announcement.setAttribute('aria-atomic', 'true')
     announcement.className = 'sr-only'
     announcement.textContent = message
-    
+
     document.body.appendChild(announcement)
-    
+
     setTimeout(() => {
       document.body.removeChild(announcement)
     }, 1000)

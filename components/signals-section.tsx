@@ -4,6 +4,7 @@ import { useRef, useState, useEffect, useCallback } from "react"
 import { cn } from "@/lib/utils"
 import gsap from "gsap"
 import { ScrollTrigger } from "gsap/ScrollTrigger"
+import { motion, useMotionTemplate, useMotionValue } from "framer-motion"
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -59,10 +60,10 @@ export function SignalsSection() {
   // Handle touch momentum scrolling
   const handleTouchStart = useCallback((e: TouchEvent) => {
     if (!scrollRef.current) return
-    
+
     const touch = e.touches[0]
     const now = Date.now()
-    
+
     touchState.current = {
       ...touchState.current,
       startX: touch.clientX,
@@ -72,24 +73,24 @@ export function SignalsSection() {
       velocityX: 0,
       isScrolling: false,
     }
-    
+
     // Cancel any ongoing momentum
     if (touchState.current.momentumId) {
       cancelAnimationFrame(touchState.current.momentumId)
     }
-    
+
     setIsDragging(true)
   }, [])
 
   const handleTouchMove = useCallback((e: TouchEvent) => {
     if (!scrollRef.current || !touchState.current) return
-    
+
     const touch = e.touches[0]
     const now = Date.now()
     const deltaX = touchState.current.lastX - touch.clientX
     const deltaY = Math.abs(touch.clientY - touchState.current.startY)
     const deltaTime = now - touchState.current.lastTime
-    
+
     // Determine if this is horizontal scrolling
     if (!touchState.current.isScrolling) {
       const deltaXAbs = Math.abs(touch.clientX - touchState.current.startX)
@@ -101,48 +102,48 @@ export function SignalsSection() {
         }
       }
     }
-    
+
     // Calculate velocity for momentum
     if (deltaTime > 0) {
       touchState.current.velocityX = deltaX / deltaTime
     }
-    
+
     // Apply scroll if horizontal movement is dominant
     if (touchState.current.isScrolling && Math.abs(touch.clientX - touchState.current.startX) > Math.abs(touch.clientY - touchState.current.startY)) {
       scrollRef.current.scrollLeft += deltaX
       e.preventDefault()
     }
-    
+
     touchState.current.lastX = touch.clientX
     touchState.current.lastTime = now
   }, [])
 
   const handleTouchEnd = useCallback(() => {
     if (!scrollRef.current) return
-    
+
     setIsDragging(false)
-    
+
     // Apply momentum scrolling
     const velocity = touchState.current.velocityX
     if (Math.abs(velocity) > 0.1) {
       let currentVelocity = velocity * 100 // Scale velocity
       const deceleration = 0.95
       const minVelocity = 0.1
-      
+
       const momentum = () => {
         if (Math.abs(currentVelocity) < minVelocity) {
           touchState.current.momentumId = 0
           return
         }
-        
+
         if (scrollRef.current) {
           scrollRef.current.scrollLeft += currentVelocity
         }
-        
+
         currentVelocity *= deceleration
         touchState.current.momentumId = requestAnimationFrame(momentum)
       }
-      
+
       momentum()
     }
   }, [])
@@ -150,7 +151,7 @@ export function SignalsSection() {
   // Update scroll progress for visual feedback
   const updateScrollProgress = useCallback(() => {
     if (!scrollRef.current) return
-    
+
     const { scrollLeft, scrollWidth, clientWidth } = scrollRef.current
     const maxScroll = scrollWidth - clientWidth
     const progress = maxScroll > 0 ? scrollLeft / maxScroll : 0
@@ -165,9 +166,9 @@ export function SignalsSection() {
   // Keyboard navigation support
   const handleKeyDown = useCallback((e: KeyboardEvent) => {
     if (!scrollRef.current) return
-    
+
     const scrollAmount = 200 // Pixels to scroll per key press
-    
+
     switch (e.key) {
       case 'ArrowLeft':
         e.preventDefault()
@@ -196,18 +197,18 @@ export function SignalsSection() {
     scrollContainer.addEventListener('touchstart', handleTouchStart, { passive: false })
     scrollContainer.addEventListener('touchmove', handleTouchMove, { passive: false })
     scrollContainer.addEventListener('touchend', handleTouchEnd, { passive: true })
-    
+
     // Add scroll listener for progress tracking
     scrollContainer.addEventListener('scroll', handleScroll, { passive: true })
-    
+
     // Add keyboard navigation
     scrollContainer.addEventListener('keydown', handleKeyDown)
-    
+
     // Make container focusable for keyboard navigation
     scrollContainer.setAttribute('tabindex', '0')
     scrollContainer.setAttribute('role', 'region')
     scrollContainer.setAttribute('aria-label', 'Horizontally scrollable signals')
-    
+
     // Initial progress calculation
     updateScrollProgress()
 
@@ -217,7 +218,7 @@ export function SignalsSection() {
       scrollContainer.removeEventListener('touchend', handleTouchEnd)
       scrollContainer.removeEventListener('scroll', handleScroll)
       scrollContainer.removeEventListener('keydown', handleKeyDown)
-      
+
       // Cancel any ongoing momentum
       if (touchState.current.momentumId) {
         cancelAnimationFrame(touchState.current.momentumId)
@@ -317,8 +318,8 @@ export function SignalsSection() {
 
       {/* Section header */}
       <div ref={headerRef} className="mb-8 sm:mb-12 md:mb-16 pr-4 sm:pr-6 md:pr-12">
-        <span className="font-mono text-[9px] sm:text-[10px] uppercase tracking-[0.3em] text-accent">01 / USP</span>
-        <h2 className="mt-3 sm:mt-4 font-[var(--font-bebas)] text-4xl sm:text-5xl md:text-7xl tracking-tight">LATEST UPDATES</h2>
+        <span className="font-mono text-[9px] sm:text-[10px] uppercase tracking-[0.3em] text-accent border border-accent px-2 py-1">01 / USP</span>
+        <h2 className="mt-6 sm:mt-8 font-display text-5xl sm:text-6xl md:text-8xl tracking-tighter text-white uppercase mix-blend-difference">LATEST <br />UPDATES</h2>
       </div>
 
       {/* Horizontal scroll container - enhanced for touch devices */}
@@ -334,8 +335,8 @@ export function SignalsSection() {
           "focus:outline-none focus:ring-2 focus:ring-accent/50 focus:ring-offset-2 focus:ring-offset-background",
           isDragging && "cursor-grabbing select-none"
         )}
-        style={{ 
-          scrollbarWidth: "none", 
+        style={{
+          scrollbarWidth: "none",
           msOverflowStyle: "none",
           WebkitOverflowScrolling: "touch", // Enhanced touch scrolling on iOS
           scrollSnapType: "x proximity", // Subtle snap for better UX
@@ -351,17 +352,17 @@ export function SignalsSection() {
         <div className="flex items-center gap-2">
           {/* Progress bar */}
           <div className="w-16 sm:w-20 h-1 bg-white/10 rounded-full overflow-hidden">
-            <div 
+            <div
               className="h-full bg-accent transition-all duration-300 ease-out rounded-full"
               style={{ width: `${scrollProgress * 100}%` }}
             />
           </div>
-          
+
           {/* Scroll hint text */}
           <span className="font-mono text-[9px] sm:text-[10px] text-muted-foreground/60 ml-2">
             {scrollProgress < 0.1 ? "Swipe to explore" : scrollProgress > 0.9 ? "End reached" : "Keep scrolling"}
           </span>
-          
+
           {/* Keyboard hint for desktop */}
           <span className="hidden md:inline font-mono text-[9px] text-muted-foreground/40 ml-2">
             Use ← → keys
@@ -391,12 +392,26 @@ function SignalCard({
     setIsPressed(false)
   }
 
+  // Mouse tracking for glow effect
+  const mouseX = useMotionValue(0);
+  const mouseY = useMotionValue(0);
+
+  function handleMouseMove({ currentTarget, clientX, clientY }: React.MouseEvent) {
+    const { left, top } = currentTarget.getBoundingClientRect();
+    mouseX.set(clientX - left);
+    mouseY.set(clientY - top);
+  }
+
   return (
-    <article
+    <motion.article
+      whileHover={{ scale: 1.02, zIndex: 10 }}
+      whileTap={{ scale: 0.98 }}
+      transition={{ type: "spring", stiffness: 400, damping: 25 }}
+      onMouseMove={handleMouseMove}
       className={cn(
-        "group relative flex-shrink-0 w-72 sm:w-80 touch-manipulation",
-        "transition-all duration-300 ease-out",
-        "hover:-translate-y-2 active:scale-95",
+        "group relative flex-shrink-0 w-72 sm:w-80 touch-manipulation cursor-pointer border border-white/10 bg-black min-h-[320px] rounded-none overflow-hidden",
+        "transition-colors duration-500 ease-out",
+        "hover:border-accent",
         isDragging && "pointer-events-none", // Disable interactions while dragging
         isPressed && "scale-95", // Touch feedback
       )}
@@ -404,38 +419,52 @@ function SignalCard({
       onTouchEnd={handleTouchEnd}
       onTouchCancel={handleTouchEnd}
     >
-      {/* Card with paper texture effect */}
-      <div className="relative bg-card border border-border/50 md:border-t md:border-l md:border-r-0 md:border-b-0 p-6 sm:p-8">
-        {/* Top torn edge effect */}
-        <div className="absolute -top-px left-0 right-0 h-px bg-gradient-to-r from-transparent via-border/40 to-transparent" />
+      {/* Magnetic Glow Effect */}
+      <motion.div
+        className="pointer-events-none absolute -inset-px opacity-0 transition duration-300 group-hover:opacity-100"
+        style={{
+          background: useMotionTemplate`
+            radial-gradient(
+              400px circle at ${mouseX}px ${mouseY}px,
+              var(--accent) 0%,
+              transparent 80%
+            )
+          `,
+          opacity: 0.15
+        }}
+      />
 
-        {/* Issue number - editorial style */}
-        <div className="flex items-baseline justify-between mb-6 sm:mb-8">
-          <span className="font-mono text-[9px] sm:text-[10px] uppercase tracking-[0.3em] text-muted-foreground">
+      {/* Crosshair corner dots (Brutalist) */}
+      <div className="absolute top-2 left-2 w-1 h-1 bg-white/20" />
+      <div className="absolute top-2 right-2 w-1 h-1 bg-white/20" />
+      <div className="absolute bottom-2 left-2 w-1 h-1 bg-white/20" />
+      <div className="absolute bottom-2 right-2 w-1 h-1 bg-white/20" />
+
+      {/* Card inner content */}
+      <div className="relative p-6 sm:p-8 flex flex-col h-full z-10">
+
+        {/* Issue number & date */}
+        <div className="flex items-baseline justify-between mb-12">
+          <span className="font-mono text-[9px] sm:text-[10px] uppercase tracking-[0.3em] text-white/50 border border-white/10 px-2 py-1 bg-white/5 inline-block">
             No. {String(index + 1).padStart(2, "0")}
           </span>
-          <time className="font-mono text-[9px] sm:text-[10px] text-muted-foreground/60">{signal.date}</time>
+          <time className="font-mono text-[9px] sm:text-[10px] text-white/40 tracking-widest">{signal.date}</time>
         </div>
 
         {/* Title */}
-        <h3 className="font-[var(--font-bebas)] text-3xl sm:text-4xl tracking-tight mb-3 sm:mb-4 group-hover:text-accent transition-colors duration-300 leading-tight">
+        <h3 className="font-display text-4xl tracking-tighter uppercase mb-4 text-white group-hover:text-white mix-blend-difference transition-colors duration-300 leading-[0.9]">
           {signal.title}
         </h3>
 
-        {/* Divider line */}
-        <div className="w-10 sm:w-12 h-px bg-accent/60 mb-4 sm:mb-6 group-hover:w-full transition-all duration-500" />
+        {/* Divider line reveals on hover */}
+        <div className="w-[10%] h-[2px] bg-accent mb-6 flex-shrink-0 group-hover:w-[50%] transition-all duration-500 ease-out" />
 
         {/* Description */}
-        <p className="font-mono text-xs text-muted-foreground leading-relaxed">{signal.note}</p>
+        <p className="font-mono text-xs text-white/70 leading-relaxed max-w-[90%] mt-auto opacity-70 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-500 translate-y-2">
+          {signal.note}
+        </p>
 
-        {/* Bottom right corner fold effect */}
-        <div className="absolute bottom-0 right-0 w-4 h-4 sm:w-6 sm:h-6 overflow-hidden">
-          <div className="absolute bottom-0 right-0 w-6 h-6 sm:w-8 sm:h-8 bg-background rotate-45 translate-x-3 translate-y-3 sm:translate-x-4 sm:translate-y-4 border-t border-l border-border/30" />
-        </div>
       </div>
-
-      {/* Shadow/depth layer */}
-      <div className="absolute inset-0 -z-10 translate-x-1 translate-y-1 bg-accent/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-    </article>
+    </motion.article>
   )
 }

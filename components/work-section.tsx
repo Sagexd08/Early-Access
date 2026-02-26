@@ -4,6 +4,7 @@ import { useState, useRef, useEffect } from "react"
 import { cn } from "@/lib/utils"
 import gsap from "gsap"
 import { ScrollTrigger } from "gsap/ScrollTrigger"
+import { motion, useMotionTemplate, useMotionValue } from "framer-motion"
 
 gsap.registerPlugin(ScrollTrigger)
 
@@ -136,39 +137,36 @@ function WorkCard({
   const [isHovered, setIsHovered] = useState(false)
   const [isFocused, setIsFocused] = useState(false)
   const cardRef = useRef<HTMLElement>(null)
-  const [isScrollActive, setIsScrollActive] = useState(false)
 
-  useEffect(() => {
-    if (!persistHover || !cardRef.current) return
+  // Mouse tracking for glow effect
+  const mouseX = useMotionValue(0);
+  const mouseY = useMotionValue(0);
 
-    const ctx = gsap.context(() => {
-      ScrollTrigger.create({
-        trigger: cardRef.current,
-        start: "top 80%",
-        onEnter: () => setIsScrollActive(true),
-      })
-    }, cardRef)
+  function handleMouseMove({ currentTarget, clientX, clientY }: React.MouseEvent) {
+    const { left, top } = currentTarget.getBoundingClientRect();
+    mouseX.set(clientX - left);
+    mouseY.set(clientY - top);
+  }
 
-    return () => ctx.revert()
-  }, [persistHover])
-
-  const isActive = isHovered || isFocused || isScrollActive
+  const isActive = isHovered || isFocused
 
   const handleKeyDown = (event: React.KeyboardEvent) => {
     if (event.key === 'Enter' || event.key === ' ') {
       event.preventDefault()
-      // Could trigger additional interactions here
     }
   }
 
   return (
-    <article
+    <motion.article
       ref={cardRef}
+      whileHover={{ scale: 1.02, zIndex: 10 }}
+      whileTap={{ scale: 0.98 }}
+      transition={{ type: "spring", stiffness: 400, damping: 25 }}
+      onMouseMove={handleMouseMove}
       className={cn(
-        "focus-card group relative border border-border/40 p-4 sm:p-5 flex flex-col justify-between transition-all duration-500 cursor-pointer overflow-hidden touch-manipulation",
+        "focus-card group relative border border-white/10 bg-black p-6 flex flex-col justify-between transition-colors duration-500 cursor-pointer overflow-hidden rounded-none",
         experiment.span,
-        isActive && "border-accent/60",
-        "active:scale-95", // Touch feedback
+        isActive ? "border-accent" : ""
       )}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
@@ -181,35 +179,48 @@ function WorkCard({
       role="article"
       aria-label={`${experiment.title} - ${experiment.description}`}
     >
-      {/* Background layer */}
-      <div
-        className={cn(
-          "absolute inset-0 bg-accent/5 transition-opacity duration-500",
-          isActive ? "opacity-100" : "opacity-0",
-        )}
+      {/* Magnetic Glow Effect */}
+      <motion.div
+        className="pointer-events-none absolute -inset-px opacity-0 transition duration-300 group-hover:opacity-100"
+        style={{
+          background: useMotionTemplate`
+            radial-gradient(
+              400px circle at ${mouseX}px ${mouseY}px,
+              var(--accent) 0%,
+              transparent 80%
+            )
+          `,
+          opacity: 0.15
+        }}
       />
+
+      {/* Crosshair corner dots (Brutalist) */}
+      <div className="absolute top-2 left-2 w-1 h-1 bg-white/20" />
+      <div className="absolute top-2 right-2 w-1 h-1 bg-white/20" />
+      <div className="absolute bottom-2 left-2 w-1 h-1 bg-white/20" />
+      <div className="absolute bottom-2 right-2 w-1 h-1 bg-white/20" />
 
       {/* Content */}
       <div className="relative z-10">
-        <span className="font-mono text-[9px] sm:text-[10px] uppercase tracking-widest text-muted-foreground">
+        <span className="font-mono text-[10px] uppercase tracking-widest text-white/50 border border-white/10 px-2 py-1 bg-white/5 inline-block">
           {experiment.medium}
         </span>
         <h3
           className={cn(
-            "mt-2 sm:mt-3 font-[var(--font-bebas)] text-xl sm:text-2xl md:text-4xl tracking-tight transition-colors duration-300 leading-tight",
-            isActive ? "text-accent" : "text-foreground",
+            "mt-6 font-display text-3xl sm:text-4xl md:text-5xl tracking-tighter uppercase transition-colors duration-300 leading-[0.9]",
+            isActive ? "text-white mix-blend-difference" : "text-white"
           )}
         >
           {experiment.title}
         </h3>
       </div>
 
-      {/* Description - reveals on hover/touch/focus */}
-      <div className="relative z-10">
+      {/* Description */}
+      <div className="relative z-10 mt-8">
         <p
           className={cn(
-            "font-mono text-xs text-muted-foreground leading-relaxed transition-all duration-500 max-w-[280px]",
-            isActive ? "opacity-100 translate-y-0" : "opacity-0 translate-y-2",
+            "font-mono text-xs text-white/70 leading-relaxed transition-all duration-500 max-w-[280px]",
+            isActive ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
           )}
         >
           {experiment.description}
@@ -219,25 +230,22 @@ function WorkCard({
       {/* Index marker */}
       <span
         className={cn(
-          "absolute bottom-3 right-3 sm:bottom-4 sm:right-4 font-mono text-[9px] sm:text-[10px] transition-colors duration-300",
-          isActive ? "text-accent" : "text-muted-foreground/40",
+          "absolute bottom-6 right-6 font-mono text-xs transition-colors duration-300",
+          isActive ? "text-accent" : "text-white/20"
         )}
         aria-hidden="true"
       >
-        {String(index + 1).padStart(2, "0")}
+        {String(index + 1).padStart(2, "0")} /
       </span>
 
-      {/* Corner line */}
+      {/* Interactive geometric reveal line */}
       <div
         className={cn(
-          "absolute top-0 right-0 w-8 h-8 sm:w-12 sm:h-12 transition-all duration-500",
-          isActive ? "opacity-100" : "opacity-0",
+          "absolute top-0 right-0 w-[50%] h-[2px] bg-accent transform origin-right transition-transform duration-500",
+          isActive ? "scale-x-100" : "scale-x-0"
         )}
         aria-hidden="true"
-      >
-        <div className="absolute top-0 right-0 w-full h-[1px] bg-accent" />
-        <div className="absolute top-0 right-0 w-[1px] h-full bg-accent" />
-      </div>
-    </article>
+      />
+    </motion.article>
   )
 }
