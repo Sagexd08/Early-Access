@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 import dynamic from "next/dynamic"
 import { SideNav } from "@/components/side-nav"
 import { useSkipLinks } from "@/lib/use-keyboard-navigation"
@@ -15,6 +15,18 @@ const ColophonSection = dynamic(() => import("@/components/colophon-section").th
 
 export default function EarlyAccessPage() {
   const { addSkipLink } = useSkipLinks()
+  const [scrollProgress, setScrollProgress] = useState(0)
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollTop = window.scrollY
+      const docHeight = document.documentElement.scrollHeight - window.innerHeight
+      const progress = docHeight > 0 ? scrollTop / docHeight : 0
+      setScrollProgress(Math.min(1, Math.max(0, progress)))
+    }
+    window.addEventListener('scroll', handleScroll, { passive: true })
+    return () => window.removeEventListener('scroll', handleScroll)
+  }, [])
 
   useEffect(() => {
     // Add skip links for keyboard navigation
@@ -124,6 +136,11 @@ export default function EarlyAccessPage() {
         </div>
 
         <div id="focus-announcer" className="sr-only" aria-live="polite" aria-atomic="true"></div>
+
+        {/* Scroll progress indicator */}
+        <div className="scroll-progress-bar" aria-hidden="true">
+          <div className="scroll-progress-fill" style={{ height: `${scrollProgress * 100}%` }} />
+        </div>
       </main>
     </>
   )

@@ -147,8 +147,8 @@ export function HeroSection() {
       aria-label="Hero section - Early Access to Lumeo"
     >
       {/* Decorative vertical lines for asymmetric grid */}
-      <div className="absolute left-[10vw] top-0 bottom-0 w-px bg-white/5 hidden md:block parallax-bg" />
-      <div className="absolute right-[25vw] top-0 bottom-0 w-px bg-white/5 hidden md:block parallax-bg" />
+      <div className="absolute left-[10vw] top-0 bottom-0 w-px bg-white/8 hidden md:block parallax-bg" />
+      <div className="absolute right-[25vw] top-0 bottom-0 w-px bg-white/8 hidden md:block parallax-bg" />
 
       {/* Main content - Brutalist/Staggered */}
       <div ref={contentRef} className="flex-1 w-full relative z-10 pt-20">
@@ -156,8 +156,8 @@ export function HeroSection() {
         <div className="flex flex-col md:flex-row justify-between items-start gap-12">
           {/* Left Column - Meta & Subheading */}
           <div className="md:w-[25vw] mt-12 md:mt-32 stagger-element order-2 md:order-1 relative z-20">
-            <div className="inline-flex items-center gap-2 mb-10 border border-accent/25 px-3 py-1.5 bg-accent/[0.04]">
-              <div className="w-1.5 h-1.5 bg-accent rounded-full" />
+            <div className="inline-flex items-center gap-2 mb-10 border border-accent/25 px-3 py-1.5 bg-accent/[0.04] border-glow-accent">
+              <div className="w-1.5 h-1.5 bg-accent rounded-full animate-pulse-ring" />
               <span className="font-mono text-[10px] sm:text-[11px] uppercase tracking-[0.25em] text-white/70">
                 System Online
               </span>
@@ -179,7 +179,7 @@ export function HeroSection() {
           {/* Right Column - Massive Typography & Form */}
           <div className="md:w-[65vw] stagger-element order-1 md:order-2 parallax-fast relative z-10">
             {/* Headline */}
-            <h1 className="font-serif text-white text-[clamp(3.8rem,10vw,10.5rem)] tracking-[-0.02em] leading-[0.85] mb-14 text-balance">
+            <h1 className="font-serif text-white text-[clamp(3.8rem,10vw,10.5rem)] tracking-[-0.02em] leading-[0.85] mb-14 text-balance text-scanline">
               <span className="block text-white/30 font-mono text-[0.7rem] md:text-[0.85rem] tracking-[0.45em] uppercase mb-2 font-normal not-italic">Settlement Infrastructure</span>
               POST&#8209;<br />
               <span className="ml-[4vw] text-accent inline-block italic">LEGACY</span><br />
@@ -187,11 +187,11 @@ export function HeroSection() {
             </h1>
 
             {/* Email signup form */}
-            <form onSubmit={handleEmailSubmit} className="max-w-md ml-[2vw] stagger-element relative z-30" noValidate>
+            <form onSubmit={handleEmailSubmit} className="max-w-md ml-[2vw] stagger-element relative z-30 group" noValidate>
               <fieldset disabled={isLoading} className="border-0 p-0 m-0 relative">
                 <legend className="sr-only">Access Request Terminal</legend>
 
-                <div className="border border-white/12 bg-black/70 backdrop-blur-sm">
+                <div className="border border-white/12 bg-black/70 backdrop-blur-sm group-focus-within:border-accent/50 group-focus-within:border-glow-accent transition-all duration-500">
                   <div className="relative">
                     <label htmlFor="email-input" className="sr-only">Email address</label>
                     <input
@@ -256,7 +256,7 @@ export function HeroSection() {
             <div className="font-mono text-[9px] uppercase text-white/30 tracking-[0.25em] mb-1">Protocol</div>
             <div className="font-mono text-white/60 text-xs tracking-[0.15em]">v0.1 — Alpha</div>
           </div>
-          <div className="text-right border-r border-accent/50 pr-4">
+          <div className="text-right border-r border-accent/70 pr-4">
             <div className="font-mono text-[9px] uppercase text-white/30 tracking-[0.25em] mb-1">Status</div>
             <div className="flex items-center justify-end gap-2 font-mono text-xs text-accent">
               <span className="w-1 h-1 bg-accent rounded-full" />

@@ -146,23 +146,23 @@ export function LumeoAnimation() {
       <div className="absolute inset-0 pointer-events-none z-10" aria-hidden="true">
         {/* Horizontal etch lines */}
         <div className="grid-line-h absolute top-[20%] left-[8%] right-[8%] h-px bg-white/4 origin-left" />
-        <div className="grid-line-h absolute top-[50%] left-[8%] right-[8%] h-px bg-white/6 origin-left" />
+        <div className="grid-line-h absolute top-[50%] left-[8%] right-[8%] h-px bg-white/10 origin-left" />
         <div className="grid-line-h absolute top-[80%] left-[8%] right-[8%] h-px bg-white/4 origin-left" />
 
         {/* Vertical etch lines */}
         <div className="grid-line-v absolute left-[20%] top-[8%] bottom-[8%] w-px bg-white/4 origin-top" />
-        <div className="grid-line-v absolute left-[50%] top-[8%] bottom-[8%] w-px bg-white/6 origin-top" />
+        <div className="grid-line-v absolute left-[50%] top-[8%] bottom-[8%] w-px bg-white/10 origin-top" />
         <div className="grid-line-v absolute left-[80%] top-[8%] bottom-[8%] w-px bg-white/4 origin-top" />
       </div>
 
       {/* Corner Architectural Markers */}
       <div className="absolute inset-0 pointer-events-none z-20" aria-hidden="true">
         <div className="corner-mark absolute top-6 left-6 sm:top-8 sm:left-8">
-          <div className="w-6 h-6 sm:w-10 sm:h-10 border-t-2 border-l-2 border-accent/30" />
+          <div className="w-6 h-6 sm:w-10 sm:h-10 border-t-2 border-l-2 border-accent/30 animate-pulse-corner" />
           <span className="block mt-2 font-mono text-[8px] sm:text-[9px] text-accent/40 uppercase tracking-[0.3em]">SYS.01</span>
         </div>
         <div className="corner-mark absolute top-6 right-6 sm:top-8 sm:right-8">
-          <div className="w-6 h-6 sm:w-10 sm:h-10 border-t-2 border-r-2 border-accent/30" />
+          <div className="w-6 h-6 sm:w-10 sm:h-10 border-t-2 border-r-2 border-accent/30 animate-pulse-corner" />
           <span className="block mt-2 font-mono text-[8px] sm:text-[9px] text-accent/40 uppercase tracking-[0.3em] text-right">INIT</span>
         </div>
         <div className="corner-mark absolute bottom-6 left-6 sm:bottom-8 sm:left-8">
@@ -194,7 +194,7 @@ export function LumeoAnimation() {
       >
         <SplitFlapAudioProvider>
           {/* LUMEO Animation Container */}
-          <div className="lumeo-block mb-6 sm:mb-8" style={{ transformStyle: "preserve-3d" }}>
+          <div className="lumeo-block mb-6 sm:mb-8 text-glow-gold" style={{ transformStyle: "preserve-3d" }}>
             <SplitFlapText text="LUMEO" speed={80} />
           </div>
 
@@ -225,12 +225,12 @@ export function LumeoAnimation() {
         {/* CTA Hint — reveals on hover/focus */}
         <div className="cta-hint opacity-0 group-hover:opacity-100 group-focus-visible:opacity-100 transition-opacity duration-500">
           <div className="inline-flex flex-col items-center gap-3">
-            <p className="font-mono text-[10px] sm:text-xs text-accent/70 uppercase tracking-[0.25em]">
-              Enter Protocol
+            <p className="font-mono text-[10px] sm:text-xs text-accent uppercase tracking-[0.25em] flex items-center gap-1">
+              Enter Protocol<span className="animate-blink">_</span>
             </p>
             <div className="flex items-center gap-1">
               <div className="w-6 h-px bg-accent/40" />
-              <div className="w-2 h-2 border border-accent/60 rotate-45 group-hover:bg-accent/20 transition-colors duration-300" />
+              <div className="w-2 h-2 border border-accent rotate-45 group-hover:bg-accent/30 transition-colors duration-300 border-glow-strong" />
               <div className="w-6 h-px bg-accent/40" />
             </div>
           </div>
@@ -256,7 +256,7 @@ export function LumeoAnimation() {
       {/* Status Module — Bottom Left */}
       <div className="absolute bottom-6 left-6 sm:bottom-8 sm:left-8 z-20 meta-stagger" aria-hidden="true">
         <div className="flex items-center gap-2">
-          <div className="w-1 h-1 bg-accent rounded-full" />
+          <div className="w-1 h-1 bg-accent rounded-full animate-pulse-ring" />
           <span className="font-mono text-[8px] sm:text-[9px] uppercase tracking-[0.25em] text-white/30">
             System Online
           </span>

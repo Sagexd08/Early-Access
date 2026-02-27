@@ -385,6 +385,33 @@ select:focus-visible,
   100% { background-position: -200% center; }
 }
 
+@keyframes pulse-corner {
+  0%, 100% { opacity: 0.3; }
+  50% { opacity: 1; }
+}
+.animate-pulse-corner {
+  animation: pulse-corner 2s ease-in-out infinite;
+}
+
+@keyframes blink-cursor {
+  0%, 100% { opacity: 1; }
+  49% { opacity: 1; }
+  50% { opacity: 0; }
+  99% { opacity: 0; }
+}
+.animate-blink {
+  animation: blink-cursor 1.2s step-end infinite;
+}
+
+@keyframes etch-in-h {
+  0% { transform: scaleX(0); opacity: 0; }
+  100% { transform: scaleX(1); opacity: 1; }
+}
+@keyframes etch-in-v {
+  0% { transform: scaleY(0); opacity: 0; }
+  100% { transform: scaleY(1); opacity: 1; }
+}
+
 /* --- Advanced Aesthetics Utility Classes --- */
 
 @layer utilities {
@@ -402,8 +429,9 @@ select:focus-visible,
   }
 
   .border-glow-accent {
-    box-shadow: 0 0 12px color-mix(in oklch, var(--accent), transparent 50%),
-                inset 0 0 6px color-mix(in oklch, var(--accent), transparent 80%);
+    box-shadow: 0 0 15px color-mix(in oklch, var(--accent), transparent 40%),
+                0 0 40px color-mix(in oklch, var(--accent), transparent 65%),
+                inset 0 0 8px color-mix(in oklch, var(--accent), transparent 85%);
   }
 
   .bg-glass {
@@ -483,5 +511,53 @@ select:focus-visible,
     pointer-events: none;
     z-index: 1;
     mix-blend-mode: overlay;
+  }
+
+  /* Stronger glow for accent elements */
+  .text-glow-gold {
+    text-shadow: 0 0 20px color-mix(in oklch, var(--accent), transparent 20%),
+                 0 0 60px color-mix(in oklch, var(--accent), transparent 60%),
+                 0 0 100px color-mix(in oklch, var(--accent), transparent 85%);
+  }
+
+  /* Scanline shimmer over text */
+  .text-scanline {
+    position: relative;
+  }
+  .text-scanline::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 2px,
+      rgba(255,255,255,0.015) 2px,
+      rgba(255,255,255,0.015) 4px
+    );
+    pointer-events: none;
+  }
+
+  /* Accent border glow — stronger than existing */
+  .border-glow-strong {
+    box-shadow: 0 0 0 1px color-mix(in oklch, var(--accent), transparent 30%),
+                0 0 20px color-mix(in oklch, var(--accent), transparent 50%),
+                0 0 40px color-mix(in oklch, var(--accent), transparent 80%);
+  }
+
+  /* Scroll progress indicator */
+  .scroll-progress-bar {
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 2px;
+    height: 100vh;
+    z-index: 100;
+    background: rgba(255,255,255,0.04);
+  }
+  .scroll-progress-fill {
+    width: 100%;
+    background: linear-gradient(to bottom, transparent, var(--accent), transparent);
+    transition: height 0.1s linear;
   }
 }

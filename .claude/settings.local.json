@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "Skill(gsd:map-codebase)",
+      "Bash(node:*)",
+      "Bash(git:*)",
+      "Bash(npx next:*)"
+    ]
+  }
+}

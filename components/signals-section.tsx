@@ -326,7 +326,7 @@ export function SignalsSection() {
 
       {/* Section header */}
       <div ref={headerRef} className="mb-8 sm:mb-12 md:mb-16 pr-4 sm:pr-6 md:pr-12">
-        <span className="font-mono text-[9px] sm:text-[10px] uppercase tracking-[0.35em] text-accent/80">01 / USP</span>
+        <span className="font-mono text-[9px] sm:text-[10px] uppercase tracking-[0.35em] text-accent text-glow-gold">01 / USP</span>
         <h2 className="mt-6 sm:mt-8 font-serif text-5xl sm:text-6xl md:text-8xl tracking-[-0.02em] text-white leading-[0.85] font-light text-balance">Latest <br /><span className="italic">Updates</span></h2>
       </div>
 
@@ -359,10 +359,10 @@ export function SignalsSection() {
       <div className="flex justify-center mt-6 sm:mt-8">
         <div className="flex items-center gap-2">
           {/* Progress bar */}
-          <div className="w-16 sm:w-24 h-px bg-white/10 overflow-hidden">
+          <div className="w-24 sm:w-40 h-px bg-white/10 overflow-hidden">
             <div
               className="h-full bg-accent transition-all duration-300 ease-out"
-              style={{ width: `${scrollProgress * 100}%` }}
+              style={{ width: `${scrollProgress * 100}%`, boxShadow: '0 0 8px var(--accent)' }}
             />
           </div>
 
@@ -417,9 +417,9 @@ function SignalCard({
       transition={{ type: "spring", stiffness: 400, damping: 25 }}
       onMouseMove={handleMouseMove}
       className={cn(
-        "shrink-0 w-72 sm:w-80 group relative touch-manipulation cursor-pointer border border-white/10 bg-black min-h-[320px] rounded-none overflow-hidden h-full",
-        "transition-colors duration-500 ease-out",
-        "hover:border-accent",
+        "shrink-0 w-72 sm:w-80 group relative touch-manipulation cursor-pointer border border-white/10 bg-black min-h-[320px] rounded-none overflow-hidden h-full clip-corner-md",
+        "transition-all duration-500 ease-out",
+        "hover:border-accent hover:border-glow-accent",
         isDragging && "pointer-events-none",
         isPressed && "scale-95",
       )}
@@ -433,12 +433,12 @@ function SignalCard({
         style={{
           background: useMotionTemplate`
             radial-gradient(
-              400px circle at ${mouseX}px ${mouseY}px,
-              var(--accent) 0%,
+              350px circle at ${mouseX}px ${mouseY}px,
+              color-mix(in oklch, var(--accent), transparent 65%) 0%,
               transparent 80%
             )
           `,
-          opacity: 0.15
+          opacity: 0.2
         }}
       />
 

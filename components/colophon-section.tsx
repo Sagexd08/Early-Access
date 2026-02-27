@@ -124,13 +124,13 @@ export function ColophonSection() {
     <footer
       ref={sectionRef}
       id="colophon"
-      className="relative py-24 sm:py-32 md:py-40 px-6 sm:px-8 md:pl-28 md:pr-12 border-t border-border/30 mb-16 md:mb-0"
+      className="relative py-24 sm:py-32 md:py-40 px-6 sm:px-8 md:pl-28 md:pr-12 border-t border-accent/20 mb-16 md:mb-0"
       role="contentinfo"
       aria-label="Site footer with company information and links"
     >
       {/* Section header */}
       <div ref={headerRef} className="mb-12 sm:mb-16">
-        <span className="font-mono text-[9px] sm:text-[10px] uppercase tracking-[0.3em] text-accent/80">04 / Footer</span>
+        <span className="font-mono text-[9px] sm:text-[10px] uppercase tracking-[0.3em] text-accent/80 text-glow-gold">04 / Footer</span>
         <h2 className="mt-4 font-serif text-4xl sm:text-5xl md:text-7xl tracking-tight font-light italic">Lumeo</h2>
         <p className="mt-4 text-xs sm:text-sm font-mono text-muted-foreground/70 max-w-2xl leading-relaxed border-l border-accent/30 pl-4 text-balance">
           The post-UPI global settlement layer. Rebuilding how value settles across borders with wallet-first,
@@ -390,7 +390,7 @@ export function ColophonSection() {
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
           <div className="flex items-center gap-4">
             <div className="flex items-center gap-2">
-              <div className="w-2 h-2 bg-accent" aria-hidden="true" />
+              <div className="w-2 h-2 bg-accent animate-pulse-ring" aria-hidden="true" />
               <span className="font-mono text-[10px] text-accent uppercase tracking-wider">
                 Alpha v0.1 — In Development
               </span>

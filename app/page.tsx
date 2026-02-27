@@ -11,11 +11,11 @@ export default function Page() {
       {/* Full-screen Plasma background */}
       <div className="fixed inset-0 z-0" aria-hidden="true">
         <Plasma
-          color="#c8921a"
-          speed={0.45}
+          color="#d4a020"
+          speed={0.35}
           direction="forward"
-          scale={1.15}
-          opacity={0.72}
+          scale={1.25}
+          opacity={0.85}
           mouseInteractive={true}
         />
       </div>

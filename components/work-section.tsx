@@ -102,7 +102,7 @@ export function WorkSection() {
           <span className="font-mono text-[9px] sm:text-[10px] uppercase tracking-[0.3em] text-accent">02 / Features</span>
           <h2 className="mt-3 sm:mt-4 font-serif text-4xl sm:text-5xl md:text-7xl tracking-tight font-light text-balance">Key <span className="italic">Features</span></h2>
         </div>
-        <p className="max-w-xs font-mono text-xs text-muted-foreground leading-relaxed md:text-right border-r border-white/10 pr-4 text-balance">
+        <p className="max-w-xs font-mono text-xs text-muted-foreground leading-relaxed md:text-right border-r border-accent/30 pr-4 text-balance">
           Revolutionary payment infrastructure built for the future of finance.
         </p>
       </div>
@@ -163,9 +163,9 @@ function WorkCard({
       transition={{ type: "spring", stiffness: 400, damping: 25 }}
       onMouseMove={handleMouseMove}
       className={cn(
-        "focus-card group relative border border-white/10 bg-black p-6 flex flex-col justify-between transition-colors duration-500 cursor-pointer overflow-hidden rounded-none",
+        "focus-card group relative border border-white/10 bg-black p-6 flex flex-col justify-between transition-colors duration-500 cursor-pointer overflow-hidden rounded-none clip-corner-md",
         experiment.span,
-        isActive ? "border-accent" : ""
+        isActive ? "border-accent border-glow-accent" : ""
       )}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
@@ -184,12 +184,12 @@ function WorkCard({
         style={{
           background: useMotionTemplate`
             radial-gradient(
-              400px circle at ${mouseX}px ${mouseY}px,
-              var(--accent) 0%,
+              300px circle at ${mouseX}px ${mouseY}px,
+              color-mix(in oklch, var(--accent), transparent 70%) 0%,
               transparent 80%
             )
           `,
-          opacity: 0.15
+          opacity: 0.25
         }}
       />
 
@@ -201,7 +201,7 @@ function WorkCard({
 
       {/* Content */}
       <div className="relative z-10">
-        <span className="font-mono text-[10px] uppercase tracking-widest text-white/40 border border-white/10 px-2 py-1 bg-white/[0.03] inline-block group-hover:border-accent/30 group-hover:text-accent/70 transition-all duration-300">
+        <span className="font-mono text-[10px] uppercase tracking-widest text-white/40 border border-white/10 px-2 py-1 bg-white/[0.03] inline-block group-hover:border-accent/50 group-hover:text-accent group-hover:bg-accent/5 transition-all duration-300">
           {experiment.medium}
         </span>
         <h3
