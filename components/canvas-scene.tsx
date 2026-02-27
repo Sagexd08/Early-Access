@@ -1,6 +1,6 @@
 "use client"
 
-import { useRef, useMemo } from "react"
+import { useRef, Suspense } from "react"
 import { Canvas, useFrame } from "@react-three/fiber"
 import { Text, Float, Environment, MeshDistortMaterial } from "@react-three/drei"
 import * as THREE from "three"
@@ -42,7 +42,6 @@ function Scene() {
           position={[0, 0, 1]}
           fontSize={0.8}
           color="#ffffff"
-          font="/fonts/Inter-Bold.woff" // Fallback to default if not found
           anchorX="center"
           anchorY="middle"
           material-toneMapped={false}
@@ -56,9 +55,11 @@ function Scene() {
 
 export function CanvasScene() {
   return (
-    <div className="absolute inset-0 w-full h-full pointer-events-none z-0 opacity-30 mix-blend-screen">
+    <div className="absolute inset-0 w-full h-full pointer-events-none z-0 opacity-60 mix-blend-screen">
       <Canvas camera={{ position: [0, 0, 5], fov: 45 }}>
-        <Scene />
+        <Suspense fallback={null}>
+          <Scene />
+        </Suspense>
       </Canvas>
     </div>
   )

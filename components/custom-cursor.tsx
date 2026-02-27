@@ -1,20 +1,29 @@
 "use client"
 
 import { useEffect, useState } from "react"
-import { motion } from "framer-motion"
+import { motion, useMotionValue, useSpring } from "framer-motion"
 
 export function CustomCursor() {
-  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 })
   const [isHovering, setIsHovering] = useState(false)
   const [isVisible, setIsVisible] = useState(false)
+  const [isTouchDevice, setIsTouchDevice] = useState(false)
+
+  const cursorX = useMotionValue(-100)
+  const cursorY = useMotionValue(-100)
+  
+  const springConfig = { damping: 28, stiffness: 500, mass: 0.5 }
+  const cursorXSpring = useSpring(cursorX, springConfig)
+  const cursorYSpring = useSpring(cursorY, springConfig)
 
   useEffect(() => {
+    if (typeof window !== 'undefined' && window.matchMedia('(pointer: coarse)').matches) {
+      setIsTouchDevice(true)
+      return
+    }
+
     const updateMousePosition = (e: MouseEvent) => {
-      setMousePosition({ x: e.clientX, y: e.clientY })
-      setIsVisible((prev) => {
-        if (!prev) return true
-        return prev
-      })
+      cursorX.set(e.clientX - 8)
+      cursorY.set(e.clientY - 8)
     }
 
     const handleMouseOver = (e: MouseEvent) => {
@@ -39,32 +48,35 @@ export function CustomCursor() {
     document.addEventListener("mouseleave", handleMouseLeave)
     document.addEventListener("mouseenter", handleMouseEnter)
 
+    // Initial visibility check
+    setIsVisible(true)
+
     return () => {
       window.removeEventListener("mousemove", updateMousePosition)
       window.removeEventListener("mouseover", handleMouseOver)
       document.removeEventListener("mouseleave", handleMouseLeave)
       document.removeEventListener("mouseenter", handleMouseEnter)
     }
-  }, [])
+  }, [cursorX, cursorY])
 
-  if (typeof window !== 'undefined' && window.matchMedia('(pointer: coarse)').matches) {
+  if (isTouchDevice) {
     return null // Don't render on touch devices
   }
 
   return (
     <motion.div
       className="fixed top-0 left-0 w-4 h-4 bg-accent rounded-full pointer-events-none z-[9999] mix-blend-difference"
+      style={{
+        x: cursorXSpring,
+        y: cursorYSpring,
+      }}
       animate={{
-        x: mousePosition.x - 8,
-        y: mousePosition.y - 8,
         scale: isHovering ? 2.5 : 1,
         opacity: isVisible ? (isHovering ? 0.5 : 1) : 0
       }}
       transition={{
-        type: "spring",
-        stiffness: 500,
-        damping: 28,
-        mass: 0.5
+        scale: { type: "spring", stiffness: 300, damping: 20 },
+        opacity: { duration: 0.2 }
       }}
     />
   )
