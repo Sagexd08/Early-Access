@@ -102,7 +102,7 @@ const vertexShader = `
     vec3 finalPos = mix(noisePos, rotatedTarget, easeProgress);
     
     // 5. Colors
-    vec3 legacyColor = vec3(0.3, 0.3, 0.35); // Dull gray
+    vec3 legacyColor = vec3(0.8, 0.8, 0.9); // Brighter gray for visibility
     vec3 coreColor = vec3(0.0, 0.9, 1.0);    // Lumeo Cyan (#00E5FF)
     vec3 highlightColor = vec3(1.0, 1.0, 1.0); // Pure white
     
@@ -113,8 +113,8 @@ const vertexShader = `
     vec4 mvPosition = modelViewMatrix * vec4(finalPos, 1.0);
     
     // Size attenuation based on depth and progress
-    float finalSize = mix(size * 2.0, size * 0.5, easeProgress);
-    gl_PointSize = finalSize * (10.0 / -mvPosition.z);
+    float finalSize = mix(size * 8.0, size * 4.0, easeProgress);
+    gl_PointSize = finalSize * (50.0 / -mvPosition.z);
     gl_Position = projectionMatrix * mvPosition;
   }
 `
@@ -135,7 +135,7 @@ const fragmentShader = `
     // Boost brightness when fully formed
     vec3 finalColor = vColor * (1.0 + vProgress * 1.5);
     
-    gl_FragColor = vec4(finalColor, alpha * (0.4 + vProgress * 0.6));
+    gl_FragColor = vec4(finalColor, alpha * (0.8 + vProgress * 0.2));
   }
 `
 
@@ -295,6 +295,12 @@ export function AtomicCore({ progressRef }: { progressRef: React.MutableRefObjec
           depthWrite={false}
           blending={THREE.AdditiveBlending}
         />
+      </mesh>
+
+      {/* Debug Box to ensure Canvas is rendering */}
+      <mesh position={[0, 0, 0]}>
+        <boxGeometry args={[1, 1, 1]} />
+        <meshBasicMaterial color="red" wireframe />
       </mesh>
     </group>
   )
