@@ -194,7 +194,7 @@ export function LumeoAnimation() {
       >
         <SplitFlapAudioProvider>
           {/* LUMEO Animation Container */}
-          <div className="lumeo-block mb-6 sm:mb-8 text-glow-gold" style={{ transformStyle: "preserve-3d" }}>
+          <div className="lumeo-block mb-6 sm:mb-8" style={{ transformStyle: "preserve-3d" }}>
             <SplitFlapText text="LUMEO" speed={80} />
           </div>
 
@@ -230,7 +230,7 @@ export function LumeoAnimation() {
             </p>
             <div className="flex items-center gap-1">
               <div className="w-6 h-px bg-accent/40" />
-              <div className="w-2 h-2 border border-accent rotate-45 group-hover:bg-accent/30 transition-colors duration-300 border-glow-strong" />
+              <div className="w-2 h-2 border border-accent rotate-45 group-hover:bg-accent/30 transition-colors duration-300" />
               <div className="w-6 h-px bg-accent/40" />
             </div>
           </div>

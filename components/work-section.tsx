@@ -4,8 +4,7 @@ import { useState, useRef, useEffect } from "react"
 import { cn } from "@/lib/utils"
 import gsap from "gsap"
 import { ScrollTrigger } from "gsap/ScrollTrigger"
-import { motion, useMotionTemplate, useMotionValue } from "framer-motion"
-
+import { motion } from "framer-motion"
 gsap.registerPlugin(ScrollTrigger)
 
 const experiments = [
@@ -138,15 +137,6 @@ function WorkCard({
   const [isFocused, setIsFocused] = useState(false)
   const cardRef = useRef<HTMLElement>(null)
 
-  const mouseX = useMotionValue(0);
-  const mouseY = useMotionValue(0);
-
-  function handleMouseMove({ currentTarget, clientX, clientY }: React.MouseEvent) {
-    const { left, top } = currentTarget.getBoundingClientRect();
-    mouseX.set(clientX - left);
-    mouseY.set(clientY - top);
-  }
-
   const isActive = isHovered || isFocused
 
   const handleKeyDown = (event: React.KeyboardEvent) => {
@@ -161,11 +151,9 @@ function WorkCard({
       whileHover={{ scale: 1.02, zIndex: 10 }}
       whileTap={{ scale: 0.98 }}
       transition={{ type: "spring", stiffness: 400, damping: 25 }}
-      onMouseMove={handleMouseMove}
       className={cn(
-        "focus-card group relative border border-white/10 bg-black p-6 flex flex-col justify-between transition-colors duration-500 cursor-pointer overflow-hidden rounded-none clip-corner-md",
-        experiment.span,
-        isActive ? "border-accent border-glow-accent" : ""
+        "focus-card group relative border border-white/10 bg-black/50 backdrop-blur-md p-6 flex flex-col justify-between transition-colors duration-500 cursor-pointer overflow-hidden rounded-none clip-corner-md",
+        isActive ? "border-accent" : ""
       )}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
@@ -178,20 +166,6 @@ function WorkCard({
       role="article"
       aria-label={`${experiment.title} - ${experiment.description}`}
     >
-      {/* Magnetic Glow Effect */}
-      <motion.div
-        className="pointer-events-none absolute -inset-px opacity-0 transition duration-300 group-hover:opacity-100"
-        style={{
-          background: useMotionTemplate`
-            radial-gradient(
-              300px circle at ${mouseX}px ${mouseY}px,
-              color-mix(in oklch, var(--accent), transparent 70%) 0%,
-              transparent 80%
-            )
-          `,
-          opacity: 0.25
-        }}
-      />
 
       {/* Crosshair corner dots (Brutalist) */}
       <div className="absolute top-2 left-2 w-1 h-1 bg-white/20 transition-colors duration-300 group-hover:bg-accent/60" />
@@ -199,9 +173,8 @@ function WorkCard({
       <div className="absolute bottom-2 left-2 w-1 h-1 bg-white/20 transition-colors duration-300 group-hover:bg-accent/60" />
       <div className="absolute bottom-2 right-2 w-1 h-1 bg-white/20 transition-colors duration-300 group-hover:bg-accent/60" />
 
-      {/* Content */}
       <div className="relative z-10">
-        <span className="font-mono text-[10px] uppercase tracking-widest text-white/40 border border-white/10 px-2 py-1 bg-white/[0.03] inline-block group-hover:border-accent/50 group-hover:text-accent group-hover:bg-accent/5 transition-all duration-300">
+        <span className="font-mono text-[10px] uppercase tracking-widest text-white/40 border border-white/10 px-2 py-1 bg-white/3 inline-block group-hover:border-accent/50 group-hover:text-accent group-hover:bg-accent/5 transition-all duration-300">
           {experiment.medium}
         </span>
         <h3

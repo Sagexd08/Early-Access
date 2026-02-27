@@ -156,7 +156,7 @@ export function HeroSection() {
         <div className="flex flex-col md:flex-row justify-between items-start gap-12">
           {/* Left Column - Meta & Subheading */}
           <div className="md:w-[25vw] mt-12 md:mt-32 stagger-element order-2 md:order-1 relative z-20">
-            <div className="inline-flex items-center gap-2 mb-10 border border-accent/25 px-3 py-1.5 bg-accent/[0.04] border-glow-accent">
+            <div className="inline-flex items-center gap-2 mb-10 border border-accent/25 px-3 py-1.5 bg-accent/4">
               <div className="w-1.5 h-1.5 bg-accent rounded-full animate-pulse-ring" />
               <span className="font-mono text-[10px] sm:text-[11px] uppercase tracking-[0.25em] text-white/70">
                 System Online
@@ -191,7 +191,7 @@ export function HeroSection() {
               <fieldset disabled={isLoading} className="border-0 p-0 m-0 relative">
                 <legend className="sr-only">Access Request Terminal</legend>
 
-                <div className="border border-white/12 bg-black/70 backdrop-blur-sm group-focus-within:border-accent/50 group-focus-within:border-glow-accent transition-all duration-500">
+                <div className="border border-white/12 bg-black/70 backdrop-blur-sm group-focus-within:border-accent/50 transition-all duration-500">
                   <div className="relative">
                     <label htmlFor="email-input" className="sr-only">Email address</label>
                     <input

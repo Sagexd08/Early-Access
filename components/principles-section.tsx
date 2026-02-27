@@ -93,7 +93,7 @@ export function PrinciplesSection() {
     <section ref={sectionRef} id="principles" className="relative py-24 sm:py-32 md:py-40 px-6 sm:px-8 md:pl-28 md:pr-12">
       {/* Section header */}
       <div ref={headerRef} className="mb-16 sm:mb-20 md:mb-24">
-        <span className="font-mono text-[9px] sm:text-[10px] uppercase tracking-[0.3em] text-accent text-glow-gold">03 / Principles</span>
+        <span className="font-mono text-[9px] sm:text-[10px] uppercase tracking-[0.3em] text-accent">03 / Principles</span>
         <h2 className="mt-4 font-serif text-4xl sm:text-5xl md:text-7xl tracking-tight font-light text-balance">How We <span className="italic">Work</span></h2>
       </div>
 
@@ -129,9 +129,8 @@ export function PrinciplesSection() {
 
             {/* Decorative line with gradient */}
             <div
-              className={`mt-6 sm:mt-8 h-px w-24 sm:w-40 md:w-64 ${
-                principle.align === "right" ? "sm:mr-0" : "ml-0"
-              }`}
+              className={`mt-6 sm:mt-8 h-px w-24 sm:w-40 md:w-64 ${principle.align === "right" ? "sm:mr-0" : "ml-0"
+                }`}
               style={{
                 background: principle.align === "right"
                   ? "linear-gradient(to left, var(--accent), transparent)"

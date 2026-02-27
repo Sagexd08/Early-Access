@@ -130,7 +130,7 @@ export function ColophonSection() {
     >
       {/* Section header */}
       <div ref={headerRef} className="mb-12 sm:mb-16">
-        <span className="font-mono text-[9px] sm:text-[10px] uppercase tracking-[0.3em] text-accent/80 text-glow-gold">04 / Footer</span>
+        <span className="font-mono text-[9px] sm:text-[10px] uppercase tracking-[0.3em] text-accent/80">04 / Footer</span>
         <h2 className="mt-4 font-serif text-4xl sm:text-5xl md:text-7xl tracking-tight font-light italic">Lumeo</h2>
         <p className="mt-4 text-xs sm:text-sm font-mono text-muted-foreground/70 max-w-2xl leading-relaxed border-l border-accent/30 pl-4 text-balance">
           The post-UPI global settlement layer. Rebuilding how value settles across borders with wallet-first,
@@ -179,9 +179,8 @@ export function ColophonSection() {
 
             {message && (
               <div
-                className={`mt-3 text-xs font-mono tracking-wider ${
-                  message.startsWith('✓') ? 'text-accent' : 'text-red-400'
-                }`}
+                className={`mt-3 text-xs font-mono tracking-wider ${message.startsWith('✓') ? 'text-accent' : 'text-red-400'
+                  }`}
                 role="status"
                 aria-live="polite"
               >

@@ -4,8 +4,7 @@ import { useRef, useState, useEffect, useCallback } from "react"
 import { cn } from "@/lib/utils"
 import gsap from "gsap"
 import { ScrollTrigger } from "gsap/ScrollTrigger"
-import { motion, useMotionTemplate, useMotionValue } from "framer-motion"
-
+import { motion } from "framer-motion"
 gsap.registerPlugin(ScrollTrigger)
 
 const signals = [
@@ -326,7 +325,7 @@ export function SignalsSection() {
 
       {/* Section header */}
       <div ref={headerRef} className="mb-8 sm:mb-12 md:mb-16 pr-4 sm:pr-6 md:pr-12">
-        <span className="font-mono text-[9px] sm:text-[10px] uppercase tracking-[0.35em] text-accent text-glow-gold">01 / USP</span>
+        <span className="font-mono text-[9px] sm:text-[10px] uppercase tracking-[0.35em] text-accent">01 / USP</span>
         <h2 className="mt-6 sm:mt-8 font-serif text-5xl sm:text-6xl md:text-8xl tracking-[-0.02em] text-white leading-[0.85] font-light text-balance">Latest <br /><span className="italic">Updates</span></h2>
       </div>
 
@@ -400,26 +399,16 @@ function SignalCard({
     setIsPressed(false)
   }
 
-  // Mouse tracking for glow effect
-  const mouseX = useMotionValue(0);
-  const mouseY = useMotionValue(0);
-
-  function handleMouseMove({ currentTarget, clientX, clientY }: React.MouseEvent) {
-    const { left, top } = currentTarget.getBoundingClientRect();
-    mouseX.set(clientX - left);
-    mouseY.set(clientY - top);
-  }
 
   return (
     <motion.article
       whileHover={{ scale: 1.02, zIndex: 10 }}
       whileTap={{ scale: 0.98 }}
       transition={{ type: "spring", stiffness: 400, damping: 25 }}
-      onMouseMove={handleMouseMove}
       className={cn(
-        "shrink-0 w-72 sm:w-80 group relative touch-manipulation cursor-pointer border border-white/10 bg-black min-h-[320px] rounded-none overflow-hidden h-full clip-corner-md",
+        "shrink-0 w-72 sm:w-80 group relative touch-manipulation cursor-pointer border border-white/10 bg-black/50 backdrop-blur-md min-h-[320px] rounded-none overflow-hidden h-full clip-corner-md",
         "transition-all duration-500 ease-out",
-        "hover:border-accent hover:border-glow-accent",
+        "hover:border-accent",
         isDragging && "pointer-events-none",
         isPressed && "scale-95",
       )}
@@ -427,20 +416,6 @@ function SignalCard({
       onTouchEnd={handleTouchEnd}
       onTouchCancel={handleTouchEnd}
     >
-      {/* Magnetic Glow Effect */}
-      <motion.div
-        className="pointer-events-none absolute -inset-px opacity-0 transition duration-300 group-hover:opacity-100"
-        style={{
-          background: useMotionTemplate`
-            radial-gradient(
-              350px circle at ${mouseX}px ${mouseY}px,
-              color-mix(in oklch, var(--accent), transparent 65%) 0%,
-              transparent 80%
-            )
-          `,
-          opacity: 0.2
-        }}
-      />
 
       {/* Corner marks */}
       <div className="absolute top-0 left-0 w-4 h-4 border-t border-l border-white/10 group-hover:border-accent/30 transition-colors duration-500" />
