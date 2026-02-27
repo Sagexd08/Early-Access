@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useRef, useState } from "react"
+import { useEffect, useRef, useState, Suspense } from "react"
 import { CountdownTimer } from "@/components/countdown-timer"
 import { AtomicCore } from "@/components/atomic-core"
 import { Canvas } from "@react-three/fiber"
@@ -169,8 +169,15 @@ export function HeroSection() {
         
         {/* 3D Canvas Background */}
         <div className="absolute inset-0 w-full h-full pointer-events-none z-0">
-          <Canvas camera={{ position: [0, 0, 10], fov: 45 }}>
-            <AtomicCore progressRef={progressRef} />
+          <Canvas
+            camera={{ position: [0, 0, 10], fov: 45 }}
+            gl={{ antialias: true, alpha: true }}
+            dpr={[1, 1.5]}
+          >
+            <color attach="background" args={['#000000']} />
+            <Suspense fallback={null}>
+              <AtomicCore progressRef={progressRef} />
+            </Suspense>
           </Canvas>
         </div>
 

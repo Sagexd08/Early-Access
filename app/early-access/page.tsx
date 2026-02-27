@@ -7,7 +7,7 @@ import { useSkipLinks } from "@/lib/use-keyboard-navigation"
 import { ScanlineOverlay } from "@/components/scanline-overlay"
 
 const Plasma = dynamic(() => import("@/components/plasma").then(m => m.Plasma), { ssr: false })
-const HeroSection = dynamic(() => import("@/components/hero-section").then(mod => mod.HeroSection), { ssr: true })
+const HeroSection = dynamic(() => import("@/components/hero-section").then(mod => mod.HeroSection), { ssr: false })
 const SignalsSection = dynamic(() => import("@/components/signals-section").then(mod => mod.SignalsSection), { ssr: false })
 const WorkSection = dynamic(() => import("@/components/work-section").then(mod => mod.WorkSection), { ssr: false })
 const PrinciplesSection = dynamic(() => import("@/components/principles-section").then(mod => mod.PrinciplesSection), { ssr: false })

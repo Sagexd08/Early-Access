@@ -102,9 +102,13 @@ const vertexShader = `
     vec3 finalPos = mix(noisePos, rotatedTarget, easeProgress);
     
     // 5. Colors
-    vec3 legacyColor = vec3(0.8, 0.8, 0.9); // Brighter gray for visibility
-    vec3 coreColor = vec3(0.0, 0.9, 1.0);    // Lumeo Cyan (#00E5FF)
-    vec3 highlightColor = vec3(1.0, 1.0, 1.0); // Pure white
+    // Legacy: bright streaks of white-blue (messaging) and amber (settlement)
+    float isSettlement = step(0.5, fract(randomOffset * 7.0));
+    vec3 messagingColor = vec3(0.6, 0.65, 0.8);  // Cold blue-white
+    vec3 settlementColor = vec3(0.8, 0.55, 0.1);  // Dull amber/gold
+    vec3 legacyColor = mix(messagingColor, settlementColor, isSettlement);
+    vec3 coreColor = vec3(0.0, 0.9, 1.0);          // Lumeo Cyan (#00E5FF)
+    vec3 highlightColor = vec3(1.0, 1.0, 1.0);     // Pure white hot center
     
     // Mix colors based on progress and add some random highlights
     vec3 mixedColor = mix(legacyColor, coreColor, easeProgress);
@@ -113,8 +117,8 @@ const vertexShader = `
     vec4 mvPosition = modelViewMatrix * vec4(finalPos, 1.0);
     
     // Size attenuation based on depth and progress
-    float finalSize = mix(size * 8.0, size * 4.0, easeProgress);
-    gl_PointSize = finalSize * (50.0 / -mvPosition.z);
+    float finalSize = mix(size * 3.5, size * 0.8, easeProgress);
+    gl_PointSize = finalSize * (12.0 / -mvPosition.z);
     gl_Position = projectionMatrix * mvPosition;
   }
 `
@@ -130,12 +134,12 @@ const fragmentShader = `
     if(ll > 0.5) discard;
     
     // Soft edge
-    float alpha = smoothstep(0.5, 0.1, ll);
+    float alpha = smoothstep(0.5, 0.05, ll);
     
-    // Boost brightness when fully formed
-    vec3 finalColor = vColor * (1.0 + vProgress * 1.5);
+    // Boost brightness when fully formed — additive blending benefits from high brightness
+    vec3 finalColor = vColor * (1.5 + vProgress * 2.5);
     
-    gl_FragColor = vec4(finalColor, alpha * (0.8 + vProgress * 0.2));
+    gl_FragColor = vec4(finalColor, alpha * (0.7 + vProgress * 0.3));
   }
 `
 
@@ -295,12 +299,6 @@ export function AtomicCore({ progressRef }: { progressRef: React.MutableRefObjec
           depthWrite={false}
           blending={THREE.AdditiveBlending}
         />
-      </mesh>
-
-      {/* Debug Box to ensure Canvas is rendering */}
-      <mesh position={[0, 0, 0]}>
-        <boxGeometry args={[1, 1, 1]} />
-        <meshBasicMaterial color="red" wireframe />
       </mesh>
     </group>
   )
