@@ -166,7 +166,7 @@ export function HeroSection() {
             <p className="font-mono text-xs sm:text-sm text-muted-foreground leading-relaxed border-l border-accent/40 pl-4">
               Lumeo dismantles the friction of legacy banking. A wallet-native, non-custodial protocol where money moves at the speed of data.
             </p>
-            <div className="mt-8 font-mono text-[10px] sm:text-xs text-white/50 uppercase tracking-widest border border-white/8 px-4 py-3 bg-white/[0.02] inline-block">
+            <div className="mt-8 font-mono text-[10px] sm:text-xs text-white/50 uppercase tracking-widest border border-white/8 px-4 py-3 bg-white/2 inline-block">
               Status <span className="text-accent font-medium">→ Pre-Alpha</span>
             </div>
 
@@ -213,7 +213,7 @@ export function HeroSection() {
                       ref={submitButtonRef}
                       type="submit"
                       disabled={isLoading || !email}
-                      className="w-full px-5 py-4 font-mono text-xs uppercase tracking-[0.28em] font-medium transition-all duration-300 disabled:opacity-30 disabled:cursor-not-allowed relative overflow-hidden group bg-white/[0.04] hover:bg-accent text-white/60 hover:text-black disabled:hover:bg-transparent disabled:hover:text-white/30"
+                      className="w-full px-5 py-4 font-mono text-xs uppercase tracking-[0.28em] font-medium transition-all duration-300 disabled:opacity-30 disabled:cursor-not-allowed relative overflow-hidden group bg-white/4 hover:bg-accent text-white/60 hover:text-black disabled:hover:bg-transparent disabled:hover:text-white/30"
                     >
                       {isLoading ? (
                         <span className="flex items-center justify-center gap-2 text-white/40">

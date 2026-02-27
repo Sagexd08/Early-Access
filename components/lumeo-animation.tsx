@@ -200,7 +200,7 @@ export function LumeoAnimation() {
 
           {/* Protocol Designation */}
           <div className="meta-stagger mb-3 sm:mb-4">
-            <div className="inline-flex items-center gap-3 border border-white/10 px-5 sm:px-7 py-2 bg-white/[0.02]">
+            <div className="inline-flex items-center gap-3 border border-white/10 px-5 sm:px-7 py-2 bg-white/2">
               <div className="w-1 h-1 bg-accent rounded-full" />
               <h1 className="font-mono text-[10px] sm:text-xs uppercase tracking-[0.4em] text-white/70 font-normal">
                 Payment Protocol
