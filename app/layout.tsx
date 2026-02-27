@@ -3,6 +3,7 @@ import type { Metadata } from "next"
 import { IBM_Plex_Sans, IBM_Plex_Mono, Bebas_Neue, Space_Mono, Cormorant_Garamond, Montserrat } from "next/font/google"
 import { Analytics } from "@vercel/analytics/next"
 import { SmoothScroll } from "@/components/smooth-scroll"
+import { CustomCursor } from "@/components/custom-cursor"
 import "./globals.css"
 
 const montserrat = Montserrat({
@@ -66,6 +67,7 @@ export default function RootLayout({
         </div>
 
         <div className="noise-overlay" aria-hidden="true" />
+        <CustomCursor />
         <SmoothScroll>
           <main id="main-content" tabIndex={-1}>
             {children}

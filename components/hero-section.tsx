@@ -2,6 +2,8 @@
 
 import { useEffect, useRef, useState } from "react"
 import { CountdownTimer } from "@/components/countdown-timer"
+import { CanvasScene } from "@/components/canvas-scene"
+import { MagneticButton } from "@/components/magnetic-button"
 import { useFocusAnnouncement } from "@/lib/use-keyboard-navigation"
 import gsap from "gsap"
 import { ScrollTrigger } from "gsap/ScrollTrigger"
@@ -146,6 +148,7 @@ export function HeroSection() {
       tabIndex={-1}
       aria-label="Hero section - Early Access to Lumeo"
     >
+      <CanvasScene />
       {/* Decorative vertical lines for asymmetric grid */}
       <div className="absolute left-[10vw] top-0 bottom-0 w-px bg-white/8 hidden md:block parallax-bg" />
       <div className="absolute right-[25vw] top-0 bottom-0 w-px bg-white/8 hidden md:block parallax-bg" />
@@ -209,20 +212,22 @@ export function HeroSection() {
                     <div className="absolute bottom-0 left-0 h-px w-0 bg-accent transition-all duration-500 group-focus-within:w-full" />
                   </div>
                   <div className="border-t border-white/12">
-                    <button
-                      ref={submitButtonRef}
-                      type="submit"
-                      disabled={isLoading || !email}
-                      className="w-full px-5 py-4 font-mono text-xs uppercase tracking-[0.28em] font-medium transition-all duration-300 disabled:opacity-30 disabled:cursor-not-allowed relative overflow-hidden group bg-white/4 hover:bg-accent text-white/60 hover:text-black disabled:hover:bg-transparent disabled:hover:text-white/30"
-                    >
-                      {isLoading ? (
-                        <span className="flex items-center justify-center gap-2 text-white/40">
-                          <span className="w-3.5 h-px bg-current animate-pulse" />
-                          Processing
-                          <span className="w-3.5 h-px bg-current animate-pulse" />
-                        </span>
-                      ) : "Request Access"}
-                    </button>
+                    <MagneticButton className="w-full block">
+                      <button
+                        ref={submitButtonRef}
+                        type="submit"
+                        disabled={isLoading || !email}
+                        className="w-full px-5 py-4 font-mono text-xs uppercase tracking-[0.28em] font-medium transition-all duration-300 disabled:opacity-30 disabled:cursor-not-allowed relative overflow-hidden group bg-white/4 hover:bg-accent text-white/60 hover:text-black disabled:hover:bg-transparent disabled:hover:text-white/30"
+                      >
+                        {isLoading ? (
+                          <span className="flex items-center justify-center gap-2 text-white/40">
+                            <span className="w-3.5 h-px bg-current animate-pulse" />
+                            Processing
+                            <span className="w-3.5 h-px bg-current animate-pulse" />
+                          </span>
+                        ) : "Request Access"}
+                      </button>
+                    </MagneticButton>
                   </div>
                 </div>
 

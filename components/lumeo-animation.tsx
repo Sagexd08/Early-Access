@@ -6,11 +6,14 @@ import { AnimatedNoise } from "@/components/animated-noise"
 import { useFocusAnnouncement } from "@/lib/use-keyboard-navigation"
 import gsap from "gsap"
 
+import { useRouter } from "next/navigation"
+
 export function LumeoAnimation() {
   const containerRef = useRef<HTMLDivElement>(null)
   const orchestratorRef = useRef<HTMLDivElement>(null)
   const [mounted, setMounted] = useState(false)
   const { announce } = useFocusAnnouncement()
+  const router = useRouter()
 
   useEffect(() => {
     setMounted(true)
@@ -95,7 +98,7 @@ export function LumeoAnimation() {
 
     // Exit animation before navigating
     const tl = gsap.timeline({
-      onComplete: () => { window.location.href = '/early-access' }
+      onComplete: () => { router.push('/early-access') }
     })
 
     tl.to(".lumeo-block", {

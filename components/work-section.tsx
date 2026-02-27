@@ -87,6 +87,20 @@ export function WorkSection() {
             toggleActions: "play none none reverse",
           },
         })
+
+        // Add parallax effect to cards
+        cards.forEach((card, i) => {
+          gsap.to(card, {
+            y: (i % 2 === 0) ? -30 : 30,
+            ease: "none",
+            scrollTrigger: {
+              trigger: gridRef.current,
+              start: "top bottom",
+              end: "bottom top",
+              scrub: true,
+            },
+          })
+        })
       }
     }, sectionRef)
 
