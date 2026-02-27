@@ -2,7 +2,8 @@
 
 import { useEffect, useRef, useState } from "react"
 import { CountdownTimer } from "@/components/countdown-timer"
-import { CanvasScene } from "@/components/canvas-scene"
+import { AtomicCore } from "@/components/atomic-core"
+import { Canvas } from "@react-three/fiber"
 import { MagneticButton } from "@/components/magnetic-button"
 import { useFocusAnnouncement } from "@/lib/use-keyboard-navigation"
 import gsap from "gsap"
@@ -20,6 +21,7 @@ export function HeroSection() {
   const contentRef = useRef<HTMLDivElement>(null)
   const emailInputRef = useRef<HTMLInputElement>(null)
   const submitButtonRef = useRef<HTMLButtonElement>(null)
+  const progressRef = useRef({ value: 0 })
   const [email, setEmail] = useState("")
   const [isLoading, setIsLoading] = useState(false)
   const [message, setMessage] = useState<string | null>(null)
@@ -58,13 +60,27 @@ export function HeroSection() {
         }
       })
 
-      gsap.to(".parallax-fast", {
-        yPercent: -50,
+      // 3D Scroll Progress
+      gsap.to(progressRef.current, {
+        value: 1,
         ease: "none",
         scrollTrigger: {
           trigger: sectionRef.current,
-          start: "top bottom",
-          end: "bottom top",
+          start: "top top",
+          end: "bottom bottom",
+          scrub: 1,
+        }
+      })
+
+      // Fade out content as user scrolls down
+      gsap.to(contentRef.current, {
+        opacity: 0,
+        y: -50,
+        ease: "none",
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          start: "top top",
+          end: "center top",
           scrub: true
         }
       })
@@ -144,17 +160,26 @@ export function HeroSection() {
     <section
       ref={sectionRef}
       id="hero"
-      className="relative min-h-screen flex items-center px-6 sm:px-8 md:pl-28 md:pr-12 py-24"
+      className="relative h-[300vh] w-full"
       tabIndex={-1}
       aria-label="Hero section - Early Access to Lumeo"
     >
-      <CanvasScene />
-      {/* Decorative vertical lines for asymmetric grid */}
-      <div className="absolute left-[10vw] top-0 bottom-0 w-px bg-white/8 hidden md:block parallax-bg" />
-      <div className="absolute right-[25vw] top-0 bottom-0 w-px bg-white/8 hidden md:block parallax-bg" />
+      {/* Sticky Container for Canvas and Content */}
+      <div className="sticky top-0 h-screen w-full overflow-hidden flex items-center px-6 sm:px-8 md:pl-28 md:pr-12 py-24">
+        
+        {/* 3D Canvas Background */}
+        <div className="absolute inset-0 w-full h-full pointer-events-none z-0">
+          <Canvas camera={{ position: [0, 0, 10], fov: 45 }}>
+            <AtomicCore progressRef={progressRef} />
+          </Canvas>
+        </div>
 
-      {/* Main content - Brutalist/Staggered */}
-      <div ref={contentRef} className="flex-1 w-full relative z-10 pt-20">
+        {/* Decorative vertical lines for asymmetric grid */}
+        <div className="absolute left-[10vw] top-0 bottom-0 w-px bg-white/8 hidden md:block parallax-bg" />
+        <div className="absolute right-[25vw] top-0 bottom-0 w-px bg-white/8 hidden md:block parallax-bg" />
+
+        {/* Main content - Brutalist/Staggered */}
+        <div ref={contentRef} className="flex-1 w-full relative z-10 pt-20">
 
         <div className="flex flex-col md:flex-row justify-between items-start gap-12">
           {/* Left Column - Meta & Subheading */}
@@ -279,6 +304,14 @@ export function HeroSection() {
             <div key={i} className={`w-1 h-1 ${isAccent ? 'bg-accent' : 'bg-white'}`} />
           ))}
         </div>
+      </div>
+
+      {/* Scroll Indicator */}
+      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 opacity-50">
+        <span className="font-mono text-[9px] uppercase tracking-[0.3em] text-white">Scroll to Converge</span>
+        <div className="w-px h-12 bg-gradient-to-b from-white/50 to-transparent" />
+      </div>
+
       </div>
     </section>
   )
