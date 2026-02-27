@@ -327,7 +327,7 @@ export function SignalsSection() {
       {/* Section header */}
       <div ref={headerRef} className="mb-8 sm:mb-12 md:mb-16 pr-4 sm:pr-6 md:pr-12">
         <span className="font-mono text-[9px] sm:text-[10px] uppercase tracking-[0.35em] text-accent/80">01 / USP</span>
-        <h2 className="mt-6 sm:mt-8 font-serif text-5xl sm:text-6xl md:text-8xl tracking-[-0.02em] text-white leading-[0.85] font-light">Latest <br />Updates</h2>
+        <h2 className="mt-6 sm:mt-8 font-serif text-5xl sm:text-6xl md:text-8xl tracking-[-0.02em] text-white leading-[0.85] font-light text-balance">Latest <br /><span className="italic">Updates</span></h2>
       </div>
 
       {/* Horizontal scroll container - enhanced for touch devices */}

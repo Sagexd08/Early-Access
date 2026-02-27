@@ -94,7 +94,7 @@ export function PrinciplesSection() {
       {/* Section header */}
       <div ref={headerRef} className="mb-16 sm:mb-20 md:mb-24">
         <span className="font-mono text-[9px] sm:text-[10px] uppercase tracking-[0.3em] text-accent">03 / Principles</span>
-        <h2 className="mt-4 font-serif text-4xl sm:text-5xl md:text-7xl tracking-tight font-light">How We Work</h2>
+        <h2 className="mt-4 font-serif text-4xl sm:text-5xl md:text-7xl tracking-tight font-light text-balance">How We <span className="italic">Work</span></h2>
       </div>
 
       {/* Staggered principles */}

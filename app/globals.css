@@ -41,7 +41,7 @@
 
 @theme inline {
   /* Updated font-sans and font-mono - Space Mono for brutalist identity */
-  --font-sans: "IBM Plex Sans", "IBM Plex Sans Fallback", sans-serif;
+  --font-sans: var(--font-montserrat, "Montserrat"), "IBM Plex Sans", sans-serif;
   --font-mono: var(--font-space-mono, "Space Mono"), "IBM Plex Mono", monospace;
   --font-display: var(--font-bebas, "Bebas Neue"), "Bebas Neue Fallback", sans-serif;
   --font-serif: var(--font-cormorant, "Cormorant Garamond"), Georgia, serif;

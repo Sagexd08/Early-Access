@@ -270,7 +270,7 @@ export const welcomeEmailTemplate = (email: string, confirmationToken: string) =
             <h1>Welcome to the Network</h1>
             
             <p class="intro-text">
-                Your request for early access has been <span class="highlight">successfully registered</span> 
+                Thank you for registering and thereby subscribing to our newsletter. Your request for early access has been <span class="highlight">successfully registered</span> 
                 in our protocol queue. You're now part of an exclusive group building the future of 
                 <span class="accent">decentralized finance</span>.
             </p>
@@ -611,7 +611,7 @@ export const confirmationEmailTemplate = (email: string) => {
             <h1>Welcome Aboard!</h1>
             
             <p class="intro-text">
-                Your email has been <span class="highlight">successfully verified</span> and your position 
+                Thank you for registering and thereby subscribing to our newsletter. Your email has been <span class="highlight">successfully verified</span> and your position 
                 in the Lumeo early access program is now <span class="accent">confirmed and secured</span>.
             </p>
             

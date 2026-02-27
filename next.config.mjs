@@ -6,6 +6,15 @@ const nextConfig = {
   images: {
     unoptimized: true,
   },
+  compiler: {
+    removeConsole: process.env.NODE_ENV === "production",
+  },
+  experimental: {
+    optimizePackageImports: ["@radix-ui/react-icons", "lucide-react", "framer-motion"],
+  },
+  turbopack: {
+    root: ".",
+  },
 }
 
 export default nextConfig

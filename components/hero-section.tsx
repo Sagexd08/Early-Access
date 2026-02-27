@@ -9,6 +9,10 @@ import { motion } from "framer-motion"
 
 gsap.registerPlugin(ScrollTrigger)
 
+// Static pattern — must be defined outside the component (module scope)
+// so the server and client always produce the exact same class list.
+const GRID_DOT_ACCENT: boolean[] = Array.from({ length: 16 }, (_, i) => i % 5 === 0)
+
 export function HeroSection() {
   const sectionRef = useRef<HTMLElement>(null)
   const contentRef = useRef<HTMLDivElement>(null)
@@ -175,10 +179,10 @@ export function HeroSection() {
           {/* Right Column - Massive Typography & Form */}
           <div className="md:w-[65vw] stagger-element order-1 md:order-2 parallax-fast relative z-10">
             {/* Headline */}
-            <h1 className="font-serif text-white text-[clamp(3.8rem,10vw,10.5rem)] tracking-[-0.02em] leading-[0.85] mb-14">
-              <span className="block text-white/30 font-mono text-[0.7rem] md:text-[0.85rem] tracking-[0.45em] uppercase mb-2 font-normal">Settlement Infrastructure</span>
+            <h1 className="font-serif text-white text-[clamp(3.8rem,10vw,10.5rem)] tracking-[-0.02em] leading-[0.85] mb-14 text-balance">
+              <span className="block text-white/30 font-mono text-[0.7rem] md:text-[0.85rem] tracking-[0.45em] uppercase mb-2 font-normal not-italic">Settlement Infrastructure</span>
               POST&#8209;<br />
-              <span className="ml-[4vw] text-accent inline-block">LEGACY</span><br />
+              <span className="ml-[4vw] text-accent inline-block italic">LEGACY</span><br />
               <span className="ml-[2vw] inline-block">INFRA</span>
             </h1>
 
@@ -266,8 +270,8 @@ export function HeroSection() {
       {/* Decorative Elements - Asymmetric Marks */}
       <div className="absolute top-[20vh] right-[10vw] hidden xl:block opacity-20 pointer-events-none parallax-fast">
         <div className="grid grid-cols-4 gap-4">
-          {[...Array(16)].map((_, i) => (
-            <div key={i} className={`w-1 h-1 ${Math.random() > 0.8 ? 'bg-accent' : 'bg-white'}`} />
+          {GRID_DOT_ACCENT.map((isAccent, i) => (
+            <div key={i} className={`w-1 h-1 ${isAccent ? 'bg-accent' : 'bg-white'}`} />
           ))}
         </div>
       </div>

@@ -1,10 +1,16 @@
 import type React from "react"
 import type { Metadata } from "next"
-import { IBM_Plex_Sans, IBM_Plex_Mono, Bebas_Neue, Space_Mono, Cormorant_Garamond } from "next/font/google"
+import { IBM_Plex_Sans, IBM_Plex_Mono, Bebas_Neue, Space_Mono, Cormorant_Garamond, Montserrat } from "next/font/google"
 import { Analytics } from "@vercel/analytics/next"
 import { SmoothScroll } from "@/components/smooth-scroll"
 import "./globals.css"
 
+const montserrat = Montserrat({
+  weight: ["300", "400", "500", "600", "700"],
+  subsets: ["latin"],
+  variable: "--font-montserrat",
+  display: "swap",
+})
 const ibmPlexSans = IBM_Plex_Sans({
   weight: ["400", "500", "600", "700"],
   subsets: ["latin"],
@@ -47,7 +53,7 @@ export default function RootLayout({
   return (
     <html lang="en" className="dark bg-background">
       <body
-        className={`${ibmPlexSans.variable} ${bebasNeue.variable} ${ibmPlexMono.variable} ${spaceMono.variable} ${cormorant.variable} font-sans antialiased overflow-x-hidden`}
+        className={`${montserrat.variable} ${ibmPlexSans.variable} ${bebasNeue.variable} ${ibmPlexMono.variable} ${spaceMono.variable} ${cormorant.variable} font-sans antialiased overflow-x-hidden`}
       >
         {/* Skip Links for Accessibility */}
         <div className="skip-links">
