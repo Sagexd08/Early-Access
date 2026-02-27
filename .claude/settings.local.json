@@ -4,7 +4,8 @@
       "Skill(gsd:map-codebase)",
       "Bash(node:*)",
       "Bash(git:*)",
-      "Bash(npx next:*)"
+      "Bash(npx next:*)",
+      "Bash(curl:*)"
     ]
   }
 }

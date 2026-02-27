@@ -1,31 +1,35 @@
 "use client"
 import { useEffect, useRef } from "react"
+
 interface AnimatedNoiseProps {
   opacity?: number
   className?: string
 }
-export function AnimatedNoise({ opacity = 0.05, className }: AnimatedNoiseProps) {
+
+export function AnimatedNoise({ opacity = 0.05, className = "" }: AnimatedNoiseProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null)
 
   useEffect(() => {
     const canvas = canvasRef.current
     if (!canvas) return
 
-    const ctx = canvas.getContext("2d")
+    // Use alpha: false for better performance since we don't need transparency in the noise itself
+    const ctx = canvas.getContext("2d", { alpha: false })
     if (!ctx) return
+
+    // Fixed small resolution for noise generation (drastically improves performance)
+    const noiseSize = 256
+    canvas.width = noiseSize
+    canvas.height = noiseSize
+
+    // Reuse ImageData to prevent garbage collection pauses
+    const imageData = ctx.createImageData(noiseSize, noiseSize)
+    const data = imageData.data
 
     let animationId: number
     let frame = 0
 
-    const resize = () => {
-      canvas.width = canvas.offsetWidth / 2
-      canvas.height = canvas.offsetHeight / 2
-    }
-
     const generateNoise = () => {
-      const imageData = ctx.createImageData(canvas.width, canvas.height)
-      const data = imageData.data
-
       for (let i = 0; i < data.length; i += 4) {
         const value = Math.random() * 255
         data[i] = value // R
@@ -33,7 +37,6 @@ export function AnimatedNoise({ opacity = 0.05, className }: AnimatedNoiseProps)
         data[i + 2] = value // B
         data[i + 3] = 255 // A
       }
-
       ctx.putImageData(imageData, 0, 0)
     }
 
@@ -46,12 +49,9 @@ export function AnimatedNoise({ opacity = 0.05, className }: AnimatedNoiseProps)
       animationId = requestAnimationFrame(animate)
     }
 
-    resize()
-    window.addEventListener("resize", resize)
     animate()
 
     return () => {
-      window.removeEventListener("resize", resize)
       cancelAnimationFrame(animationId)
     }
   }, [])
@@ -68,6 +68,8 @@ export function AnimatedNoise({ opacity = 0.05, className }: AnimatedNoiseProps)
         pointerEvents: "none",
         opacity,
         mixBlendMode: "overlay",
+        // Let the GPU scale the small noise texture up
+        imageRendering: "pixelated",
       }}
     />
   )
