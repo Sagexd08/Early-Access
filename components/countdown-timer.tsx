@@ -18,7 +18,7 @@ export function CountdownTimer() {
 
   useEffect(() => {
     const calculateTimeLeft = () => {
-      const releaseDate = new Date('2026-08-02T00:00:00')
+      const releaseDate = new Date('2026-08-27T00:00:00')
       const now = new Date()
       const difference = releaseDate.getTime() - now.getTime()
 
